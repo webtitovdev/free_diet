@@ -243,18 +243,18 @@
 
 ### Backend Implementation for User Story 5
 
-- [ ] T111 [P] [US5] Create DailyLog entity model types in src/entities/daily-log/model/types.ts
-- [ ] T112 [P] [US5] Implement daily log calculation logic in src/entities/daily-log/lib/calculate-daily-log.ts (aggregate meals, deviation %, goal achieved). Formula for goal achievement per FR-019: goalAchieved = (Math.abs(actualCalories - targetCalories) / targetCalories) <= 0.10
-- [ ] T113 [US5] Create calendar month data API route in src/app/api/calendar/route.ts GET (returns DailyLog for month range)
-- [ ] T114 [US5] Create day details API route in src/app/api/calendar/[date]/route.ts GET (meals for specific day)
+- [x] T111 [P] [US5] Create DailyLog entity model types in src/entities/daily-log/model/types.ts
+- [x] T112 [P] [US5] Implement daily log calculation logic in src/entities/daily-log/lib/calculate-daily-log.ts (aggregate meals, deviation %, goal achieved). Formula for goal achievement per FR-019: goalAchieved = (Math.abs(actualCalories - targetCalories) / targetCalories) <= 0.10
+- [x] T113 [US5] Create calendar month data API route in src/app/api/calendar/route.ts GET (returns DailyLog for month range)
+- [x] T114 [US5] Create day details API route in src/app/api/calendar/[date]/route.ts GET (meals for specific day)
 
 ### Frontend Implementation for User Story 5
 
-- [ ] T115 [P] [US5] Create progress tracking feature store in src/features/progress-tracking/model/calendar-store.ts (month data, selected day)
-- [ ] T116 [P] [US5] Create calendar API methods in src/features/progress-tracking/api/calendar-api.ts (getMonthData, getDayDetails)
-- [ ] T117 [P] [US5] Create CalendarDayCell component in src/features/progress-tracking/ui/CalendarDayCell.tsx (green if goal achieved, gray otherwise)
-- [ ] T118 [P] [US5] Create DayDetailModal component in src/features/progress-tracking/ui/DayDetailModal.tsx showing meals and totals
-- [ ] T119 [US5] Create CalendarView widget in src/widgets/calendar-view/CalendarView.tsx using Ant Design Calendar
+- [x] T115 [P] [US5] Create progress tracking feature store in src/features/progress-tracking/model/calendar-store.ts (month data, selected day)
+- [x] T116 [P] [US5] Create calendar API methods in src/features/progress-tracking/api/calendar-api.ts (getMonthData, getDayDetails)
+- [x] T117 [P] [US5] Create CalendarDayCell component in src/features/progress-tracking/ui/CalendarDayCell.tsx (green if goal achieved, gray otherwise)
+- [x] T118 [P] [US5] Create DayDetailModal component in src/features/progress-tracking/ui/DayDetailModal.tsx showing meals and totals
+- [x] T119 [US5] Create CalendarView widget in src/widgets/calendar-view/CalendarView.tsx using Ant Design Calendar
 - [ ] T120 [US5] Create calendar page in src/pages/calendar-page/CalendarPage.tsx
 - [ ] T121 [US5] Create calendar route in src/app/(dashboard)/calendar/page.tsx
 
