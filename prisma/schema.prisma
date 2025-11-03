@@ -1,0 +1,167 @@
+// prisma/schema.prisma
+// Сгенерировано из specs/001-calorie-photo-tracker/data-model.md
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// User Entity - Зарегистрированный пользователь приложения
+// ============================================================================
+
+model User {
+  id                String    @id @default(uuid())
+  email             String    @unique
+  emailVerified     DateTime?
+  hashedPassword    String?   // null для Google OAuth
+  authMethod        AuthMethod
+  verificationToken String?   @unique
+  tokenExpiresAt    DateTime?
+  createdAt         DateTime  @default(now())
+
+  profile   UserProfile?
+  photos    FoodPhoto[]
+  meals     Meal[]
+  dailyLogs DailyLog[]
+
+  @@map("users")
+}
+
+enum AuthMethod {
+  GOOGLE
+  EMAIL_PASSWORD
+}
+
+// ============================================================================
+// UserProfile Entity - Личные метрики и цели пользователя
+// ============================================================================
+
+model UserProfile {
+  id             String   @id @default(uuid())
+  userId         String   @unique
+  weight         Float    // кг
+  age            Int      // лет
+  gender         Gender
+  height         Int      // см
+  goal           GoalType
+  targetCalories Int      // рассчитанные целевые калории
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_profiles")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum GoalType {
+  BULK          // Набор массы (+15% surplus)
+  MAINTAIN      // Удержание веса (maintenance)
+  CUT           // Похудение (-15% deficit)
+  SUGAR_CONTROL // Контроль сахара (maintenance, carb focus)
+}
+
+// ============================================================================
+// FoodPhoto Entity - Загруженная фотография еды с lifecycle management
+// ============================================================================
+
+model FoodPhoto {
+  id               String      @id @default(uuid())
+  userId           String
+  storageUrl       String      // URL в Vercel Blob storage
+  uploadedAt       DateTime    @default(now())
+  autoDeleteAt     DateTime    // uploadedAt + 30 days
+  processingStatus PhotoStatus
+
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  meal Meal? // Optional - meal может существовать без фото
+
+  @@map("food_photos")
+}
+
+enum PhotoStatus {
+  UPLOADING  // Загрузка в процессе
+  PROCESSING // OpenRouter API анализирует
+  COMPLETED  // Анализ завершен, результаты доступны
+  FAILED     // Обработка не удалась (низкое качество, еда не обнаружена, API ошибка)
+}
+
+// ============================================================================
+// Meal Entity - Сохраненный прием пищи с продуктами и питательными веществами
+// ============================================================================
+
+model Meal {
+  id            String       @id @default(uuid())
+  userId        String
+  photoId       String?      @unique // IMPORTANT: nullable, no cascade delete (FR-005b)
+  date          DateTime
+  category      MealCategory
+  totalCalories Float
+  totalProtein  Float // белки (граммы)
+  totalFats     Float // жиры (граммы)
+  totalCarbs    Float // углеводы (граммы)
+  createdAt     DateTime     @default(now())
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  photo     FoodPhoto? @relation(fields: [photoId], references: [id], onDelete: SetNull)
+  foodItems FoodItem[]
+
+  @@map("meals")
+}
+
+enum MealCategory {
+  BREAKFAST // Завтрак (6:00-11:00 suggested)
+  LUNCH     // Обед (11:00-16:00 suggested)
+  DINNER    // Ужин (16:00-21:00 suggested)
+  SNACK     // Перекус (other times suggested)
+}
+
+// ============================================================================
+// FoodItem Entity - Индивидуальный продукт в приеме пищи
+// ============================================================================
+
+model FoodItem {
+  id              String  @id @default(uuid())
+  mealId          String
+  name            String  // название продукта (Russian)
+  weight          Float   // вес в граммах или quantity
+  caloriesPer100g Float   // калории на 100г
+  proteinPer100g  Float   // белки на 100г (граммы)
+  fatsPer100g     Float   // жиры на 100г (граммы)
+  carbsPer100g    Float   // углеводы на 100г (граммы)
+  addedManually   Boolean @default(false) // true если пользователь добавил, false если API распознал
+
+  meal Meal @relation(fields: [mealId], references: [id], onDelete: Cascade)
+
+  @@map("food_items")
+}
+
+// ============================================================================
+// DailyLog Entity - Агрегированная дневная сводка по питанию для календаря
+// ============================================================================
+
+model DailyLog {
+  id               String   @id @default(uuid())
+  userId           String
+  date             DateTime @unique @db.Date // дата без времени
+  totalCalories    Float    // сумма всех приемов пищи за день
+  totalProtein     Float    // сумма белков (граммы)
+  totalFats        Float    // сумма жиров (граммы)
+  totalCarbs       Float    // сумма углеводов (граммы)
+  deviationPercent Float    // % отклонения от targetCalories
+  goalAchieved     Boolean  // true если в пределах ±10% от target
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, date])
+  @@map("daily_logs")
+}

@@ -42,38 +42,38 @@
 
 ### Database & ORM Setup
 
-- [ ] T011 Create Prisma schema in prisma/schema.prisma with all 6 entities (User, UserProfile, FoodPhoto, Meal, FoodItem, DailyLog). IMPORTANT: Meal-Photo relationship must be optional (photoId nullable) with no cascade delete to satisfy FR-005b (meal records persist after photo deletion)
-- [ ] T012 Configure PostgreSQL datasource and Prisma client generator in prisma/schema.prisma
-- [ ] T013 Run initial Prisma migration: npx prisma migrate dev --name init
-- [ ] T014 Generate Prisma Client types: npx prisma generate
+- [x] T011 Create Prisma schema in prisma/schema.prisma with all 6 entities (User, UserProfile, FoodPhoto, Meal, FoodItem, DailyLog). IMPORTANT: Meal-Photo relationship must be optional (photoId nullable) with no cascade delete to satisfy FR-005b (meal records persist after photo deletion)
+- [x] T012 Configure PostgreSQL datasource and Prisma client generator in prisma/schema.prisma
+- [ ] T013 Run initial Prisma migration: npx prisma migrate dev --name init (DEFERRED: требуется настройка PostgreSQL базы данных)
+- [x] T014 Generate Prisma Client types: npx prisma generate
 
 ### Shared API Infrastructure
 
-- [ ] T015 [P] Create Axios client instance in src/shared/api/client.ts with interceptors for auth tokens and error handling
-- [ ] T016 [P] Define common API types in src/shared/api/types.ts (ApiResponse, ApiError, PaginatedResponse)
-- [ ] T017 [P] Create shared API utilities in src/shared/lib/api-utils.ts (error parsing, response formatting)
+- [x] T015 [P] Create Axios client instance in src/shared/api/client.ts with interceptors for auth tokens and error handling
+- [x] T016 [P] Define common API types in src/shared/api/types.ts (ApiResponse, ApiError, PaginatedResponse)
+- [x] T017 [P] Create shared API utilities in src/shared/lib/api-utils.ts (error parsing, response formatting)
 
 ### Shared UI Components (Ant Design Wrappers)
 
-- [ ] T018 [P] Create Button wrapper component in src/shared/ui/button/Button.tsx
-- [ ] T019 [P] Create Input wrapper component in src/shared/ui/input/Input.tsx
-- [ ] T020 [P] Create Card wrapper component in src/shared/ui/card/Card.tsx
-- [ ] T021 [P] Create Modal wrapper component in src/shared/ui/modal/Modal.tsx
-- [ ] T022 [P] Create Form wrapper component in src/shared/ui/form/Form.tsx
+- [x] T018 [P] Create Button wrapper component in src/shared/ui/button/Button.tsx
+- [x] T019 [P] Create Input wrapper component in src/shared/ui/input/Input.tsx
+- [x] T020 [P] Create Card wrapper component in src/shared/ui/card/Card.tsx
+- [x] T021 [P] Create Modal wrapper component in src/shared/ui/modal/Modal.tsx
+- [x] T022 [P] Create Form wrapper component in src/shared/ui/form/Form.tsx
 
 ### Shared Utilities & Helpers
 
-- [ ] T023 [P] Create date formatting utilities in src/shared/lib/format-date.ts
-- [ ] T024 [P] Create email validation utility in src/shared/lib/validate-email.ts
-- [ ] T025 [P] Create environment config in src/shared/config/env.ts with type-safe env variable access
-- [ ] T026 [P] Create app constants in src/shared/config/constants.ts (API timeouts, file size limits, etc.)
+- [x] T023 [P] Create date formatting utilities in src/shared/lib/format-date.ts
+- [x] T024 [P] Create email validation utility in src/shared/lib/validate-email.ts
+- [x] T025 [P] Create environment config in src/shared/config/env.ts with type-safe env variable access
+- [x] T026 [P] Create app constants in src/shared/config/constants.ts (API timeouts, file size limits, etc.)
 
 ### Feature-Sliced Design Structure
 
-- [ ] T027 [P] Create FSD directory structure: src/entities/, src/features/, src/widgets/, src/pages/
-- [ ] T028 [P] Create entity barrel exports in src/entities/index.ts
-- [ ] T029 [P] Create feature barrel exports in src/features/index.ts
-- [ ] T030 [P] Create widget barrel exports in src/widgets/index.ts
+- [x] T027 [P] Create FSD directory structure: src/entities/, src/features/, src/widgets/, src/pages/
+- [x] T028 [P] Create entity barrel exports in src/entities/index.ts
+- [x] T029 [P] Create feature barrel exports in src/features/index.ts
+- [x] T030 [P] Create widget barrel exports in src/widgets/index.ts
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
