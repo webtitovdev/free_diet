@@ -140,7 +140,7 @@ export const ROUTES = {
   REGISTER: "/auth/register",
   VERIFY_EMAIL: "/auth/verify-email",
   DASHBOARD: "/dashboard",
-  PHOTO_UPLOAD: "/photo",
+  PHOTO_UPLOAD: "/photos/upload",
   PROFILE: "/profile",
   CALENDAR: "/calendar",
 } as const;

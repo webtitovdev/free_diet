@@ -1,13 +1,20 @@
-// Vercel Blob Storage client с автоматическим удалением через 30 дней
+// Storage client с поддержкой локальной разработки и Vercel Blob для production
 // T057 + T057a: Vercel Blob configuration с expires parameter (FR-005a)
 
 import { put, del } from "@vercel/blob";
+import { writeFile, unlink, mkdir } from "fs/promises";
+import { join } from "path";
+import { existsSync } from "fs";
 
 // 30 дней в миллисекундах (FR-005a: automatic deletion)
 const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
 
+// Проверка, работаем ли мы локально или на Vercel
+const isProduction = process.env.VERCEL === "1";
+const useVercelBlob = isProduction && !!process.env.BLOB_READ_WRITE_TOKEN;
+
 /**
- * Загружает фото еды в Vercel Blob с автоматическим удалением через 30 дней
+ * Загружает фото еды в storage (Vercel Blob для production, локальная папка для development)
  * @param file File buffer или Blob
  * @param userId ID пользователя для организации файлов
  * @param filename Имя файла
@@ -18,26 +25,61 @@ export async function uploadFoodPhoto(
   userId: string,
   filename: string
 ): Promise<{ url: string; autoDeleteAt: Date }> {
-  // КРИТИЧНО (FR-005a): Автоматическое удаление через 30 дней (Vercel Blob TTL)
-  // Note: Vercel Blob автоматически удаляет файлы через TTL, настраивается в Vercel Dashboard
-  const blob = await put(`photos/${userId}/${Date.now()}-${filename}`, file, {
-    access: "public",
-    addRandomSuffix: true,
-  });
-
-  // Вычисляем дату автоматического удаления
   const autoDeleteAt = new Date(Date.now() + THIRTY_DAYS_MS);
 
-  return {
-    url: blob.url,
-    autoDeleteAt,
-  };
+  if (useVercelBlob) {
+    // Production: используем Vercel Blob
+    const blob = await put(`photos/${userId}/${Date.now()}-${filename}`, file, {
+      access: "public",
+      addRandomSuffix: true,
+    });
+
+    return {
+      url: blob.url,
+      autoDeleteAt,
+    };
+  } else {
+    // Development: сохраняем локально в public/uploads
+    const buffer = file instanceof Buffer ? file : Buffer.from(await file.arrayBuffer());
+    const timestamp = Date.now();
+    const sanitizedFilename = filename.replace(/[^a-zA-Z0-9.-]/g, "_");
+    const relativePath = `uploads/photos/${userId}`;
+    const publicDir = join(process.cwd(), "public", relativePath);
+    const filePathOnDisk = join(publicDir, `${timestamp}-${sanitizedFilename}`);
+
+    // Создаем директорию если не существует
+    if (!existsSync(publicDir)) {
+      await mkdir(publicDir, { recursive: true });
+    }
+
+    // Сохраняем файл
+    await writeFile(filePathOnDisk, buffer);
+
+    // Возвращаем публичный URL
+    const url = `/${relativePath}/${timestamp}-${sanitizedFilename}`;
+
+    return {
+      url,
+      autoDeleteAt,
+    };
+  }
 }
 
 /**
- * Удаляет фото из Vercel Blob вручную (если требуется до истечения 30 дней)
- * @param url URL файла в Blob storage
+ * Удаляет фото из storage (Vercel Blob или локальная папка)
+ * @param url URL файла в storage
  */
 export async function deleteFoodPhoto(url: string): Promise<void> {
-  await del(url);
+  if (useVercelBlob) {
+    // Production: удаляем из Vercel Blob
+    await del(url);
+  } else {
+    // Development: удаляем локальный файл
+    try {
+      const filePath = join(process.cwd(), "public", url);
+      await unlink(filePath);
+    } catch (error) {
+      console.error("Failed to delete local file:", error);
+    }
+  }
 }

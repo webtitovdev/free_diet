@@ -51,7 +51,7 @@ export function Header() {
       key: "photo",
       icon: <CameraOutlined />,
       label: "Загрузить фото",
-      onClick: () => router.push("/photo"),
+      onClick: () => router.push("/photos/upload"),
     },
     {
       key: "calendar",

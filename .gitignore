@@ -45,3 +45,7 @@ Thumbs.db
 
 # Prisma
 prisma/migrations/*_migration/
+
+# Uploaded files (development only)
+public/uploads/*
+!public/uploads/.gitkeep
