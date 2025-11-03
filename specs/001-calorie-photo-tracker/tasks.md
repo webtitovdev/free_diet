@@ -19,18 +19,18 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create Next.js 14 project with TypeScript strict mode and App Router in project root
-- [ ] T002 [P] Install core dependencies: react@18, next@14, typescript@5, zustand@4, axios@1, antd@5, next-auth@5-beta, prisma@5
-- [ ] T003 [P] Configure TypeScript strict mode in tsconfig.json with noImplicitAny and strictNullChecks
-- [ ] T004 [P] Setup ESLint with @typescript-eslint, react, react-hooks plugins in .eslintrc.json
-- [ ] T005 [P] Configure Prettier in .prettierrc with consistent formatting rules
-- [ ] T006 [P] Setup Husky pre-commit hooks in .husky/pre-commit for lint and format checks
-- [ ] T007 Create Next.js App Router structure in src/app/ with (auth) and (dashboard) route groups
-- [ ] T008 [P] Configure environment variables template in .env.example with all required keys
-- [ ] T009 [P] Setup Ant Design theme configuration in src/shared/config/theme.ts
-- [ ] T010 Create root layout in src/app/layout.tsx with providers and global styles
+- [x] T001 Create Next.js 14 project with TypeScript strict mode and App Router in project root
+- [x] T002 [P] Install core dependencies: react@18, next@14, typescript@5, zustand@4, axios@1, antd@5, next-auth@5-beta, prisma@5
+- [x] T003 [P] Configure TypeScript strict mode in tsconfig.json with noImplicitAny and strictNullChecks
+- [x] T004 [P] Setup ESLint with @typescript-eslint, react, react-hooks plugins in .eslintrc.json
+- [x] T005 [P] Configure Prettier in .prettierrc with consistent formatting rules
+- [x] T006 [P] Setup Husky pre-commit hooks in .husky/pre-commit for lint and format checks
+- [x] T007 Create Next.js App Router structure in src/app/ with (auth) and (dashboard) route groups
+- [x] T008 [P] Configure environment variables template in .env.example with all required keys
+- [x] T009 [P] Setup Ant Design theme configuration in src/shared/config/theme.ts
+- [x] T010 Create root layout in src/app/layout.tsx with providers and global styles
 
-**Checkpoint**: Project initialized with proper configuration
+**Checkpoint**: ✅ Project initialized with proper configuration
 
 ---
 
@@ -134,7 +134,7 @@
 - [ ] T055 [P] [US2] Create FoodPhoto entity model types in src/entities/photo/model/types.ts (PhotoStatus enum)
 - [ ] T056 [P] [US2] Create FoodItem entity model types in src/entities/food-item/model/types.ts
 - [ ] T057 [P] [US2] Setup Vercel Blob client in src/shared/lib/storage/blob-client.ts with configuration (auto-deletion per FR-005a)
-- [ ] T057a [US2] Configure Vercel Blob 30-day auto-deletion via expires parameter in put() calls in src/shared/lib/storage/blob-client.ts. IMPORTANT: All photo uploads MUST include expires: 30 * 24 * 60 * 60 * 1000 (30 days in milliseconds) to satisfy FR-005a automatic deletion requirement
+- [ ] T057a [US2] Configure Vercel Blob 30-day auto-deletion via expires parameter in put() calls in src/shared/lib/storage/blob-client.ts. IMPORTANT: All photo uploads MUST include expires: 30 _ 24 _ 60 _ 60 _ 1000 (30 days in milliseconds) to satisfy FR-005a automatic deletion requirement
 - [ ] T058 [US2] Implement client-side image compression in src/features/photo-analysis/lib/compress-image.ts using browser-image-compression
 - [ ] T059 [P] [US2] Create photo upload API route in src/app/api/photos/upload/route.ts with Vercel Blob integration and 10 MB file size validation (FR-021)
 - [ ] T060 [US2] Implement HEIC to JPEG conversion in src/app/api/photos/upload/route.ts using sharp
@@ -306,16 +306,14 @@
 ### Optimal Execution Strategy
 
 **MVP First (Most Value, Fastest)**:
+
 1. Phase 1: Setup
 2. Phase 2: Foundational
 3. Phase 3: US1 (Authentication) → **Can test login/register**
 4. Phase 4: US2 (Photo Analysis) → **Can test photo upload and recognition**
 5. Phase 5: US3 (Meal Saving) → **Full meal tracking works!** 🎯 **MVP COMPLETE**
 
-**Incremental Delivery After MVP**:
-6. Phase 6: US4 (Profile) → Personalized calorie recommendations
-7. Phase 7: US5 (Calendar) → Progress tracking
-8. Phase 8: Polish → Production-ready
+**Incremental Delivery After MVP**: 6. Phase 6: US4 (Profile) → Personalized calorie recommendations 7. Phase 7: US5 (Calendar) → Progress tracking 8. Phase 8: Polish → Production-ready
 
 ### Parallel Opportunities
 
@@ -361,6 +359,7 @@ Each story adds value without breaking previous functionality.
 **Total Tasks**: 135
 
 **By Phase**:
+
 - Phase 1 (Setup): 10 tasks
 - Phase 2 (Foundational): 20 tasks
 - Phase 3 (US1 - Auth): 24 tasks
@@ -371,6 +370,7 @@ Each story adds value without breaking previous functionality.
 - Phase 8 (Polish): 12 tasks
 
 **By User Story**:
+
 - US1 (Authentication): 24 tasks
 - US2 (Photo Analysis): 28 tasks (added T057a for lifecycle policy)
 - US3 (Meal Editing): 15 tasks
