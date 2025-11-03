@@ -1,0 +1,56 @@
+// Auth middleware для защиты authenticated routes
+// T053: Auth middleware
+
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
+
+// Маршруты, требующие аутентификации
+const protectedRoutes = ["/dashboard", "/profile", "/calendar", "/photo"];
+
+// Маршруты, доступные только не аутентифицированным пользователям
+const authRoutes = ["/auth/login", "/auth/register"];
+
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Получение JWT токена из сессии
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
+  const isAuthenticated = !!token;
+
+  // Проверка protected routes
+  const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route));
+  if (isProtectedRoute && !isAuthenticated) {
+    // Редирект на login если не аутентифицирован
+    const loginUrl = new URL("/auth/login", request.url);
+    loginUrl.searchParams.set("callbackUrl", pathname);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  // Проверка auth routes (login, register)
+  const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
+  if (isAuthRoute && isAuthenticated) {
+    // Редирект на dashboard если уже аутентифицирован
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
+  return NextResponse.next();
+}
+
+// Конфигурация middleware
+export const config = {
+  matcher: [
+    /*
+     * Match all request paths except:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    "/((?!api|_next/static|_next/image|favicon.ico).*)",
+  ],
+};

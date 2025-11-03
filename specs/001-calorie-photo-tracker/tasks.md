@@ -89,33 +89,33 @@
 
 ### Backend Implementation for User Story 1
 
-- [ ] T031 [P] [US1] Create User entity model types in src/entities/user/model/types.ts (User, AuthMethod enum)
-- [ ] T032 [US1] Configure NextAuth.js in src/app/api/auth/[...nextauth]/route.ts with Google and Credentials providers
-- [ ] T033 [US1] Implement Prisma adapter for NextAuth in src/app/api/auth/[...nextauth]/route.ts
-- [ ] T034 [P] [US1] Create user registration API route in src/app/api/auth/register/route.ts with email/password validation
-- [ ] T035 [P] [US1] Implement email verification token generation in src/entities/user/lib/generate-token.ts (UUID v4, 24h expiry)
-- [ ] T036 [US1] Setup Resend email service in src/shared/lib/email/resend-client.ts
-- [ ] T037 [P] [US1] Create React Email verification template in src/shared/lib/email/templates/verification-email.tsx
-- [ ] T038 [US1] Implement send verification email function in src/shared/lib/email/send-verification.ts with retry mechanism. Per edge case (spec.md:L116), implement exponential backoff retry queue: 3 attempts with delays 1 min, 5 min, 15 min. If all retries fail, log error and allow manual resend via user profile
-- [ ] T039 [US1] Create email verification API route in src/app/api/auth/verify-email/route.ts. CRITICAL: Implement tokenExpiresAt validation per FR-003a (24h TTL): (1) Query user by verificationToken, (2) Check if tokenExpiresAt < new Date() - if expired, return 400 with message "Verification link expired. Please request a new one", (3) If valid, set emailVerified=true and clear verificationToken/tokenExpiresAt, (4) Return success redirect to login page
-- [ ] T040 [P] [US1] Implement password hashing with bcrypt in src/entities/user/lib/hash-password.ts (salt rounds: 10)
-- [ ] T041 [US1] Create login credentials verification in src/app/api/auth/[...nextauth]/route.ts authorize callback
-- [ ] T042 [P] [US1] Create session check API route in src/app/api/auth/session/route.ts
+- [x] T031 [P] [US1] Create User entity model types in src/entities/user/model/types.ts (User, AuthMethod enum)
+- [x] T032 [US1] Configure NextAuth.js in src/app/api/auth/[...nextauth]/route.ts with Google and Credentials providers
+- [x] T033 [US1] Implement Prisma adapter for NextAuth in src/app/api/auth/[...nextauth]/route.ts
+- [x] T034 [P] [US1] Create user registration API route in src/app/api/auth/register/route.ts with email/password validation
+- [x] T035 [P] [US1] Implement email verification token generation in src/entities/user/lib/generate-token.ts (UUID v4, 24h expiry)
+- [x] T036 [US1] Setup Resend email service in src/shared/lib/email/resend-client.ts
+- [x] T037 [P] [US1] Create React Email verification template in src/shared/lib/email/templates/verification-email.tsx
+- [x] T038 [US1] Implement send verification email function in src/shared/lib/email/send-verification.ts with retry mechanism. Per edge case (spec.md:L116), implement exponential backoff retry queue: 3 attempts with delays 1 min, 5 min, 15 min. If all retries fail, log error and allow manual resend via user profile
+- [x] T039 [US1] Create email verification API route in src/app/api/auth/verify-email/route.ts. CRITICAL: Implement tokenExpiresAt validation per FR-003a (24h TTL): (1) Query user by verificationToken, (2) Check if tokenExpiresAt < new Date() - if expired, return 400 with message "Verification link expired. Please request a new one", (3) If valid, set emailVerified=true and clear verificationToken/tokenExpiresAt, (4) Return success redirect to login page
+- [x] T040 [P] [US1] Implement password hashing with bcrypt in src/entities/user/lib/hash-password.ts (salt rounds: 10)
+- [x] T041 [US1] Create login credentials verification in src/app/api/auth/[...nextauth]/route.ts authorize callback
+- [x] T042 [P] [US1] Create session check API route in src/app/api/auth/session/route.ts
 
 ### Frontend Implementation for User Story 1
 
-- [ ] T043 [P] [US1] Create auth feature store in src/features/auth/model/auth-store.ts with Zustand (login, logout, session state)
-- [ ] T044 [P] [US1] Create auth API methods in src/features/auth/api/auth-api.ts (register, login, verifyEmail using Axios)
-- [ ] T045 [P] [US1] Create LoginForm component in src/features/auth/ui/LoginForm.tsx with Ant Design Form
-- [ ] T046 [P] [US1] Create RegisterForm component in src/features/auth/ui/RegisterForm.tsx with client-side email/password validation. IMPORTANT: Implement FR-002b validation rules: minimum 8 characters, at least one digit, at least one letter. Show user-friendly error messages in real-time (use Ant Design Form validation)
-- [ ] T047 [P] [US1] Create GoogleOAuthButton component in src/features/auth/ui/GoogleOAuthButton.tsx
-- [ ] T048 [US1] Create EmailVerification page component in src/pages/auth-page/EmailVerification.tsx
-- [ ] T049 [US1] Create auth page layout in src/app/(auth)/layout.tsx
-- [ ] T050 [US1] Create login page in src/app/(auth)/login/page.tsx composing LoginForm and GoogleOAuthButton
-- [ ] T051 [US1] Create register page in src/app/(auth)/register/page.tsx composing RegisterForm
-- [ ] T052 [US1] Create verify-email page in src/app/(auth)/verify-email/page.tsx
-- [ ] T053 [US1] Implement auth middleware in src/middleware.ts to protect authenticated routes
-- [ ] T054 [US1] Create authenticated layout in src/app/(dashboard)/layout.tsx with session check
+- [x] T043 [P] [US1] Create auth feature store in src/features/auth/model/auth-store.ts with Zustand (login, logout, session state)
+- [x] T044 [P] [US1] Create auth API methods in src/features/auth/api/auth-api.ts (register, login, verifyEmail using Axios)
+- [x] T045 [P] [US1] Create LoginForm component in src/features/auth/ui/LoginForm.tsx with Ant Design Form
+- [x] T046 [P] [US1] Create RegisterForm component in src/features/auth/ui/RegisterForm.tsx with client-side email/password validation. IMPORTANT: Implement FR-002b validation rules: minimum 8 characters, at least one digit, at least one letter. Show user-friendly error messages in real-time (use Ant Design Form validation)
+- [x] T047 [P] [US1] Create GoogleOAuthButton component in src/features/auth/ui/GoogleOAuthButton.tsx
+- [x] T048 [US1] Create EmailVerification page component in src/pages/auth-page/EmailVerification.tsx
+- [x] T049 [US1] Create auth page layout in src/app/(auth)/layout.tsx
+- [x] T050 [US1] Create login page in src/app/(auth)/login/page.tsx composing LoginForm and GoogleOAuthButton
+- [x] T051 [US1] Create register page in src/app/(auth)/register/page.tsx composing RegisterForm
+- [x] T052 [US1] Create verify-email page in src/app/(auth)/verify-email/page.tsx
+- [x] T053 [US1] Implement auth middleware in src/middleware.ts to protect authenticated routes
+- [x] T054 [US1] Create authenticated layout in src/app/(dashboard)/layout.tsx with session check
 
 **Checkpoint**: User Story 1 complete - users can register, verify email, and login
 
