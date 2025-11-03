@@ -6,20 +6,20 @@
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/shared/lib/prisma";
 import { verifyPassword } from "@/entities/user/lib/hash-password";
 import { AuthMethod } from "@/entities/user/model/types";
 
 export const authOptions: NextAuthOptions = {
-  // Prisma adapter для хранения сессий в БД
-  adapter: PrismaAdapter(prisma),
-
   providers: [
     // Google OAuth Provider
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      // Увеличиваем таймаут для Google OAuth
+      httpOptions: {
+        timeout: 10000, // 10 секунд вместо дефолтных 3.5
+      },
       profile(profile) {
         return {
           id: profile.sub,
@@ -93,7 +93,7 @@ export const authOptions: NextAuthOptions = {
           id: string;
           email: string;
           emailVerified: Date | null;
-          authMethod: string;
+          authMethod: AuthMethod;
         };
         token.userId = userWithAuth.id;
         token.email = userWithAuth.email;
@@ -103,7 +103,7 @@ export const authOptions: NextAuthOptions = {
 
       // При Google OAuth сохраняем provider
       if (account?.provider === "google") {
-        token.authMethod = AuthMethod.GOOGLE;
+        token.authMethod = AuthMethod.GOOGLE as AuthMethod;
       }
 
       return token;
@@ -115,11 +115,11 @@ export const authOptions: NextAuthOptions = {
         const user = session.user as {
           id?: string;
           emailVerified?: boolean;
-          authMethod?: string;
+          authMethod?: AuthMethod;
         };
         user.id = token.userId as string;
         user.emailVerified = token.emailVerified as boolean;
-        user.authMethod = token.authMethod as string;
+        user.authMethod = token.authMethod;
       }
       return session;
     },
@@ -127,10 +127,13 @@ export const authOptions: NextAuthOptions = {
 
   // Кастомные страницы
   pages: {
-    signIn: "/auth/login",
-    error: "/auth/error",
+    signIn: "/login", // Route group (auth) делает URL /login вместо /auth/login
+    error: "/error", // Аналогично для error страницы
   },
 
   // Настройки безопасности
   secret: process.env.NEXTAUTH_SECRET,
+
+  // Отладочные логи (удалить в production)
+  debug: process.env.NODE_ENV === "development",
 };

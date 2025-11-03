@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, App } from "antd";
 import ruRU from "antd/locale/ru_RU";
 import { theme } from "@/shared/config/theme";
+import { SessionProvider } from "@/shared/providers/SessionProvider";
+import { ToastProvider } from "@/shared/providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,11 +16,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru">
       <body>
-        <AntdRegistry>
-          <ConfigProvider locale={ruRU} theme={theme}>
-            {children}
-          </ConfigProvider>
-        </AntdRegistry>
+        <SessionProvider>
+          <AntdRegistry>
+            <ConfigProvider locale={ruRU} theme={theme}>
+              <App>
+                <ToastProvider>{children}</ToastProvider>
+              </App>
+            </ConfigProvider>
+          </AntdRegistry>
+        </SessionProvider>
       </body>
     </html>
   );

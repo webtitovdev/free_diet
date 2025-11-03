@@ -9,7 +9,8 @@ import { getToken } from "next-auth/jwt";
 const protectedRoutes = ["/dashboard", "/profile", "/calendar", "/photo"];
 
 // Маршруты, доступные только не аутентифицированным пользователям
-const authRoutes = ["/auth/login", "/auth/register"];
+// Route group (auth) делает URL без префикса /auth
+const authRoutes = ["/login", "/register"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -25,8 +26,8 @@ export async function middleware(request: NextRequest) {
   // Проверка protected routes
   const isProtectedRoute = protectedRoutes.some((route) => pathname.startsWith(route));
   if (isProtectedRoute && !isAuthenticated) {
-    // Редирект на login если не аутентифицирован
-    const loginUrl = new URL("/auth/login", request.url);
+    // Редирект на login если не аутентифицирован (без префикса /auth)
+    const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
   }

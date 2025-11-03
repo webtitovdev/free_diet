@@ -266,16 +266,16 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T122 [P] Create app header widget in src/widgets/header/Header.tsx with navigation and user menu
-- [ ] T123 [P] Create landing page in src/pages/landing/LandingPage.tsx with feature overview
-- [ ] T124 [P] Update root page in src/app/page.tsx to use landing page
-- [ ] T125 [P] Add error boundary in src/app/error.tsx for global error handling
-- [ ] T126 [P] Add loading states in src/app/loading.tsx for route transitions
-- [ ] T127 [P] Create not-found page in src/app/not-found.tsx
-- [ ] T128 [P] Implement global error toast notifications using Ant Design message
-- [ ] T129 Add environment validation script in scripts/check-env.js
-- [ ] T130 [P] Create database seed script in prisma/seed.ts with common food items (optional)
-- [ ] T131 [P] Update README.md with project overview and setup instructions
+- [x] T122 [P] Create app header widget in src/widgets/header/Header.tsx with navigation and user menu
+- [x] T123 [P] Create landing page in src/pages/landing/LandingPage.tsx with feature overview
+- [x] T124 [P] Update root page in src/app/page.tsx to use landing page
+- [x] T125 [P] Add error boundary in src/app/error.tsx for global error handling
+- [x] T126 [P] Add loading states in src/app/loading.tsx for route transitions
+- [x] T127 [P] Create not-found page in src/app/not-found.tsx
+- [x] T128 [P] Implement global error toast notifications using Ant Design message
+- [x] T129 Add environment validation script in scripts/check-env.js
+- [x] T130 [P] Create database seed script in prisma/seed.ts with common food items (optional)
+- [x] T131 [P] Update README.md with project overview and setup instructions
 - [ ] T132 Run quickstart.md validation to ensure all setup steps work
 - [ ] T133 [P] [Post-MVP] Setup analytics integration for tracking SC-010 (user awareness surveys), SC-011 (30-day retention rate), SC-012 (time to first photo analysis). CRITICAL CONSTITUTION CHECK: Before implementation, verify that selected analytics library (Google Analytics 4 via @next/third-parties or Mixpanel SDK) has full TypeScript support without 'any' types (Принцип I). Recommended: @next/third-parties/google for GA4 (TypeScript-first) or mixpanel-browser@^2.48.0 with @types/mixpanel-browser
 - [ ] T134 [P] Test meal persistence after photo auto-deletion (FR-005b validation): Create test script in tests/manual/meal-photo-persistence.test.ts that (1) Creates meal with associated photo, (2) Simulates photo auto-deletion (update FoodPhoto.autoDeleteAt to past date and run cleanup job), (3) Verifies meal record still exists with all food items and nutrition data intact, (4) Confirms photoId is nullable and no cascade delete occurs

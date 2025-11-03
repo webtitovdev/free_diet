@@ -1,13 +1,21 @@
 // Типы для User entity
 // Соответствует Prisma schema и data-model.md
 
+import { AuthMethod as PrismaAuthMethod } from "@prisma/client";
+
 /**
  * Метод аутентификации пользователя
+ * Используем тип из Prisma для совместимости
  */
-export enum AuthMethod {
-  GOOGLE = "GOOGLE", // Google OAuth
-  EMAIL_PASSWORD = "EMAIL_PASSWORD", // Email + Password
-}
+export type AuthMethod = PrismaAuthMethod;
+
+/**
+ * Константы для методов аутентификации
+ */
+export const AuthMethod = {
+  GOOGLE: "GOOGLE" as const,
+  EMAIL_PASSWORD: "EMAIL_PASSWORD" as const,
+} as const;
 
 /**
  * Базовая информация о пользователе

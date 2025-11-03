@@ -31,6 +31,8 @@ export interface DailyLogInput {
   totalFats: number;
   totalCarbs: number;
   targetCalories: number; // Для расчета deviationPercent и goalAchieved
+  deviationPercent: number; // Отклонение от targetCalories в процентах
+  goalAchieved: boolean; // true если в пределах ±10% от цели
 }
 
 /**

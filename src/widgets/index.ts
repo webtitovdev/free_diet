@@ -16,14 +16,9 @@
  * - calendar-view - календарь прогресса
  */
 
-// TODO: После создания widget компонентов, добавить экспорты здесь
-// Примеры:
-// export * from './header';
+export * from "./header";
 // export * from './photo-upload-form';
 // export * from './food-items-list';
 // export * from './meal-editor';
 // export * from './profile-form';
 // export * from './calendar-view';
-
-// Временный экспорт для предотвращения ошибок линтера
-export {};

@@ -9,8 +9,8 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/shared/lib/auth/auth-options";
-import { prisma } from "@/shared/lib/db/prisma";
+import { authOptions } from "@/lib/auth";
+import { prisma } from "@/shared/lib/prisma";
 import { getMonthRange, calculateMonthStats } from "@/entities/daily-log/lib/calculate-daily-log";
 import type { MonthData } from "@/entities/daily-log/model/types";
 
