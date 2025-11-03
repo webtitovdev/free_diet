@@ -41,6 +41,24 @@ export async function POST(request: NextRequest) {
       category = suggestMealCategory(); // Default без timezone
     }
 
+    // Создаем дату с учетом timezone клиента
+    // Если clientTimezoneOffset не предоставлен, используем серверное время
+    const mealDate = new Date();
+    if (body.clientTimezoneOffset !== undefined) {
+      // Конвертируем UTC время в локальное время клиента
+      // clientTimezoneOffset в минутах (например, -180 для UTC+3)
+      const clientTime = new Date(mealDate.getTime() + body.clientTimezoneOffset * 60 * 1000);
+
+      // Нормализуем дату - убираем время, оставляем только день в локальном времени клиента
+      const localYear = clientTime.getUTCFullYear();
+      const localMonth = clientTime.getUTCMonth();
+      const localDay = clientTime.getUTCDate();
+
+      // Создаем дату в UTC, но с днем из локального времени клиента
+      mealDate.setUTCFullYear(localYear, localMonth, localDay);
+      mealDate.setUTCHours(0, 0, 0, 0);
+    }
+
     // Создаем meal с food items в транзакции + обновляем DailyLog
     const meal = await prisma.$transaction(async (tx) => {
       // Создаем meal
@@ -48,7 +66,7 @@ export async function POST(request: NextRequest) {
         data: {
           userId,
           photoId: body.photoId || null,
-          date: new Date(),
+          date: mealDate,
           category,
           totalCalories: totals.calories,
           totalProtein: totals.protein,
