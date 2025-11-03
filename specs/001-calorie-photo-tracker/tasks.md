@@ -131,38 +131,38 @@
 
 ### Backend Implementation for User Story 2
 
-- [ ] T055 [P] [US2] Create FoodPhoto entity model types in src/entities/photo/model/types.ts (PhotoStatus enum)
-- [ ] T056 [P] [US2] Create FoodItem entity model types in src/entities/food-item/model/types.ts
-- [ ] T057 [P] [US2] Setup Vercel Blob client in src/shared/lib/storage/blob-client.ts with configuration (auto-deletion per FR-005a)
-- [ ] T057a [US2] Configure Vercel Blob 30-day auto-deletion via expires parameter in put() calls in src/shared/lib/storage/blob-client.ts. IMPORTANT: All photo uploads MUST include expires: 30 _ 24 _ 60 _ 60 _ 1000 (30 days in milliseconds) to satisfy FR-005a automatic deletion requirement
-- [ ] T058 [US2] Implement client-side image compression in src/features/photo-analysis/lib/compress-image.ts using browser-image-compression
-- [ ] T059 [P] [US2] Create photo upload API route in src/app/api/photos/upload/route.ts with Vercel Blob integration and 10 MB file size validation (FR-021)
-- [ ] T060 [US2] Implement HEIC to JPEG conversion in src/app/api/photos/upload/route.ts using sharp
-- [ ] T061 [P] [US2] Setup OpenRouter API client in src/shared/api/openrouter.ts with vision model configuration
-- [ ] T062 [US2] Implement food photo analysis function in src/shared/api/openrouter.ts (analyzeFoodPhoto with Claude Haiku)
-- [ ] T063 [US2] Create photo analysis API route in src/app/api/photos/analyze/route.ts orchestrating OpenRouter API call
-- [ ] T064 [P] [US2] Implement USDA FoodData API client in src/shared/api/usda-food-api.ts for nutritional data fallback
-- [ ] T065 [US2] Create photo status polling API route in src/app/api/photos/[id]/status/route.ts
-- [ ] T066 [US2] Create photo results retrieval API route in src/app/api/photos/[id]/results/route.ts
+- [x] T055 [P] [US2] Create FoodPhoto entity model types in src/entities/photo/model/types.ts (PhotoStatus enum)
+- [x] T056 [P] [US2] Create FoodItem entity model types in src/entities/food-item/model/types.ts
+- [x] T057 [P] [US2] Setup Vercel Blob client in src/shared/lib/storage/blob-client.ts with configuration (auto-deletion per FR-005a)
+- [x] T057a [US2] Configure Vercel Blob 30-day auto-deletion via expires parameter in put() calls in src/shared/lib/storage/blob-client.ts. IMPORTANT: All photo uploads MUST include expires: 30 _ 24 _ 60 _ 60 _ 1000 (30 days in milliseconds) to satisfy FR-005a automatic deletion requirement
+- [x] T058 [US2] Implement client-side image compression in src/features/photo-analysis/lib/compress-image.ts using browser-image-compression
+- [x] T059 [P] [US2] Create photo upload API route in src/app/api/photos/upload/route.ts with Vercel Blob integration and 10 MB file size validation (FR-021)
+- [x] T060 [US2] Implement HEIC to JPEG conversion in src/app/api/photos/upload/route.ts using sharp
+- [x] T061 [P] [US2] Setup OpenRouter API client in src/shared/api/openrouter.ts with vision model configuration
+- [x] T062 [US2] Implement food photo analysis function in src/shared/api/openrouter.ts (analyzeFoodPhoto with Claude Haiku)
+- [x] T063 [US2] Create photo analysis API route in src/app/api/photos/analyze/route.ts orchestrating OpenRouter API call
+- [x] T064 [P] [US2] Implement USDA FoodData API client in src/shared/api/usda-food-api.ts for nutritional data fallback
+- [x] T065 [US2] Create photo status polling API route in src/app/api/photos/[id]/status/route.ts
+- [x] T066 [US2] Create photo results retrieval API route in src/app/api/photos/[id]/results/route.ts
 
 ### Frontend Implementation for User Story 2
 
-- [ ] T067 [P] [US2] Create photo analysis feature store in src/features/photo-analysis/model/photo-store.ts (upload state, results)
-- [ ] T068 [P] [US2] Create photo API methods in src/features/photo-analysis/api/photo-api.ts (upload, getStatus, getResults)
-- [ ] T069 [P] [US2] Create PhotoUploadButton component in src/features/photo-analysis/ui/PhotoUploadButton.tsx with client-side file size validation (max 10 MB, user-friendly error message before upload)
-- [ ] T070 [P] [US2] Create UploadProgress component in src/features/photo-analysis/ui/UploadProgress.tsx with loading indicator
-- [ ] T070a [US2] Implement photo processing status polling logic in src/features/photo-analysis/model/photo-store.ts (poll /api/photos/[id]/status every 2 seconds while processingStatus === 'PROCESSING'). Rationale: 2-second interval balances UX responsiveness (photo analysis takes 5-10 seconds per SC-003) with API load. User sees update within 2s of completion, minimal server requests (~5 polls per analysis)
-- [ ] T071 [US2] Create PhotoUploadForm widget in src/widgets/photo-upload-form/PhotoUploadForm.tsx
-- [ ] T072 [P] [US2] Create FoodItemCard component in src/features/photo-analysis/ui/FoodItemCard.tsx displaying product details
-- [ ] T073 [US2] Create FoodItemsList widget in src/widgets/food-items-list/FoodItemsList.tsx displaying all recognized items
-- [ ] T074 [US2] Create photo upload page in src/pages/photo-upload-page/PhotoUploadPage.tsx
-- [ ] T075 [US2] Create photo upload route in src/app/(dashboard)/photo/page.tsx
-- [ ] T076 [P] [US2] Create AddFoodManuallyButton component in src/features/photo-analysis/ui/AddFoodManuallyButton.tsx
-- [ ] T077 [P] [US2] Create FoodSearchModal component in src/features/photo-analysis/ui/FoodSearchModal.tsx with USDA API search
-- [ ] T078 [P] [US2] Create ManualFoodItemForm component in src/features/photo-analysis/ui/ManualFoodItemForm.tsx (name, weight, nutrition inputs)
-- [ ] T079 [US2] Add manual food item API method in src/features/photo-analysis/api/photo-api.ts (searchFood, addManualItem)
-- [ ] T080 [US2] Integrate manual add functionality into FoodItemsList widget in src/widgets/food-items-list/FoodItemsList.tsx
-- [ ] T081 [US2] Update photo upload page in src/pages/photo-upload-page/PhotoUploadPage.tsx to support manual additions
+- [x] T067 [P] [US2] Create photo analysis feature store in src/features/photo-analysis/model/photo-store.ts (upload state, results)
+- [x] T068 [P] [US2] Create photo API methods in src/features/photo-analysis/api/photo-api.ts (upload, getStatus, getResults)
+- [x] T069 [P] [US2] Create PhotoUploadButton component in src/features/photo-analysis/ui/PhotoUploadButton.tsx with client-side file size validation (max 10 MB, user-friendly error message before upload)
+- [x] T070 [P] [US2] Create UploadProgress component in src/features/photo-analysis/ui/UploadProgress.tsx with loading indicator
+- [x] T070a [US2] Implement photo processing status polling logic in src/features/photo-analysis/model/photo-store.ts (poll /api/photos/[id]/status every 2 seconds while processingStatus === 'PROCESSING'). Rationale: 2-second interval balances UX responsiveness (photo analysis takes 5-10 seconds per SC-003) with API load. User sees update within 2s of completion, minimal server requests (~5 polls per analysis)
+- [x] T071 [US2] Create PhotoUploadForm widget in src/widgets/photo-upload-form/PhotoUploadForm.tsx
+- [x] T072 [P] [US2] Create FoodItemCard component in src/features/photo-analysis/ui/FoodItemCard.tsx displaying product details
+- [x] T073 [US2] Create FoodItemsList widget in src/widgets/food-items-list/FoodItemsList.tsx displaying all recognized items
+- [x] T074 [US2] Create photo upload page in src/pages/photo-upload-page/PhotoUploadPage.tsx
+- [x] T075 [US2] Create photo upload route in src/app/(dashboard)/photo/page.tsx
+- [x] T076 [P] [US2] Create AddFoodManuallyButton component in src/features/photo-analysis/ui/AddFoodManuallyButton.tsx
+- [x] T077 [P] [US2] Create FoodSearchModal component in src/features/photo-analysis/ui/FoodSearchModal.tsx with USDA API search
+- [x] T078 [P] [US2] Create ManualFoodItemForm component in src/features/photo-analysis/ui/ManualFoodItemForm.tsx (name, weight, nutrition inputs)
+- [x] T079 [US2] Add manual food item API method in src/features/photo-analysis/api/photo-api.ts (searchFood, addManualItem)
+- [x] T080 [US2] Integrate manual add functionality into FoodItemsList widget in src/widgets/food-items-list/FoodItemsList.tsx
+- [x] T081 [US2] Update photo upload page in src/pages/photo-upload-page/PhotoUploadPage.tsx to support manual additions
 
 **Checkpoint**: User Story 2 complete - users can upload photos, see food analysis results, and manually add unrecognized items
 
