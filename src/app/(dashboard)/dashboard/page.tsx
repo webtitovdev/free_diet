@@ -5,6 +5,17 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { Typography, Row, Col, Card, Statistic, Space } from "antd";
+import {
+  CameraOutlined,
+  CalendarOutlined,
+  UserOutlined,
+  PictureOutlined,
+  FireOutlined,
+  ClockCircleOutlined,
+} from "@ant-design/icons";
+
+const { Title, Paragraph } = Typography;
 
 // Отключаем статическую генерацию для страницы с аутентификацией
 export const dynamic = "force-dynamic";
@@ -18,118 +29,146 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">
-          Добро пожаловать, {session.user.email}!
-        </h1>
-        <p className="mt-2 text-gray-600">Выберите действие для работы с приложением</p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Карточка: Загрузить фото еды */}
-        <Link
-          href="/photos/upload"
-          className="block p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
-        >
-          <div className="flex items-center mb-4">
-            <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
-              <svg
-                className="w-6 h-6 text-indigo-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-            </div>
-          </div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Загрузить фото еды</h2>
-          <p className="text-gray-600">Сфотографируйте вашу еду для анализа калорий</p>
-        </Link>
-
-        {/* Карточка: Календарь прогресса */}
-        <Link
-          href="/calendar"
-          className="block p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
-        >
-          <div className="flex items-center mb-4">
-            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-              <svg
-                className="w-6 h-6 text-green-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-            </div>
-          </div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Календарь прогресса</h2>
-          <p className="text-gray-600">Просматривайте историю питания и отслеживайте прогресс</p>
-        </Link>
-
-        {/* Карточка: Профиль */}
-        <Link
-          href="/profile"
-          className="block p-6 bg-white rounded-lg shadow hover:shadow-lg transition-shadow"
-        >
-          <div className="flex items-center mb-4">
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-              <svg
-                className="w-6 h-6 text-purple-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                />
-              </svg>
-            </div>
-          </div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Профиль</h2>
-          <p className="text-gray-600">Настройте свои цели и параметры</p>
-        </Link>
-      </div>
-
-      {/* Быстрая статистика (можно добавить позже) */}
-      <div className="mt-8 bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Быстрая статистика</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="text-center p-4 bg-gray-50 rounded-lg">
-            <div className="text-3xl font-bold text-indigo-600">0</div>
-            <div className="text-sm text-gray-600 mt-1">Загруженных фото</div>
-          </div>
-          <div className="text-center p-4 bg-gray-50 rounded-lg">
-            <div className="text-3xl font-bold text-green-600">0</div>
-            <div className="text-sm text-gray-600 mt-1">Дней отслеживания</div>
-          </div>
-          <div className="text-center p-4 bg-gray-50 rounded-lg">
-            <div className="text-3xl font-bold text-purple-600">0</div>
-            <div className="text-sm text-gray-600 mt-1">Ккал сегодня</div>
-          </div>
+    <div style={{ maxWidth: 1200, margin: "0 auto", padding: "24px" }}>
+      <Space direction="vertical" size="large" style={{ width: "100%" }}>
+        {/* Приветствие */}
+        <div>
+          <Title level={2}>Добро пожаловать, {session.user.email}!</Title>
+          <Paragraph type="secondary">Выберите действие для работы с приложением</Paragraph>
         </div>
-      </div>
+
+        {/* Карточки действий */}
+        <Row gutter={[16, 16]}>
+          {/* Карточка: Загрузить фото еды */}
+          <Col xs={24} md={12} lg={8}>
+            <Link href="/photos/upload" style={{ textDecoration: "none" }}>
+              <Card hoverable style={{ height: "100%" }}>
+                <Space direction="vertical" size="middle">
+                  <div
+                    style={{
+                      width: 48,
+                      height: 48,
+                      backgroundColor: "#f0f5ff",
+                      borderRadius: 8,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <CameraOutlined style={{ fontSize: 24, color: "#1890ff" }} />
+                  </div>
+                  <div>
+                    <Title level={4} style={{ margin: 0 }}>
+                      Загрузить фото еды
+                    </Title>
+                    <Paragraph type="secondary" style={{ margin: "8px 0 0 0" }}>
+                      Сфотографируйте вашу еду для анализа калорий
+                    </Paragraph>
+                  </div>
+                </Space>
+              </Card>
+            </Link>
+          </Col>
+
+          {/* Карточка: Календарь прогресса */}
+          <Col xs={24} md={12} lg={8}>
+            <Link href="/calendar" style={{ textDecoration: "none" }}>
+              <Card hoverable style={{ height: "100%" }}>
+                <Space direction="vertical" size="middle">
+                  <div
+                    style={{
+                      width: 48,
+                      height: 48,
+                      backgroundColor: "#f6ffed",
+                      borderRadius: 8,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <CalendarOutlined style={{ fontSize: 24, color: "#52c41a" }} />
+                  </div>
+                  <div>
+                    <Title level={4} style={{ margin: 0 }}>
+                      Календарь прогресса
+                    </Title>
+                    <Paragraph type="secondary" style={{ margin: "8px 0 0 0" }}>
+                      Просматривайте историю питания и отслеживайте прогресс
+                    </Paragraph>
+                  </div>
+                </Space>
+              </Card>
+            </Link>
+          </Col>
+
+          {/* Карточка: Профиль */}
+          <Col xs={24} md={12} lg={8}>
+            <Link href="/profile" style={{ textDecoration: "none" }}>
+              <Card hoverable style={{ height: "100%" }}>
+                <Space direction="vertical" size="middle">
+                  <div
+                    style={{
+                      width: 48,
+                      height: 48,
+                      backgroundColor: "#f9f0ff",
+                      borderRadius: 8,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <UserOutlined style={{ fontSize: 24, color: "#722ed1" }} />
+                  </div>
+                  <div>
+                    <Title level={4} style={{ margin: 0 }}>
+                      Профиль
+                    </Title>
+                    <Paragraph type="secondary" style={{ margin: "8px 0 0 0" }}>
+                      Настройте свои цели и параметры
+                    </Paragraph>
+                  </div>
+                </Space>
+              </Card>
+            </Link>
+          </Col>
+        </Row>
+
+        {/* Быстрая статистика */}
+        <Card title="Быстрая статистика">
+          <Row gutter={[16, 16]}>
+            <Col xs={24} md={8}>
+              <Card>
+                <Statistic
+                  title="Загруженных фото"
+                  value={0}
+                  prefix={<PictureOutlined />}
+                  valueStyle={{ color: "#1890ff" }}
+                />
+              </Card>
+            </Col>
+            <Col xs={24} md={8}>
+              <Card>
+                <Statistic
+                  title="Дней отслеживания"
+                  value={0}
+                  prefix={<ClockCircleOutlined />}
+                  valueStyle={{ color: "#52c41a" }}
+                />
+              </Card>
+            </Col>
+            <Col xs={24} md={8}>
+              <Card>
+                <Statistic
+                  title="Ккал сегодня"
+                  value={0}
+                  prefix={<FireOutlined />}
+                  valueStyle={{ color: "#722ed1" }}
+                />
+              </Card>
+            </Col>
+          </Row>
+        </Card>
+      </Space>
     </div>
   );
 }
