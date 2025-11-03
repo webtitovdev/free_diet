@@ -1,40 +1,43 @@
-// Типы для FoodPhoto entity
-// T055: FoodPhoto entity model types (PhotoStatus enum)
+// FoodPhoto entity types
+// T055: Create FoodPhoto entity model types in src/entities/photo/model/types.ts (PhotoStatus enum)
+// Spec: §US2, data-model.md
 
 /**
- * Статус обработки фотографии
+ * Photo processing status enum
+ * Tracks the lifecycle of uploaded food photos
  */
 export enum PhotoStatus {
-  UPLOADING = "UPLOADING", // Загрузка в процессе
-  PROCESSING = "PROCESSING", // Анализ OpenRouter API
-  COMPLETED = "COMPLETED", // Анализ завершен, результаты доступны
-  FAILED = "FAILED", // Ошибка обработки (низкое качество, еда не обнаружена, ошибка API)
+  UPLOADING = "UPLOADING", // Upload in progress
+  PROCESSING = "PROCESSING", // OpenRouter API analyzing
+  COMPLETED = "COMPLETED", // Analysis complete, results available
+  FAILED = "FAILED", // Processing failed (low quality, no food detected, API error)
 }
 
 /**
- * Фотография еды
+ * FoodPhoto entity interface
+ * Represents an uploaded food photo with auto-deletion lifecycle
  */
 export interface FoodPhoto {
   id: string;
   userId: string;
-  storageUrl: string; // URL в Vercel Blob storage
+  storageUrl: string; // URL in Vercel Blob storage
   uploadedAt: Date;
-  autoDeleteAt: Date; // uploadedAt + 30 дней (FR-005a)
+  autoDeleteAt: Date; // uploadedAt + 30 days (FR-005a)
   processingStatus: PhotoStatus;
 }
 
 /**
- * Данные для создания фотографии
+ * DTO for creating a new food photo
  */
-export interface CreateFoodPhotoData {
+export interface CreateFoodPhotoDto {
   userId: string;
   storageUrl: string;
-  autoDeleteAt: Date;
+  processingStatus?: PhotoStatus; // defaults to PROCESSING
 }
 
 /**
- * Данные для обновления статуса фотографии
+ * DTO for updating photo processing status
  */
-export interface UpdatePhotoStatusData {
+export interface UpdatePhotoStatusDto {
   processingStatus: PhotoStatus;
 }
