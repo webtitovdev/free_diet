@@ -152,7 +152,7 @@ model FoodItem {
 model DailyLog {
   id               String   @id @default(uuid())
   userId           String
-  date             DateTime @unique @db.Date // дата без времени
+  date             DateTime @db.Date // дата без времени
   totalCalories    Float    // сумма всех приемов пищи за день
   totalProtein     Float    // сумма белков (граммы)
   totalFats        Float    // сумма жиров (граммы)
@@ -162,6 +162,7 @@ model DailyLog {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@unique([userId, date], name: "userId_date")
   @@index([userId, date])
   @@map("daily_logs")
 }

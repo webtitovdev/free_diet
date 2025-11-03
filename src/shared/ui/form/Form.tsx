@@ -20,7 +20,7 @@ export interface CustomFormProps extends AntFormProps {
 export const Form: React.FC<CustomFormProps> = ({ layout = "vertical", children, ...props }) => {
   return (
     <AntForm layout={layout} {...props}>
-      {children}
+      {children as React.ReactNode}
     </AntForm>
   );
 };
@@ -47,9 +47,6 @@ export const FormItem: React.FC<CustomFormItemProps> = ({
     </AntForm.Item>
   );
 };
-
-// Привязываем FormItem к Form
-Form.Item = FormItem;
 
 // Named exports для других компонентов формы
 export const { List, ErrorList, Provider, useForm, useFormInstance, useWatch } = AntForm;

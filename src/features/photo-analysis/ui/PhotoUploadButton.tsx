@@ -6,7 +6,7 @@
 import React from "react";
 import { Button, message } from "antd";
 import { CameraOutlined } from "@ant-design/icons";
-import { compressImage } from "../lib/compress-image";
+import { compressPhotoBeforeUpload } from "../lib/compress-image";
 import { uploadPhoto, analyzePhoto } from "../api/photo-api";
 import { usePhotoAnalysisStore } from "../model/photo-store";
 
@@ -34,7 +34,7 @@ export const PhotoUploadButton: React.FC<PhotoUploadButtonProps> = ({
 
       // Сжатие изображения
       message.loading("Подготовка фото...", 0);
-      const compressedFile = await compressImage(file);
+      const compressedFile = await compressPhotoBeforeUpload(file);
       setUploading(true, 30);
 
       // Загрузка на сервер

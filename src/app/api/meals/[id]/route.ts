@@ -5,9 +5,9 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/shared/lib/prisma";
-import { UpdateMealDto } from "@/entities/meal/model/types";
+import { UpdateMealDto, MealCategory } from "@/entities/meal/model/types";
 import { calculateTotalNutrition } from "@/entities/food-item/lib/calculate-nutrition";
 import { updateDailyLog, deleteDailyLogIfEmpty } from "@/entities/daily-log/lib/update-daily-log";
 
@@ -83,7 +83,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     // Обновляем meal в транзакции
     const updatedMeal = await prisma.$transaction(async (tx) => {
       const updateData: {
-        category?: string;
+        category?: MealCategory;
         totalCalories?: number;
         totalProtein?: number;
         totalFats?: number;

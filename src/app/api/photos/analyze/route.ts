@@ -3,7 +3,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/shared/lib/prisma";
 import { analyzeFoodPhoto } from "@/shared/api/openrouter";
 import { PhotoStatus } from "@/entities/photo/model/types";

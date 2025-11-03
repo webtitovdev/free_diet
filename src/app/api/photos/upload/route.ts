@@ -4,7 +4,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import sharp from "sharp";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { prisma } from "@/shared/lib/prisma";
 import { uploadFoodPhoto } from "@/shared/lib/storage/blob-client";
 import { PhotoStatus } from "@/entities/photo/model/types";
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     // HEIC → JPEG конверсия если требуется (T060)
     if (file.type === "image/heic" || file.type === "image/heif" || file.name.endsWith(".heic")) {
       try {
-        buffer = await sharp(buffer).jpeg({ quality: 85 }).toBuffer();
+        buffer = Buffer.from(await sharp(buffer).jpeg({ quality: 85 }).toBuffer());
       } catch (error) {
         console.error("HEIC conversion failed:", error);
         return NextResponse.json({ error: "Ошибка конверсии HEIC формата" }, { status: 400 });

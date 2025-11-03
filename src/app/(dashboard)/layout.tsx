@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Layout, Spin } from "antd";
 import { useAuthStore } from "@/features/auth/model/auth-store";
+import { AuthMethod } from "@/entities/user/model/types";
 
 const { Header, Content } = Layout;
 
@@ -35,7 +36,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         id: user.id,
         email: session.user.email!,
         emailVerified: !!user.emailVerified,
-        authMethod: user.authMethod,
+        authMethod: user.authMethod as AuthMethod,
       });
     }
   }, [session, status, router, setUser]);

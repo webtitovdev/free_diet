@@ -9,10 +9,6 @@ import { Button as AntButton, ButtonProps as AntButtonProps } from "antd";
 // Расширяем типы Ant Design Button
 export interface ButtonProps extends AntButtonProps {
   /**
-   * Вариант кнопки
-   */
-  variant?: "primary" | "default" | "dashed" | "text" | "link";
-  /**
    * Полная ширина
    */
   fullWidth?: boolean;
@@ -21,16 +17,9 @@ export interface ButtonProps extends AntButtonProps {
 /**
  * Кастомный Button компонент
  */
-export const Button: React.FC<ButtonProps> = ({
-  variant = "default",
-  fullWidth = false,
-  children,
-  style,
-  ...props
-}) => {
+export const Button: React.FC<ButtonProps> = ({ fullWidth = false, children, style, ...props }) => {
   return (
     <AntButton
-      type={variant}
       style={{
         ...style,
         width: fullWidth ? "100%" : style?.width,

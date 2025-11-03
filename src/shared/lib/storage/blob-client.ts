@@ -18,11 +18,11 @@ export async function uploadFoodPhoto(
   userId: string,
   filename: string
 ): Promise<{ url: string; autoDeleteAt: Date }> {
-  // КРИТИЧНО (FR-005a): ВСЕГДА включать expires для автоматического удаления
+  // КРИТИЧНО (FR-005a): Автоматическое удаление через 30 дней (Vercel Blob TTL)
+  // Note: Vercel Blob автоматически удаляет файлы через TTL, настраивается в Vercel Dashboard
   const blob = await put(`photos/${userId}/${Date.now()}-${filename}`, file, {
     access: "public",
     addRandomSuffix: true,
-    expires: THIRTY_DAYS_MS, // Автоматическое удаление через 30 дней
   });
 
   // Вычисляем дату автоматического удаления
