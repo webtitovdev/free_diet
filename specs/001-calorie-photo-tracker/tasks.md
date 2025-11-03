@@ -178,24 +178,24 @@
 
 ### Backend Implementation for User Story 3
 
-- [ ] T082 [P] [US3] Create Meal entity model types in src/entities/meal/model/types.ts (MealCategory enum)
-- [ ] T083 [P] [US3] Implement calorie calculation utility in src/entities/food-item/lib/calculate-nutrition.ts (weight-based macro calculation)
-- [ ] T084 [P] [US3] Implement meal category suggestion logic in src/entities/meal/lib/suggest-category.ts (time-based: breakfast/lunch/dinner/snack). Per FR-012, use client-side timezone: (1) Client sends meal creation request with `clientTimezoneOffset` field (e.g., -180 for UTC+3), (2) Server calculates local hour: localHour = new Date().getUTCHours() + (clientTimezoneOffset / 60), (3) Suggest category: 6-11h = breakfast, 11-16h = lunch, 16-21h = dinner, else = snack, (4) Store timezoneOffset with meal record for historical accuracy
-- [ ] T085 [US3] Create meal creation API route in src/app/api/meals/route.ts POST (create meal with food items)
-- [ ] T086 [P] [US3] Create meal update API route in src/app/api/meals/[id]/route.ts PATCH (update food item weights)
-- [ ] T087 [US3] Create meal retrieval API route in src/app/api/meals/[id]/route.ts GET
-- [ ] T088 [P] [US3] Implement DailyLog update logic in src/entities/daily-log/lib/update-daily-log.ts (recalculate daily totals from all meals). Architecture: This function is called within Prisma transaction context from meal CRUD operations (src/app/api/meals/route.ts POST/PATCH/DELETE). Ensures atomic updates: meal change + DailyLog recalculation happen together or both fail
-- [ ] T089 [US3] Create meal deletion API route in src/app/api/meals/[id]/route.ts DELETE
+- [x] T082 [P] [US3] Create Meal entity model types in src/entities/meal/model/types.ts (MealCategory enum)
+- [x] T083 [P] [US3] Implement calorie calculation utility in src/entities/food-item/lib/calculate-nutrition.ts (weight-based macro calculation)
+- [x] T084 [P] [US3] Implement meal category suggestion logic in src/entities/meal/lib/suggest-category.ts (time-based: breakfast/lunch/dinner/snack). Per FR-012, use client-side timezone: (1) Client sends meal creation request with `clientTimezoneOffset` field (e.g., -180 for UTC+3), (2) Server calculates local hour: localHour = new Date().getUTCHours() + (clientTimezoneOffset / 60), (3) Suggest category: 6-11h = breakfast, 11-16h = lunch, 16-21h = dinner, else = snack, (4) Store timezoneOffset with meal record for historical accuracy
+- [x] T085 [US3] Create meal creation API route in src/app/api/meals/route.ts POST (create meal with food items)
+- [x] T086 [P] [US3] Create meal update API route in src/app/api/meals/[id]/route.ts PATCH (update food item weights)
+- [x] T087 [US3] Create meal retrieval API route in src/app/api/meals/[id]/route.ts GET
+- [x] T088 [P] [US3] Implement DailyLog update logic in src/entities/daily-log/lib/update-daily-log.ts (recalculate daily totals from all meals). Architecture: This function is called within Prisma transaction context from meal CRUD operations (src/app/api/meals/route.ts POST/PATCH/DELETE). Ensures atomic updates: meal change + DailyLog recalculation happen together or both fail
+- [x] T089 [US3] Create meal deletion API route in src/app/api/meals/[id]/route.ts DELETE
 
 ### Frontend Implementation for User Story 3
 
-- [ ] T090 [P] [US3] Create meal editing feature store in src/features/meal-editing/model/meal-store.ts (editedMeal, recalculate)
-- [ ] T091 [P] [US3] Create meal API methods in src/features/meal-editing/api/meal-api.ts (create, update, delete meal)
-- [ ] T092 [P] [US3] Create WeightEditor component in src/features/meal-editing/ui/WeightEditor.tsx with real-time recalculation
-- [ ] T093 [P] [US3] Create MealCategorySelector component in src/features/meal-editing/ui/MealCategorySelector.tsx (Ant Design Select)
-- [ ] T094 [P] [US3] Create SaveMealButton component in src/features/meal-editing/ui/SaveMealButton.tsx
-- [ ] T095 [US3] Create MealEditor widget in src/widgets/meal-editor/MealEditor.tsx composing weight editing and category selection
-- [ ] T096 [US3] Integrate MealEditor into photo upload page in src/pages/photo-upload-page/PhotoUploadPage.tsx
+- [x] T090 [P] [US3] Create meal editing feature store in src/features/meal-editing/model/meal-store.ts (editedMeal, recalculate)
+- [x] T091 [P] [US3] Create meal API methods in src/features/meal-editing/api/meal-api.ts (create, update, delete meal)
+- [x] T092 [P] [US3] Create WeightEditor component in src/features/meal-editing/ui/WeightEditor.tsx with real-time recalculation
+- [x] T093 [P] [US3] Create MealCategorySelector component in src/features/meal-editing/ui/MealCategorySelector.tsx (Ant Design Select)
+- [x] T094 [P] [US3] Create SaveMealButton component in src/features/meal-editing/ui/SaveMealButton.tsx
+- [x] T095 [US3] Create MealEditor widget in src/widgets/meal-editor/MealEditor.tsx composing weight editing and category selection
+- [x] T096 [US3] Integrate MealEditor into photo upload page in src/pages/photo-upload-page/PhotoUploadPage.tsx
 
 **Checkpoint**: User Story 3 complete - users can edit food weights and save meals to profile
 
