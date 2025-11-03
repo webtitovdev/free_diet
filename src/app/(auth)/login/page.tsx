@@ -17,7 +17,7 @@ export default function LoginPage() {
 
       <div style={{ marginTop: 16, textAlign: "center" }}>
         <p>
-          Нет аккаунта? <Link href="/auth/register">Зарегистрироваться</Link>
+          Нет аккаунта? <Link href="/register">Зарегистрироваться</Link>
         </p>
       </div>
     </div>

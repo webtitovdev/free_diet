@@ -86,24 +86,75 @@ export const authOptions: NextAuthOptions = {
 
   // JWT callbacks
   callbacks: {
+    // Обработка входа - создание/обновление пользователя в БД
+    async signIn({ user, account }) {
+      // Для Google OAuth создаем/обновляем пользователя в БД
+      if (account?.provider === "google" && user.email) {
+        try {
+          // Используем providerAccountId (Google sub) как постоянный ID
+          const googleUserId = account.providerAccountId;
+
+          const existingUser = await prisma.user.findUnique({
+            where: { email: user.email },
+          });
+
+          if (!existingUser) {
+            // Создаем нового пользователя для Google OAuth
+            await prisma.user.create({
+              data: {
+                id: googleUserId,
+                email: user.email,
+                emailVerified: new Date(), // Google OAuth уже верифицирован
+                authMethod: AuthMethod.GOOGLE,
+              },
+            });
+            console.log(`Created new Google user: ${user.email} with ID: ${googleUserId}`);
+          } else if (!existingUser.emailVerified) {
+            // Обновляем существующего пользователя (верификация email)
+            await prisma.user.update({
+              where: { email: user.email },
+              data: {
+                emailVerified: new Date(),
+                authMethod: AuthMethod.GOOGLE,
+              },
+            });
+          }
+        } catch (error) {
+          console.error("Error creating/updating user during Google sign-in:", error);
+          return false;
+        }
+      }
+      return true;
+    },
+
     async jwt({ token, user, account }) {
       // При первом входе добавляем данные пользователя в токен
       if (user) {
-        const userWithAuth = user as {
-          id: string;
-          email: string;
-          emailVerified: Date | null;
-          authMethod: AuthMethod;
-        };
-        token.userId = userWithAuth.id;
-        token.email = userWithAuth.email;
-        token.emailVerified = userWithAuth.emailVerified !== null;
-        token.authMethod = userWithAuth.authMethod;
-      }
+        // Для Google OAuth получаем или создаем пользователя из БД
+        if (account?.provider === "google" && user.email) {
+          const dbUser = await prisma.user.findUnique({
+            where: { email: user.email },
+          });
 
-      // При Google OAuth сохраняем provider
-      if (account?.provider === "google") {
-        token.authMethod = AuthMethod.GOOGLE as AuthMethod;
+          if (dbUser) {
+            token.userId = dbUser.id;
+            token.email = dbUser.email;
+            token.emailVerified = dbUser.emailVerified !== null;
+            token.authMethod = dbUser.authMethod;
+          }
+        } else {
+          // Для credentials provider
+          const userWithAuth = user as {
+            id: string;
+            email: string;
+            emailVerified: Date | null;
+            authMethod: AuthMethod;
+          };
+          token.userId = userWithAuth.id;
+          token.email = userWithAuth.email;
+          token.emailVerified = userWithAuth.emailVerified !== null;
+          token.authMethod = userWithAuth.authMethod;
+        }
       }
 
       return token;

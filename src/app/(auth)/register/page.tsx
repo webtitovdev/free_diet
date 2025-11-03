@@ -17,7 +17,7 @@ export default function RegisterPage() {
 
       <div style={{ marginTop: 16, textAlign: "center" }}>
         <p>
-          Уже есть аккаунт? <Link href="/auth/login">Войти</Link>
+          Уже есть аккаунт? <Link href="/login">Войти</Link>
         </p>
       </div>
     </div>

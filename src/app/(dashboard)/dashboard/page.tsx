@@ -28,12 +28,14 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
+  const userEmail = session.user?.email || "пользователь";
+
   return (
     <div style={{ maxWidth: 1200, margin: "0 auto", padding: "24px" }}>
       <Space direction="vertical" size="large" style={{ width: "100%" }}>
         {/* Приветствие */}
         <div>
-          <Title level={2}>Добро пожаловать, {session.user.email}!</Title>
+          <Title level={2}>Добро пожаловать, {userEmail}!</Title>
           <Paragraph type="secondary">Выберите действие для работы с приложением</Paragraph>
         </div>
 

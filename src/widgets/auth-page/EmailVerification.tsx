@@ -47,7 +47,7 @@ export function EmailVerification() {
       {status === "success" && (
         <>
           <Alert message={message} type="success" showIcon style={{ marginBottom: 16 }} />
-          <Button type="primary" size="large" onClick={() => router.push("/auth/login")}>
+          <Button type="primary" size="large" onClick={() => router.push("/login")}>
             Перейти к входу
           </Button>
         </>
@@ -56,7 +56,7 @@ export function EmailVerification() {
       {status === "error" && (
         <>
           <Alert message={message} type="error" showIcon style={{ marginBottom: 16 }} />
-          <Button onClick={() => router.push("/auth/register")}>Вернуться к регистрации</Button>
+          <Button onClick={() => router.push("/register")}>Вернуться к регистрации</Button>
         </>
       )}
     </div>

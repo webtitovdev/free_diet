@@ -19,6 +19,25 @@ export async function POST(request: NextRequest) {
 
     const userId = (session.user as { id: string }).id;
 
+    // Проверяем, существует ли пользователь в БД
+    // Это нужно на случай, если БД была очищена, но сессия осталась
+    const userExists = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { id: true },
+    });
+
+    if (!userExists) {
+      console.error("User from session not found in DB:", userId);
+      console.error("This likely means the database was reset but the JWT session is still valid");
+      return NextResponse.json(
+        {
+          error: "Сессия устарела. Пожалуйста, выйдите и войдите заново.",
+          code: "USER_NOT_FOUND",
+        },
+        { status: 401 }
+      );
+    }
+
     // Получение файла из FormData
     const formData = await request.formData();
     const file = formData.get("photo") as File;
