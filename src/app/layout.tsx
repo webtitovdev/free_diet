@@ -5,6 +5,7 @@ import ruRU from "antd/locale/ru_RU";
 import { theme } from "@/shared/config/theme";
 import { SessionProvider } from "@/shared/providers/SessionProvider";
 import { ToastProvider } from "@/shared/providers";
+import { Header } from "@/widgets/header/Header";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,7 +21,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <AntdRegistry>
             <ConfigProvider locale={ruRU} theme={theme}>
               <App>
-                <ToastProvider>{children}</ToastProvider>
+                <ToastProvider>
+                  <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+                    <Header />
+                    <main style={{ flex: 1 }}>{children}</main>
+                  </div>
+                </ToastProvider>
               </App>
             </ConfigProvider>
           </AntdRegistry>

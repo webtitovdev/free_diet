@@ -21,7 +21,8 @@ export const PhotoUploadButton: React.FC<PhotoUploadButtonProps> = ({
   onUploadComplete,
   onError,
 }) => {
-  const { setUploading, setPhoto, setError } = usePhotoAnalysisStore();
+  const { setUploading, setPhoto, setError, setRecognizedItems, setProcessingStatus } =
+    usePhotoAnalysisStore();
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +50,13 @@ export const PhotoUploadButton: React.FC<PhotoUploadButtonProps> = ({
       // Запуск анализа
       message.destroy();
       message.loading("Анализ фото...", 0);
-      await analyzePhoto(uploadResult.photoId);
+      const analyzeResult = await analyzePhoto(uploadResult.photoId);
+
+      // Сохраняем результаты анализа
+      if (analyzeResult.recognizedItems) {
+        setRecognizedItems(analyzeResult.recognizedItems);
+      }
+      setProcessingStatus(analyzeResult.processingStatus);
       setUploading(true, 100);
 
       message.destroy();

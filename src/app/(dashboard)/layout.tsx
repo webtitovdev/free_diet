@@ -4,14 +4,11 @@
 "use client";
 
 import { useEffect } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Layout, Spin, Button } from "antd";
-import { LogoutOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
 import { useAuthStore } from "@/features/auth/model/auth-store";
 import { AuthMethod } from "@/entities/user/model/types";
-
-const { Header, Content } = Layout;
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
@@ -65,33 +62,5 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     return null;
   }
 
-  const handleLogout = async () => {
-    await signOut({ redirect: true, callbackUrl: "/login" });
-  };
-
-  return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <Header
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          backgroundColor: "#001529",
-          color: "#fff",
-        }}
-      >
-        <h1 style={{ color: "#fff", margin: 0 }}>Free Diet</h1>
-        <Button
-          type="text"
-          icon={<LogoutOutlined />}
-          onClick={handleLogout}
-          style={{ color: "#fff" }}
-        >
-          Выход
-        </Button>
-      </Header>
-
-      <Content style={{ padding: "24px" }}>{children}</Content>
-    </Layout>
-  );
+  return <div style={{ padding: "24px" }}>{children}</div>;
 }

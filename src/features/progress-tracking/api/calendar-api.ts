@@ -21,7 +21,7 @@ import type { MonthData, DayDetails } from "@/entities/daily-log/model/types";
  */
 export async function getMonthData(year: number, month: number): Promise<MonthData> {
   try {
-    const response = await apiClient.get<MonthData>("/api/calendar", {
+    const response = await apiClient.get<MonthData>("/calendar", {
       params: {
         year,
         month,
@@ -48,7 +48,7 @@ export async function getDayDetails(date: Date): Promise<DayDetails> {
     // Форматируем дату в YYYY-MM-DD
     const dateStr = formatDateForAPI(date);
 
-    const response = await apiClient.get<DayDetails>(`/api/calendar/${dateStr}`);
+    const response = await apiClient.get<DayDetails>(`/calendar/${dateStr}`);
 
     return response.data;
   } catch (error) {

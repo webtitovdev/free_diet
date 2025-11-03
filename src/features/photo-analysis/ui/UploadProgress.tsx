@@ -4,8 +4,13 @@
 "use client";
 
 import React, { useEffect, useRef, useCallback } from "react";
-import { Progress, Card, Typography, Spin, Alert } from "antd";
-import { LoadingOutlined, CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import { Progress, Card, Typography, Spin, Alert, Button } from "antd";
+import {
+  LoadingOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 import { PhotoStatus } from "@/entities/photo/model/types";
 import { usePhotoAnalysisStore } from "../model/photo-store";
 import { getPhotoStatus } from "../api/photo-api";
@@ -28,8 +33,8 @@ export const UploadProgress: React.FC = () => {
     photoId,
     processingStatus,
     setProcessingStatus,
-    setRecognizedItems,
     setError,
+    reset,
   } = usePhotoAnalysisStore();
 
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -49,11 +54,9 @@ export const UploadProgress: React.FC = () => {
       const statusResult = await getPhotoStatus(photoId);
       setProcessingStatus(statusResult.processingStatus);
 
-      // Если обработка завершена, получаем результаты
+      // Если обработка завершена, останавливаем polling
       if (statusResult.processingStatus === PhotoStatus.COMPLETED) {
-        // Результаты пока не возвращаются из API (см. комментарий в results/route.ts)
-        // В будущем здесь будут recognizedItems
-        setRecognizedItems([]);
+        // Результаты уже сохранены в store из PhotoUploadButton после вызова analyzePhoto
         stopPolling();
       } else if (statusResult.processingStatus === PhotoStatus.FAILED) {
         setError("Не удалось распознать продукты на фотографии");
@@ -64,7 +67,7 @@ export const UploadProgress: React.FC = () => {
       setError("Ошибка при проверке статуса");
       stopPolling();
     }
-  }, [photoId, setProcessingStatus, setRecognizedItems, setError, stopPolling]);
+  }, [photoId, setProcessingStatus, setError, stopPolling]);
 
   // Запуск polling при статусе PROCESSING
   useEffect(() => {
@@ -112,6 +115,10 @@ export const UploadProgress: React.FC = () => {
     return "";
   };
 
+  const handleRetry = () => {
+    reset();
+  };
+
   return (
     <Card style={{ marginTop: 16 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
@@ -144,6 +151,11 @@ export const UploadProgress: React.FC = () => {
           type="error"
           showIcon
           style={{ marginTop: 16 }}
+          action={
+            <Button size="small" danger icon={<ReloadOutlined />} onClick={handleRetry}>
+              Попробовать снова
+            </Button>
+          }
         />
       )}
     </Card>
