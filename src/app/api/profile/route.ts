@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/shared/lib/prisma";
-import { ProfileInput } from "@/entities/profile/model/types";
+import { ProfileInput, Gender, GoalType } from "@/entities/profile/model/types";
 import {
   validateProfileInput,
   validateProfileUpdate,
@@ -152,9 +152,9 @@ export async function PATCH(request: NextRequest) {
     const updatedData = {
       weight: body.weight ?? existingProfile.weight,
       age: body.age ?? existingProfile.age,
-      gender: body.gender ?? existingProfile.gender,
+      gender: (body.gender ?? existingProfile.gender) as Gender,
       height: body.height ?? existingProfile.height,
-      goal: body.goal ?? existingProfile.goal,
+      goal: (body.goal ?? existingProfile.goal) as GoalType,
     };
 
     // Пересчет калорийности (если изменились параметры, влияющие на расчет)

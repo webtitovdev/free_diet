@@ -7,7 +7,7 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/shared/lib/prisma";
 import { PhotoStatus } from "@/entities/photo/model/types";
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Проверка аутентификации
     const session = await getServerSession(authOptions);
@@ -16,7 +16,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     }
 
     const userId = (session.user as { id: string }).id;
-    const photoId = params.id;
+    const { id: photoId } = await params;
 
     // Получение фотографии
     const photo = await prisma.foodPhoto.findUnique({

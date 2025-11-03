@@ -15,7 +15,7 @@ import { updateDailyLog, deleteDailyLogIfEmpty } from "@/entities/daily-log/lib/
  * GET /api/meals/[id]
  * Получение meal со всеми food items
  */
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Проверка аутентификации
     const session = await getServerSession(authOptions);
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     }
 
     const userId = (session.user as { id: string }).id;
-    const mealId = params.id;
+    const { id: mealId } = await params;
 
     // Получаем meal с food items
     const meal = await prisma.meal.findUnique({
@@ -54,7 +54,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
  * PATCH /api/meals/[id]
  * Обновление meal (категория, веса food items)
  */
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     // Проверка аутентификации
     const session = await getServerSession(authOptions);
@@ -63,7 +63,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     }
 
     const userId = (session.user as { id: string }).id;
-    const mealId = params.id;
+    const { id: mealId } = await params;
     const body: UpdateMealDto = await request.json();
 
     // Проверяем существование meal и права доступа
@@ -156,7 +156,10 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
  * DELETE /api/meals/[id]
  * Удаление meal и всех его food items
  */
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     // Проверка аутентификации
     const session = await getServerSession(authOptions);
@@ -165,7 +168,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     }
 
     const userId = (session.user as { id: string }).id;
-    const mealId = params.id;
+    const { id: mealId } = await params;
 
     // Проверяем существование meal и права доступа
     const meal = await prisma.meal.findUnique({
