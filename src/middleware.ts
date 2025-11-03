@@ -1,12 +1,12 @@
 // Auth middleware для защиты authenticated routes
-// T053: Auth middleware
+// Next.js 14+ Middleware
 
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getToken } from "next-auth/jwt";
 
 // Маршруты, требующие аутентификации
-const protectedRoutes = ["/dashboard", "/profile", "/calendar", "/photo"];
+const protectedRoutes = ["/dashboard", "/profile", "/calendar", "/photos"];
 
 // Маршруты, доступные только не аутентифицированным пользователям
 // Route group (auth) делает URL без префикса /auth

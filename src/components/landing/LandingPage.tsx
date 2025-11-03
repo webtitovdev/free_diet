@@ -121,7 +121,7 @@ export function LandingPage() {
               <Button
                 type="primary"
                 size="large"
-                onClick={() => router.push("/photo")}
+                onClick={() => router.push("/photos/upload")}
                 style={{
                   background: "#52c41a",
                   borderColor: "#52c41a",
