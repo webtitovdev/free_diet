@@ -136,9 +136,9 @@ export const SUCCESS_CRITERIA = {
  */
 export const ROUTES = {
   HOME: "/",
-  LOGIN: "/auth/login",
-  REGISTER: "/auth/register",
-  VERIFY_EMAIL: "/auth/verify-email",
+  LOGIN: "/login",
+  REGISTER: "/register",
+  VERIFY_EMAIL: "/verify-email",
   DASHBOARD: "/dashboard",
   PHOTO_UPLOAD: "/photos/upload",
   PROFILE: "/profile",

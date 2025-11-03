@@ -25,7 +25,7 @@ export async function sendVerificationEmail({
   token,
 }: SendVerificationEmailParams): Promise<boolean> {
   // Формируем URL для верификации
-  const verificationUrl = `${process.env.NEXTAUTH_URL}/auth/verify-email?token=${token}`;
+  const verificationUrl = `${process.env.NEXTAUTH_URL}/verify-email?token=${token}`;
 
   // Retry параметры: 3 попытки с задержками 1 мин, 5 мин, 15 мин
   const retryDelays = [
@@ -100,7 +100,7 @@ export async function sendVerificationEmailNoRetry({
   email,
   token,
 }: SendVerificationEmailParams): Promise<boolean> {
-  const verificationUrl = `${process.env.NEXTAUTH_URL}/auth/verify-email?token=${token}`;
+  const verificationUrl = `${process.env.NEXTAUTH_URL}/verify-email?token=${token}`;
 
   try {
     await resendClient.emails.send({
