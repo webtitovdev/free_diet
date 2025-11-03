@@ -80,26 +80,26 @@
 
 ### Core Components для US1
 
-- [ ] T021 [P] [US1] Создать Button компонент в frontend/src/shared/ui/shadcn/Button.tsx с variants (primary, secondary, outline, ghost, danger), sizes (sm, md, lg), loading состоянием, fullWidth опцией, минимальным touch target 44x44px на мобильном согласно ButtonProps интерфейсу и quickstart.md секции 4.1
-- [ ] T022 [P] [US1] Создать Card компонент в frontend/src/shared/ui/shadcn/Card.tsx с variants (default, outlined, elevated), configurable padding/borderRadius/shadow, interactive опцией с hover эффектами согласно CardProps интерфейсу
-- [ ] T023 [P] [US1] Создать ProgressCircle компонент в frontend/src/shared/ui/shadcn/ProgressCircle.tsx с размерами (sm, md, lg, xl), цветами, showPercentage/showValue опциями, animated transitions согласно ProgressCircleProps интерфейсу (Yazio-style круговые индикаторы)
-- [ ] T024 [US1] Создать LoadingSpinner компонент в frontend/src/shared/ui/shadcn/LoadingSpinner.tsx с размерами, цветами, fullScreen опцией для использования в Button loading состояниях согласно LoadingSpinnerProps интерфейсу
+- [x] T021 [P] [US1] Создать Button компонент в frontend/src/shared/ui/shadcn/Button.tsx с variants (primary, secondary, outline, ghost, danger), sizes (sm, md, lg), loading состоянием, fullWidth опцией, минимальным touch target 44x44px на мобильном согласно ButtonProps интерфейсу и quickstart.md секции 4.1
+- [x] T022 [P] [US1] Создать Card компонент в frontend/src/shared/ui/shadcn/Card.tsx с variants (default, outlined, elevated), configurable padding/borderRadius/shadow, interactive опцией с hover эффектами согласно CardProps интерфейсу
+- [x] T023 [P] [US1] Создать ProgressCircle компонент в frontend/src/shared/ui/shadcn/ProgressCircle.tsx с размерами (sm, md, lg, xl), цветами, showPercentage/showValue опциями, animated transitions согласно ProgressCircleProps интерфейсу (Yazio-style круговые индикаторы)
+- [x] T024 [US1] Создать LoadingSpinner компонент в frontend/src/shared/ui/shadcn/LoadingSpinner.tsx с размерами, цветами, fullScreen опцией для использования в Button loading состояниях согласно LoadingSpinnerProps интерфейсу
 
 ### MealCard Widget (Critical для дневника)
 
-- [ ] T025 [US1] Создать MealCard widget в frontend/src/widgets/meal-card/ui/MealCard.tsx с imageUrl, calories, macros (protein/carbs/fat), timestamp, onClick/onEdit/onDelete handlers, variants (compact, detailed) согласно MealCardProps интерфейсу с использованием Card и Button компонентов
-- [ ] T026 [US1] Стилизовать MealCard с border-radius 8-16px, box-shadow для глубины, responsive layout (полная ширина на мобильном с padding 16-24px), макронутриенты с цветовой кодировкой (protein: синий, carbs: желтый, fat: оранжевый) согласно research.md (Lifesum pattern)
+- [x] T025 [US1] Создать MealCard widget в frontend/src/widgets/meal-card/ui/MealCard.tsx с imageUrl, calories, macros (protein/carbs/fat), timestamp, onClick/onEdit/onDelete handlers, variants (compact, detailed) согласно MealCardProps интерфейсу с использованием Card и Button компонентов
+- [x] T026 [US1] Стилизовать MealCard с border-radius 8-16px, box-shadow для глубины, responsive layout (полная ширина на мобильном с padding 16-24px), макронутриенты с цветовой кодировкой (protein: синий, carbs: желтый, fat: оранжевый) согласно research.md (Lifesum pattern)
 
 ### Diary Page Migration (Критичный экран для 90% пользователей)
 
-- [ ] T027 [US1] Мигрировать Diary страницу с Ant Design на shadcn/ui в frontend/src/pages/diary/ui/DiaryPage.tsx: заменить Ant Design List на нативный map с MealCard компонентами, заменить Ant Design Button на shadcn/ui Button, добавить mobile-first стили (p-4 mobile:p-6)
-- [ ] T028 [US1] Добавить ProgressCircle компоненты на Diary страницу для отображения дневного прогресса калорий (calories eaten / remaining / burned) в верхней части экрана согласно research.md (Lifesum visual hierarchy pattern)
-- [ ] T029 [US1] Реализовать плавную прокрутку списка приемов пищи на Diary странице с scroll-smooth behavior, fade-in анимациями для MealCard (200ms ease-in-out) согласно FR-006, lazy loading для оптимизации производительности
+- [x] T027 [US1] Мигрировать Diary страницу с Ant Design на shadcn/ui в frontend/src/pages/diary/ui/DiaryPage.tsx: заменить Ant Design List на нативный map с MealCard компонентами, заменить Ant Design Button на shadcn/ui Button, добавить mobile-first стили (p-4 mobile:p-6)
+- [x] T028 [US1] Добавить ProgressCircle компоненты на Diary страницу для отображения дневного прогресса калорий (calories eaten / remaining / burned) в верхней части экрана согласно research.md (Lifesum visual hierarchy pattern)
+- [x] T029 [US1] Реализовать плавную прокрутку списка приемов пищи на Diary странице с scroll-smooth behavior, fade-in анимациями для MealCard (200ms ease-in-out) согласно FR-006, lazy loading для оптимизации производительности
 
 ### Visual Feedback & Touch Optimization
 
-- [ ] T030 [US1] Добавить визуальную обратную связь < 100ms на все интерактивные элементы US1: Button hover/active states (scale 0.98 transform), MealCard ripple effect при клике, touch feedback через active:scale-[0.98] согласно FR-007 и animations.ts buttonPress preset
-- [ ] T031 [US1] Валидировать touch targets на мобильном: все кнопки и интерактивные элементы >= 44x44px (mobile:min-h-[44px] mobile:min-w-[44px]), spacing между элементами >= 8px согласно FR-002 и accessibility.ts touchTargets.mobile config
+- [x] T030 [US1] Добавить визуальную обратную связь < 100ms на все интерактивные элементы US1: Button hover/active states (scale 0.98 transform), MealCard ripple effect при клике, touch feedback через active:scale-[0.98] согласно FR-007 и animations.ts buttonPress preset
+- [x] T031 [US1] Валидировать touch targets на мобильном: все кнопки и интерактивные элементы >= 44x44px (mobile:min-h-[44px] mobile:min-w-[44px]), spacing между элементами >= 8px согласно FR-002 и accessibility.ts touchTargets.mobile config
 
 **Checkpoint**: User Story 1 полностью функциональна и testable независимо. Можно деплоить как MVP.
 
