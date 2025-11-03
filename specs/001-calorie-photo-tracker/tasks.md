@@ -211,23 +211,23 @@
 
 ### Backend Implementation for User Story 4
 
-- [ ] T097 [P] [US4] Create UserProfile entity model types in src/entities/profile/model/types.ts (Gender, GoalType enums)
-- [ ] T098 [P] [US4] Implement Mifflin-St Jeor calorie calculation in src/entities/profile/lib/calculate-calories.ts (BMR + TDEE + goal multipliers)
-- [ ] T099 [P] [US4] Create profile validation rules in src/entities/profile/lib/validate-profile.ts (weight 30-300kg, height 100-250cm, age 10-120)
-- [ ] T100 [US4] Create profile creation API route in src/app/api/profile/route.ts POST with calorie calculation
-- [ ] T101 [US4] Create profile update API route in src/app/api/profile/route.ts PATCH with recalculation
-- [ ] T102 [US4] Create profile retrieval API route in src/app/api/profile/route.ts GET
+- [x] T097 [P] [US4] Create UserProfile entity model types in src/entities/profile/model/types.ts (Gender, GoalType enums)
+- [x] T098 [P] [US4] Implement Mifflin-St Jeor calorie calculation in src/entities/profile/lib/calculate-calories.ts (BMR + TDEE + goal multipliers)
+- [x] T099 [P] [US4] Create profile validation rules in src/entities/profile/lib/validate-profile.ts (weight 30-300kg, height 100-250cm, age 10-120)
+- [x] T100 [US4] Create profile creation API route in src/app/api/profile/route.ts POST with calorie calculation
+- [x] T101 [US4] Create profile update API route in src/app/api/profile/route.ts PATCH with recalculation
+- [x] T102 [US4] Create profile retrieval API route in src/app/api/profile/route.ts GET
 
 ### Frontend Implementation for User Story 4
 
-- [ ] T103 [P] [US4] Create profile management feature store in src/features/profile-management/model/profile-store.ts (profile data, update)
-- [ ] T104 [P] [US4] Create profile API methods in src/features/profile-management/api/profile-api.ts (get, update profile)
-- [ ] T105 [P] [US4] Create ProfileFormFields component in src/features/profile-management/ui/ProfileFormFields.tsx (weight, age, gender, height inputs)
-- [ ] T106 [P] [US4] Create GoalSelector component in src/features/profile-management/ui/GoalSelector.tsx (BULK/MAINTAIN/CUT/SUGAR_CONTROL)
-- [ ] T107 [P] [US4] Create CalorieDisplay component in src/features/profile-management/ui/CalorieDisplay.tsx showing calculated target
-- [ ] T108 [US4] Create ProfileForm widget in src/widgets/profile-form/ProfileForm.tsx composing all profile fields
-- [ ] T109 [US4] Create profile page in src/pages/profile-page/ProfilePage.tsx
-- [ ] T110 [US4] Create profile route in src/app/(dashboard)/profile/page.tsx
+- [x] T103 [P] [US4] Create profile management feature store in src/features/profile-management/model/profile-store.ts (profile data, update)
+- [x] T104 [P] [US4] Create profile API methods in src/features/profile-management/api/profile-api.ts (get, update profile)
+- [x] T105 [P] [US4] Create ProfileFormFields component in src/features/profile-management/ui/ProfileFormFields.tsx (weight, age, gender, height inputs)
+- [x] T106 [P] [US4] Create GoalSelector component in src/features/profile-management/ui/GoalSelector.tsx (BULK/MAINTAIN/CUT/SUGAR_CONTROL)
+- [x] T107 [P] [US4] Create CalorieDisplay component in src/features/profile-management/ui/CalorieDisplay.tsx showing calculated target
+- [x] T108 [US4] Create ProfileForm widget in src/widgets/profile-form/ProfileForm.tsx composing all profile fields
+- [x] T109 [US4] Create profile page in src/pages/profile-page/ProfilePage.tsx
+- [x] T110 [US4] Create profile route in src/app/(dashboard)/profile/page.tsx
 
 **Checkpoint**: User Story 4 complete - users can manage profile and see personalized calorie recommendations
 
