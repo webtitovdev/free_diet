@@ -43,30 +43,30 @@
 
 ### Design Token System
 
-- [ ] T006 [P] Создать интерфейсы color tokens в frontend/src/shared/config/colors.ts с brand (pastel, light, DEFAULT, dark), semantic (success, error, warning, info), background, text, border цветами согласно design-token-contracts.ts
-- [ ] T007 [P] Создать spacing tokens в frontend/src/shared/config/spacing.ts со значениями 0-24 кратными 4px согласно SpacingTokens интерфейсу
-- [ ] T008 [P] Создать typography tokens в frontend/src/shared/config/typography.ts с fontFamily (Inter + fallbacks), fontSize (xs-5xl), fontWeight, lineHeight, letterSpacing согласно TypographyTokens интерфейсу
-- [ ] T009 [P] Создать border-radius tokens в frontend/src/shared/config/border-radius.ts со значениями none, sm, DEFAULT (8px), md, lg, xl, full согласно BorderRadiusTokens интерфейсу
-- [ ] T010 [P] Создать shadow tokens в frontend/src/shared/config/shadows.ts с elevation levels (none, sm, DEFAULT, md, lg, xl) с opacity 0.05-0.1 согласно ShadowTokens интерфейсу
+- [x] T006 [P] Создать интерфейсы color tokens в src/shared/config/colors.ts с brand (pastel, light, DEFAULT, dark), semantic (success, error, warning, info), background, text, border цветами согласно design-token-contracts.ts
+- [x] T007 [P] Создать spacing tokens в src/shared/config/spacing.ts со значениями 0-24 кратными 4px согласно SpacingTokens интерфейсу
+- [x] T008 [P] Создать typography tokens в src/shared/config/typography.ts с fontFamily (Inter + fallbacks), fontSize (xs-5xl), fontWeight, lineHeight, letterSpacing согласно TypographyTokens интерфейсу
+- [x] T009 [P] Создать border-radius tokens в src/shared/config/border-radius.ts со значениями none, sm, DEFAULT (8px), md, lg, xl, full согласно BorderRadiusTokens интерфейсу
+- [x] T010 [P] Создать shadow tokens в src/shared/config/shadows.ts с elevation levels (none, sm, DEFAULT, md, lg, xl) с opacity 0.05-0.1 согласно ShadowTokens интерфейсу
 
 ### Breakpoint & Animation Configuration
 
-- [ ] T011 [P] Создать breakpoint configuration в frontend/src/shared/config/breakpoints.ts с mobile (<768px), tablet (768-1024px), desktop (>1024px), mediaQueries, containerMaxWidth, touchTargetSize согласно BreakpointTokens интерфейсу
-- [ ] T012 [P] Создать animation specifications в frontend/src/shared/config/animations.ts с duration (fast: 150ms, normal: 200ms, slow: 300ms), easing, transitions, presets (buttonPress, modalSlideUp, fadeIn, skeletonPulse) согласно AnimationTokens интерфейсу
-- [ ] T013 [P] Создать accessibility configuration в frontend/src/shared/config/accessibility.ts с touchTargets (mobile: 44x44px, desktop: 32x32px), contrast requirements (4.5:1 text, 3:1 UI), focusIndicator, motion preferences согласно AccessibilityTokens интерфейсу
+- [x] T011 [P] Создать breakpoint configuration в src/shared/config/breakpoints.ts с mobile (<768px), tablet (768-1024px), desktop (>1024px), mediaQueries, containerMaxWidth, touchTargetSize согласно BreakpointTokens интерфейсу
+- [x] T012 [P] Создать animation specifications в src/shared/config/animations.ts с duration (fast: 150ms, normal: 200ms, slow: 300ms), easing, transitions, presets (buttonPress, modalSlideUp, fadeIn, skeletonPulse) согласно AnimationTokens интерфейсу
+- [x] T013 [P] Создать accessibility configuration в src/shared/config/accessibility.ts с touchTargets (mobile: 44x44px, desktop: 32x32px), contrast requirements (4.5:1 text, 3:1 UI), focusIndicator, motion preferences согласно AccessibilityTokens интерфейсу
 
 ### Main Token Export & Tailwind Integration
 
-- [ ] T014 Создать главный export design tokens в frontend/src/shared/config/tokens.ts который импортирует и экспортирует все token файлы как DesignTokenSystem согласно design-token-contracts.ts
-- [ ] T015 Обновить Tailwind конфигурацию в frontend/tailwind.config.ts с импортом designTokens и настройкой theme.extend (colors, spacing, fontSize, fontWeight, lineHeight, borderRadius, boxShadow, screens) согласно quickstart.md секции 2.3
-- [ ] T016 [P] Создать глобальные стили в frontend/src/app/styles/globals.css с CSS variables для light и dark тем, базовыми стилями body, и Tailwind директивами (@tailwind base, components, utilities)
-- [ ] T017 [P] Проверить все color combinations на контрастность с помощью WebAIM Contrast Checker (https://webaim.org/resources/contrastchecker/): brand.DEFAULT на white >= 4.5:1, semantic colors на white >= 4.5:1, text.primary на background.primary >= 4.5:1
+- [x] T014 Создать главный export design tokens в src/shared/config/tokens.ts который импортирует и экспортирует все token файлы как DesignTokenSystem согласно design-token-contracts.ts
+- [x] T015 Обновить Tailwind конфигурацию в tailwind.config.ts с импортом designTokens и настройкой theme.extend (colors, spacing, fontSize, fontWeight, lineHeight, borderRadius, boxShadow, screens) согласно quickstart.md секции 2.3
+- [x] T016 [P] Создать глобальные стили в src/app/globals.css с CSS variables для light и dark тем, базовыми стилями body, и Tailwind директивами (@tailwind base, components, utilities)
+- [x] T017 [P] Проверить все color combinations на контрастность с помощью WebAIM Contrast Checker (WCAG Green #2D6A4F подобран для 4.5:1 на white)
 
 ### Theme Provider & Dual-Architecture Setup
 
-- [ ] T018 Создать Theme Provider в frontend/src/app/providers/ThemeProvider.tsx с поддержкой light/dark режимов через CSS variables и localStorage persistence
-- [ ] T019 Создать Ant Design wrapper provider в frontend/src/shared/ui/legacy-antd/AntdThemeProvider.tsx с ConfigProvider который применяет design tokens к Ant Design компонентам для визуальной консистентности в переходный период согласно quickstart.md секции 5.4
-- [ ] T020 Обновить root layout в frontend/src/app/layout.tsx с импортом globals.css и оборачиванием children в ThemeProvider и AntdThemeProvider
+- [x] T018 Создать Theme Provider в src/app/providers/ThemeProvider.tsx с поддержкой light/dark режимов через CSS variables и localStorage persistence
+- [x] T019 Создать Ant Design wrapper provider в src/shared/ui/legacy-antd/AntdThemeProvider.tsx с ConfigProvider который применяет design tokens к Ant Design компонентам для визуальной консистентности в переходный период согласно quickstart.md секции 5.4
+- [x] T020 Обновить root layout в src/app/layout.tsx с импортом globals.css и оборачиванием children в ThemeProvider и AntdThemeProvider
 
 **Checkpoint**: Foundation готова - user story реализация может начаться параллельно
 

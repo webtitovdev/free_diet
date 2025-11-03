@@ -1,3 +1,72 @@
+/**
+ * Global Styles - Mobile-First UI Redesign
+ *
+ * Tailwind CSS v4 директивы + CSS variables для light/dark тем
+ * @see specs/001-mobile-first-ui-redesign/
+ */
+
+/* Tailwind CSS базовые слои */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables для Light Theme */
+:root {
+  /* Brand Colors */
+  --color-brand-pastel: #a8e6a3;
+  --color-brand-light: #c8f0c5;
+  --color-brand-default: #2d6a4f;
+  --color-brand-dark: #1f4a37;
+
+  /* Semantic Colors */
+  --color-success: #22c55e;
+  --color-error: #ef4444;
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
+
+  /* Background Colors */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f9fafb;
+  --color-bg-tertiary: #f3f4f6;
+
+  /* Text Colors */
+  --color-text-primary: #1f2937;
+  --color-text-secondary: #4b5563;
+  --color-text-disabled: #9ca3af;
+  --color-text-inverse: #ffffff;
+
+  /* Border Colors */
+  --color-border-default: #e5e7eb;
+  --color-border-focus: #2d6a4f;
+  --color-border-error: #ef4444;
+}
+
+/* CSS Variables для Dark Theme */
+.dark {
+  /* Brand Colors */
+  --color-brand-pastel: #1f4a37;
+  --color-brand-light: #2d6a4f;
+  --color-brand-default: #a8e6a3;
+  --color-brand-dark: #c8f0c5;
+
+  /* Background Colors */
+  --color-bg-primary: #1f2937;
+  --color-bg-secondary: #111827;
+  --color-bg-tertiary: #374151;
+
+  /* Text Colors */
+  --color-text-primary: #f9fafb;
+  --color-text-secondary: #d1d5db;
+  --color-text-disabled: #6b7280;
+  --color-text-inverse: #1f2937;
+
+  /* Border Colors */
+  --color-border-default: #374151;
+  --color-border-focus: #a8e6a3;
+  --color-border-error: #ef4444;
+}
+
+/* Base Styles */
 * {
   box-sizing: border-box;
   padding: 0;
@@ -11,13 +80,67 @@ body {
 }
 
 body {
+  /* Typography из tokens */
   font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  font-size: 16px; /* FR-009: 16px на десктопе */
+  line-height: 1.5; /* Минимум для accessibility */
+
+  /* Colors из CSS variables */
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+
+  /* Font smoothing */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Mobile font size (FR-009: 14-16px на мобильном) */
+@media (max-width: 767px) {
+  body {
+    font-size: 14px;
+  }
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* Focus Indicators для Accessibility (WCAG 2.4.7) */
+:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Screen Reader Only класс */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Reduced Motion для Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
