@@ -255,8 +255,8 @@
 - [x] T117 [P] [US5] Create CalendarDayCell component in src/features/progress-tracking/ui/CalendarDayCell.tsx (green if goal achieved, gray otherwise)
 - [x] T118 [P] [US5] Create DayDetailModal component in src/features/progress-tracking/ui/DayDetailModal.tsx showing meals and totals
 - [x] T119 [US5] Create CalendarView widget in src/widgets/calendar-view/CalendarView.tsx using Ant Design Calendar
-- [ ] T120 [US5] Create calendar page in src/pages/calendar-page/CalendarPage.tsx
-- [ ] T121 [US5] Create calendar route in src/app/(dashboard)/calendar/page.tsx
+- [x] T120 [US5] Create calendar page in src/pages/calendar-page/CalendarPage.tsx
+- [x] T121 [US5] Create calendar route in src/app/(dashboard)/calendar/page.tsx
 
 **Checkpoint**: User Story 5 complete - users can track progress via visual calendar
 
