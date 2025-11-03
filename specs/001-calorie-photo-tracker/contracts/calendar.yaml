@@ -1,0 +1,240 @@
+openapi: 3.0.3
+info:
+  title: Free Diet - Calendar API
+  description: Calendar and progress tracking endpoints
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000/api
+    description: Development server
+
+tags:
+  - name: Calendar
+    description: Calendar and progress operations
+
+paths:
+  /calendar:
+    get:
+      tags:
+        - Calendar
+      summary: Get calendar data for month
+      description: |
+        Returns daily logs for specified month. Used for calendar visualization.
+        Must complete in < 2 seconds (§SC-009, §US5)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 2000
+            maximum: 2100
+          description: Year (YYYY)
+          example: 2025
+        - name: month
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 12
+          description: Month (1-12)
+          example: 11
+      responses:
+        '200':
+          description: Calendar data retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  year:
+                    type: integer
+                  month:
+                    type: integer
+                  days:
+                    type: array
+                    description: Array of daily logs for the month
+                    items:
+                      $ref: '#/components/schemas/DailyLog'
+                  statistics:
+                    $ref: '#/components/schemas/MonthStatistics'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /calendar/{date}:
+    get:
+      tags:
+        - Calendar
+      summary: Get detailed day information
+      description: |
+        Returns all meals and detailed nutrition for specific day (§FR-020, §US5)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: date
+          in: path
+          required: true
+          schema:
+            type: string
+            format: date
+          description: Date in YYYY-MM-DD format
+          example: "2025-11-03"
+      responses:
+        '200':
+          description: Day details retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    format: date
+                  dailyLog:
+                    $ref: '#/components/schemas/DailyLog'
+                  meals:
+                    type: array
+                    description: All meals for this day
+                    items:
+                      $ref: '#/components/schemas/MealSummary'
+                  targetCalories:
+                    type: integer
+                    description: User's target calories from profile
+                    nullable: true
+        '404':
+          description: No data for this day
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "No meals recorded for this day"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    DailyLog:
+      type: object
+      description: Aggregated daily nutrition summary (data-model §DailyLog)
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date
+          description: Calendar date without time
+        totalCalories:
+          type: number
+          format: float
+          description: Sum of all meals for this day
+        totalProtein:
+          type: number
+          format: float
+        totalFats:
+          type: number
+          format: float
+        totalCarbs:
+          type: number
+          format: float
+        deviationPercent:
+          type: number
+          format: float
+          description: |
+            Percentage deviation from target calories (§FR-019):
+            ((totalCalories - targetCalories) / targetCalories) * 100
+          example: -5.2
+        goalAchieved:
+          type: boolean
+          description: |
+            True if within ±10% of target (§FR-019):
+            - Green indicator in calendar
+            - False = Gray indicator
+          example: true
+        mealCount:
+          type: integer
+          description: Number of meals recorded for this day
+          minimum: 0
+
+    MealSummary:
+      type: object
+      description: Abbreviated meal info for calendar day details
+      properties:
+        id:
+          type: string
+          format: uuid
+        category:
+          type: string
+          enum: [BREAKFAST, LUNCH, DINNER, SNACK]
+        time:
+          type: string
+          format: time
+          description: Time of meal (HH:mm)
+        totalCalories:
+          type: number
+          format: float
+        totalProtein:
+          type: number
+          format: float
+        totalFats:
+          type: number
+          format: float
+        totalCarbs:
+          type: number
+          format: float
+        foodItemCount:
+          type: integer
+          description: Number of food items in this meal
+
+    MonthStatistics:
+      type: object
+      description: Aggregated statistics for the month
+      properties:
+        totalDaysLogged:
+          type: integer
+          description: Number of days with at least 1 meal
+          example: 25
+        daysGoalAchieved:
+          type: integer
+          description: Number of days where goal was achieved (±10%)
+          example: 18
+        goalAchievementRate:
+          type: number
+          format: float
+          description: Percentage of logged days where goal achieved
+          example: 72.0
+        averageDailyCalories:
+          type: number
+          format: float
+          description: Average calories across logged days
+          example: 2100.5
+        averageDeviationPercent:
+          type: number
+          format: float
+          description: Average deviation from target
+          example: -2.3
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

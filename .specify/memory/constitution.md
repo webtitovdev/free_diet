@@ -1,50 +1,272 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+===================
+Version Change: Новая версия → 1.0.0
+Modified Principles: Созданы новые принципы на основе предоставленных технологий
+Added Sections:
+  - TypeScript без any
+  - Feature-Sliced Design архитектура
+  - Инструменты форматирования и линтинга
+  - UI библиотека Ant Design
+  - Управление состоянием Zustand
+  - HTTP клиент Axios
+  - Отсутствие тестов (по выбору проекта)
+Removed Sections: Нет (новая конституция)
+Templates Status:
+  ✅ plan-template.md - совместима (содержит Constitution Check секцию)
+  ✅ spec-template.md - совместима (требования и структура поддерживаются)
+  ✅ tasks-template.md - совместима (структура задач соответствует FSD)
+Follow-up TODOs: Нет
+-->
 
-## Core Principles
+# Free Diet Constitution
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+## Основные Принципы
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### I. TypeScript без Any
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+**Декларация**: Весь код проекта ДОЛЖЕН быть написан на TypeScript с строгим запретом использования типа `any`.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+**Правила**:
+- Использование `any` запрещено во всех файлах проекта
+- Все переменные, параметры функций и возвращаемые значения ДОЛЖНЫ иметь явную типизацию
+- Для сложных типов использовать utility types TypeScript (`Partial`, `Pick`, `Omit`, и т.д.)
+- Для неизвестных типов использовать `unknown` вместо `any` с последующей проверкой типов
+- В конфигурации TypeScript ДОЛЖНЫ быть включены строгие опции:
+  - `strict: true`
+  - `noImplicitAny: true`
+  - `strictNullChecks: true`
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+**Обоснование**: Строгая типизация предотвращает ошибки на этапе компиляции, улучшает читаемость кода, обеспечивает лучшую поддержку IDE и делает рефакторинг безопасным.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### II. Feature-Sliced Design (FSD)
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+**Декларация**: Архитектура проекта ДОЛЖНА соответствовать методологии Feature-Sliced Design.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+**Правила**:
+- Структура проекта организована по слоям:
+  - `app/` - инициализация приложения, провайдеры, роутинг
+  - `pages/` - страницы приложения, композиция виджетов
+  - `widgets/` - самостоятельные блоки страниц
+  - `features/` - действия пользователя, бизнес-логика
+  - `entities/` - бизнес-сущности проекта
+  - `shared/` - переиспользуемые компоненты, утилиты, UI-kit
+- Каждый слой может импортировать только нижележащие слои
+- Внутри каждого слайса используется структура:
+  - `ui/` - React компоненты
+  - `model/` - бизнес-логика, хранилище (Zustand)
+  - `api/` - запросы к API (Axios)
+  - `lib/` - вспомогательные функции
+  - `index.ts` - публичный API слайса
+- Запрещены кросс-импорты между слайсами одного уровня
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+**Обоснование**: FSD обеспечивает предсказуемую структуру проекта, упрощает масштабирование, улучшает поддерживаемость и позволяет командам работать параллельно над разными фичами.
 
-## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+### III. Форматирование и Линтинг
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+**Декларация**: Проект ДОЛЖЕН использовать Prettier для форматирования и ESLint для статического анализа кода.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Правила**:
+- Prettier настроен для автоматического форматирования всех TypeScript/TSX файлов
+- ESLint настроен с рекомендуемыми правилами для TypeScript и React
+- Запуск проверки линтера обязателен перед каждым коммитом (через husky pre-commit hook)
+- Все предупреждения ESLint ДОЛЖНЫ быть исправлены перед мержем в основную ветку
+- Конфигурация Prettier и ESLint ДОЛЖНА быть единой для всей команды
+- Плагины ESLint:
+  - `@typescript-eslint` - правила для TypeScript
+  - `eslint-plugin-react` - правила для React
+  - `eslint-plugin-react-hooks` - правила для React Hooks
+  - `eslint-config-prettier` - отключение конфликтующих правил
+
+**Обоснование**: Единый стиль кода улучшает читаемость, уменьшает количество споров о форматировании в code review, предотвращает типичные ошибки и обеспечивает консистентность кодовой базы.
+
+### IV. UI библиотека Ant Design
+
+**Декларация**: Для UI компонентов ДОЛЖНА использоваться библиотека Ant Design.
+
+**Правила**:
+- Все стандартные UI компоненты (кнопки, формы, таблицы, модалы) ДОЛЖНЫ использовать компоненты из Ant Design
+- Кастомные компоненты создаются только при отсутствии подходящего компонента в Ant Design
+- Кастомизация Ant Design компонентов выполняется через:
+  - Настройку темы в `theme` конфигурации
+  - CSS Modules для стилизации отдельных компонентов
+  - Композицию существующих компонентов
+- Запрещено дублирование функциональности, уже предоставленной Ant Design
+- Ant Design компоненты размещаются в `shared/ui/` для переиспользования
+
+**Обоснование**: Использование зрелой UI библиотеки ускоряет разработку, обеспечивает accessibility из коробки, предоставляет консистентный дизайн и снижает количество кода для поддержки.
+
+### V. Управление Состоянием через Zustand
+
+**Декларация**: Глобальное состояние приложения ДОЛЖНО управляться через библиотеку Zustand.
+
+**Правила**:
+- Каждый store размещается в соответствующем слайсе в папке `model/`
+- Store ДОЛЖЕН быть типизирован с использованием TypeScript интерфейсов
+- Использовать принцип единственной ответственности: один store на одну бизнес-область
+- Для асинхронных операций создавать отдельные actions в store
+- Локальное состояние компонентов управляется через `useState`, глобальное - через Zustand
+- Структура store:
+  ```typescript
+  interface StoreState {
+    // данные
+  }
+
+  interface StoreActions {
+    // действия
+  }
+
+  type Store = StoreState & StoreActions;
+  ```
+- Селекторы используются для оптимизации ре-рендеров
+
+**Обоснование**: Zustand предоставляет простой и минималистичный API, не требует boilerplate кода, имеет отличную TypeScript поддержку и хорошую производительность.
+
+### VI. HTTP Клиент Axios
+
+**Декларация**: Все HTTP запросы ДОЛЖНЫ выполняться через библиотеку Axios.
+
+**Правила**:
+- Axios инстанс конфигурируется в `shared/api/` с базовыми настройками:
+  - Base URL
+  - Timeout
+  - Interceptors для обработки ошибок
+  - Interceptors для добавления токенов авторизации
+- API методы размещаются в `api/` папках соответствующих слайсов
+- Все запросы ДОЛЖНЫ быть типизированы (request и response типы)
+- Обработка ошибок выполняется централизованно через interceptors
+- Используется структура:
+  ```typescript
+  // shared/api/client.ts
+  export const apiClient = axios.create({ ... });
+
+  // entities/user/api/userApi.ts
+  export const userApi = {
+    getUser: (id: string): Promise<User> => { ... }
+  };
+  ```
+
+**Обоснование**: Axios предоставляет удобный API для работы с HTTP, поддерживает interceptors для централизованной обработки ошибок и трансформации данных, имеет встроенную защиту от XSRF и работает как в браузере, так и в Node.js.
+
+### VII. Политика Тестирования
+
+**Декларация**: В текущей фазе проекта автоматизированное тестирование НЕ является обязательным требованием.
+
+**Правила**:
+- Написание unit, integration и e2e тестов является опциональным
+- Если тесты добавляются, они ДОЛЖНЫ:
+  - Быть размещены рядом с тестируемым кодом в папке `__tests__/`
+  - Использовать единый фреймворк (рекомендуется Vitest или Jest)
+  - Быть полностью типизированными
+- Ручное тестирование функциональности обязательно перед мержем в основную ветку
+- Quality assurance обеспечивается через:
+  - TypeScript строгую типизацию
+  - ESLint статический анализ
+  - Code review
+  - Ручное тестирование
+
+**Обоснование**: На ранних стадиях проекта или для небольших команд overhead от написания тестов может замедлить скорость разработки. TypeScript и ESLint обеспечивают базовый уровень качества кода без дополнительных затрат времени на тесты.
+
+## Технологический Стек
+
+### Frontend
+- **Язык**: TypeScript (strict mode)
+- **UI Framework**: React
+- **UI библиотека**: Ant Design
+- **Управление состоянием**: Zustand
+- **HTTP клиент**: Axios
+- **Сборщик**: Vite (рекомендуется) или Webpack
+- **Линтер**: ESLint с TypeScript плагинами
+- **Форматтер**: Prettier
+
+### Инструменты разработки
+- **Package Manager**: npm, yarn или pnpm
+- **Git Hooks**: husky для pre-commit проверок
+- **IDE**: VS Code (рекомендуется) с расширениями:
+  - ESLint
+  - Prettier
+  - TypeScript and JavaScript Language Features
+
+## Структура Проекта
+
+```
+src/
+├── app/                    # Инициализация приложения
+│   ├── providers/          # Провайдеры (Router, Theme и т.д.)
+│   ├── styles/             # Глобальные стили
+│   └── index.tsx           # Точка входа
+├── pages/                  # Страницы приложения
+│   └── [page-name]/
+│       ├── ui/
+│       └── index.ts
+├── widgets/                # Виджеты (композиция features)
+│   └── [widget-name]/
+│       ├── ui/
+│       └── index.ts
+├── features/               # Фичи (действия пользователя)
+│   └── [feature-name]/
+│       ├── ui/
+│       ├── model/
+│       ├── api/
+│       └── index.ts
+├── entities/               # Бизнес-сущности
+│   └── [entity-name]/
+│       ├── ui/
+│       ├── model/
+│       ├── api/
+│       └── index.ts
+└── shared/                 # Переиспользуемые ресурсы
+    ├── ui/                 # UI-kit компоненты
+    ├── api/                # API клиент, базовые запросы
+    ├── lib/                # Утилиты, хелперы
+    ├── config/             # Конфигурация приложения
+    └── types/              # Общие типы
+```
+
+## Процесс Разработки
+
+### Code Review
+- Все изменения ДОЛЖНЫ проходить code review перед мержем
+- Reviewer проверяет:
+  - Соответствие FSD архитектуре
+  - Отсутствие `any` типов
+  - Правильность типизации
+  - Использование Ant Design компонентов
+  - Соблюдение стандартов форматирования
+  - Корректность работы с Zustand stores
+  - Правильность обработки Axios запросов
+
+### Git Workflow
+- Используется feature branch workflow
+- Названия веток: `feature/`, `fix/`, `refactor/`
+- Коммиты следуют Conventional Commits:
+  - `feat:` - новая функциональность
+  - `fix:` - исправление бага
+  - `refactor:` - рефакторинг без изменения функциональности
+  - `style:` - форматирование, отступы
+  - `docs:` - документация
+
+### Pre-commit Проверки
+- ESLint проверка всех измененных файлов
+- Prettier форматирование
+- TypeScript компиляция без ошибок
+
+## Управление
+
+### Изменения Конституции
+- Изменения в конституции требуют обсуждения с командой
+- Мажорные изменения (удаление/изменение принципов) требуют консенсуса
+- Минорные изменения (добавление принципов) требуют одобрения тимлида
+- Патч изменения (уточнения, опечатки) могут вноситься любым разработчиком
+
+### Версионирование
+- MAJOR: Удаление или несовместимое изменение принципов
+- MINOR: Добавление новых принципов или секций
+- PATCH: Уточнения, исправления, улучшение формулировок
+
+### Compliance Review
+- Регулярная проверка соответствия кода конституции
+- Выявление технического долга при нарушении принципов
+- Планирование рефакторинга для приведения кода в соответствие
+
+**Version**: 1.0.0 | **Ratified**: 2025-11-03 | **Last Amended**: 2025-11-03

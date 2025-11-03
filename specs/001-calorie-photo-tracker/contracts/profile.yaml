@@ -1,0 +1,244 @@
+openapi: 3.0.3
+info:
+  title: Free Diet - Profile API
+  description: User profile and goals management
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000/api
+    description: Development server
+
+tags:
+  - name: Profile
+    description: Profile operations
+
+paths:
+  /profile:
+    get:
+      tags:
+        - Profile
+      summary: Get user profile
+      description: Returns current user's profile with calculated target calories (Spec §US4)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Profile retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '404':
+          description: Profile not created yet
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Profile not found. Please create your profile."
+
+    post:
+      tags:
+        - Profile
+      summary: Create user profile
+      description: |
+        Creates profile with physical parameters and goal. Calculates target calories using Mifflin-St Jeor.
+        (Spec §FR-015, §FR-016, §FR-017, §US4)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileInput'
+      responses:
+        '201':
+          description: Profile created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                invalidWeight:
+                  value:
+                    error: "Weight must be between 30 and 300 kg"
+                invalidHeight:
+                  value:
+                    error: "Height must be between 100 and 250 cm"
+                invalidAge:
+                  value:
+                    error: "Age must be between 10 and 120 years"
+        '409':
+          description: Profile already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Profile already exists. Use PATCH to update."
+
+    patch:
+      tags:
+        - Profile
+      summary: Update user profile
+      description: |
+        Updates profile parameters and/or goal. Recalculates target calories if relevant fields changed.
+        (Spec §FR-017, §US4)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                weight:
+                  type: number
+                  format: float
+                  minimum: 30
+                  maximum: 300
+                age:
+                  type: integer
+                  minimum: 10
+                  maximum: 120
+                gender:
+                  type: string
+                  enum: [MALE, FEMALE]
+                height:
+                  type: integer
+                  minimum: 100
+                  maximum: 250
+                goal:
+                  type: string
+                  enum: [BULK, MAINTAIN, CUT, SUGAR_CONTROL]
+      responses:
+        '200':
+          description: Profile updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      tags:
+        - Profile
+      summary: Delete user profile
+      description: Deletes profile. User can still use app but without calorie tracking.
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Profile deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    ProfileInput:
+      type: object
+      required:
+        - weight
+        - age
+        - gender
+        - height
+        - goal
+      properties:
+        weight:
+          type: number
+          format: float
+          minimum: 30
+          maximum: 300
+          description: Weight in kilograms (§FR-015)
+          example: 75.5
+        age:
+          type: integer
+          minimum: 10
+          maximum: 120
+          description: Age in years (§FR-015)
+          example: 30
+        gender:
+          type: string
+          enum: [MALE, FEMALE]
+          description: Gender for calorie calculation (§FR-015)
+        height:
+          type: integer
+          minimum: 100
+          maximum: 250
+          description: Height in centimeters (§FR-015)
+          example: 180
+        goal:
+          type: string
+          enum: [BULK, MAINTAIN, CUT, SUGAR_CONTROL]
+          description: |
+            Fitness goal (§FR-016):
+            - BULK: Набор массы (+15% calorie surplus)
+            - MAINTAIN: Удержание веса (maintenance)
+            - CUT: Похудение (-15% calorie deficit)
+            - SUGAR_CONTROL: Контроль сахара (maintenance)
+
+    UserProfile:
+      allOf:
+        - $ref: '#/components/schemas/ProfileInput'
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            userId:
+              type: string
+              format: uuid
+            targetCalories:
+              type: integer
+              description: |
+                Calculated using Mifflin-St Jeor formula (§FR-017):
+                BMR = (10 × weight) + (6.25 × height) - (5 × age) ± gender_offset
+                TDEE = BMR × 1.2 (activity multiplier)
+                Target = TDEE × goal_multiplier
+              example: 2040
+            createdAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    NotFound:
+      description: Profile not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Profile not found"

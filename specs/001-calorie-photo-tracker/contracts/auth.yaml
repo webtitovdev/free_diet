@@ -1,0 +1,312 @@
+openapi: 3.0.3
+info:
+  title: Free Diet - Authentication API
+  description: Authentication endpoints for Google OAuth and Email/Password registration
+  version: 1.0.0
+  contact:
+    name: Free Diet API Support
+
+servers:
+  - url: http://localhost:3000/api
+    description: Development server
+  - url: https://yourdomain.com/api
+    description: Production server
+
+tags:
+  - name: Auth
+    description: Authentication operations
+
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Register new user with email/password
+      description: Creates new user account with email/password. Sends verification email with token. (Spec §FR-002, §FR-003)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: user@example.com
+                password:
+                  type: string
+                  format: password
+                  minLength: 8
+                  description: Min 8 chars, must contain 1 digit and 1 letter (§FR-002b)
+                  example: Password123
+      responses:
+        '201':
+          description: User created successfully, verification email sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Registration successful. Please check your email to verify your account."
+                  userId:
+                    type: string
+                    format: uuid
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                weakPassword:
+                  value:
+                    error: "Password must be at least 8 characters and contain 1 digit and 1 letter"
+                invalidEmail:
+                  value:
+                    error: "Invalid email format"
+        '409':
+          description: Email already registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "User with this email already exists"
+
+  /auth/verify-email:
+    get:
+      tags:
+        - Auth
+      summary: Verify email with token
+      description: Verifies user email using token from verification email. Token valid for 24h. (Spec §FR-003a, §FR-004)
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Verification token from email link
+      responses:
+        '200':
+          description: Email verified successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Email verified successfully. You can now log in."
+        '400':
+          description: Invalid or expired token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                expired:
+                  value:
+                    error: "Verification token has expired. Please request a new one."
+                invalid:
+                  value:
+                    error: "Invalid verification token"
+
+  /auth/resend-verification:
+    post:
+      tags:
+        - Auth
+      summary: Resend verification email
+      description: Resends verification email if original expired or not received (Spec §Edge Cases)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+      responses:
+        '200':
+          description: Verification email resent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Verification email has been resent"
+        '404':
+          description: User not found or already verified
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login with email/password
+      description: Authenticates user with email/password. Requires verified email. (Spec §FR-004)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  accessToken:
+                    type: string
+                    description: JWT access token for authenticated requests
+        '401':
+          description: Authentication failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                invalidCredentials:
+                  value:
+                    error: "Invalid email or password"
+                emailNotVerified:
+                  value:
+                    error: "Please verify your email before logging in"
+
+  /auth/google/callback:
+    get:
+      tags:
+        - Auth
+      summary: Google OAuth callback
+      description: Handles Google OAuth redirect. Managed by NextAuth.js. (Spec §FR-001)
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Authorization code from Google
+        - name: state
+          in: query
+          schema:
+            type: string
+          description: CSRF protection state parameter
+      responses:
+        '302':
+          description: Redirect to application with session cookie
+        '401':
+          description: OAuth authentication failed
+
+  /auth/session:
+    get:
+      tags:
+        - Auth
+      summary: Get current session
+      description: Returns current authenticated user session
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Session information
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  expiresAt:
+                    type: string
+                    format: date-time
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/logout:
+    post:
+      tags:
+        - Auth
+      summary: Logout user
+      description: Invalidates current session
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Logout successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Logged out successfully"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        emailVerified:
+          type: boolean
+        authMethod:
+          type: string
+          enum: [GOOGLE, EMAIL_PASSWORD]
+        createdAt:
+          type: string
+          format: date-time
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Human-readable error message
+        code:
+          type: string
+          description: Machine-readable error code (optional)

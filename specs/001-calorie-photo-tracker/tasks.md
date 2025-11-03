@@ -42,7 +42,7 @@
 
 ### Database & ORM Setup
 
-- [ ] T011 Create Prisma schema in prisma/schema.prisma with all 6 entities (User, UserProfile, FoodPhoto, Meal, FoodItem, DailyLog)
+- [ ] T011 Create Prisma schema in prisma/schema.prisma with all 6 entities (User, UserProfile, FoodPhoto, Meal, FoodItem, DailyLog). IMPORTANT: Meal-Photo relationship must be optional (photoId nullable) with no cascade delete to satisfy FR-005b (meal records persist after photo deletion)
 - [ ] T012 Configure PostgreSQL datasource and Prisma client generator in prisma/schema.prisma
 - [ ] T013 Run initial Prisma migration: npx prisma migrate dev --name init
 - [ ] T014 Generate Prisma Client types: npx prisma generate
@@ -96,8 +96,8 @@
 - [ ] T035 [P] [US1] Implement email verification token generation in src/entities/user/lib/generate-token.ts (UUID v4, 24h expiry)
 - [ ] T036 [US1] Setup Resend email service in src/shared/lib/email/resend-client.ts
 - [ ] T037 [P] [US1] Create React Email verification template in src/shared/lib/email/templates/verification-email.tsx
-- [ ] T038 [US1] Implement send verification email function in src/shared/lib/email/send-verification.ts
-- [ ] T039 [US1] Create email verification API route in src/app/api/auth/verify-email/route.ts
+- [ ] T038 [US1] Implement send verification email function in src/shared/lib/email/send-verification.ts with retry mechanism. Per edge case (spec.md:L116), implement exponential backoff retry queue: 3 attempts with delays 1 min, 5 min, 15 min. If all retries fail, log error and allow manual resend via user profile
+- [ ] T039 [US1] Create email verification API route in src/app/api/auth/verify-email/route.ts. IMPORTANT: Check token expiration (tokenExpiresAt) per FR-003a - tokens are valid for 24 hours. If expired, return user-friendly error with option to resend verification email
 - [ ] T040 [P] [US1] Implement password hashing with bcrypt in src/entities/user/lib/hash-password.ts (salt rounds: 10)
 - [ ] T041 [US1] Create login credentials verification in src/app/api/auth/[...nextauth]/route.ts authorize callback
 - [ ] T042 [P] [US1] Create session check API route in src/app/api/auth/session/route.ts
@@ -107,7 +107,7 @@
 - [ ] T043 [P] [US1] Create auth feature store in src/features/auth/model/auth-store.ts with Zustand (login, logout, session state)
 - [ ] T044 [P] [US1] Create auth API methods in src/features/auth/api/auth-api.ts (register, login, verifyEmail using Axios)
 - [ ] T045 [P] [US1] Create LoginForm component in src/features/auth/ui/LoginForm.tsx with Ant Design Form
-- [ ] T046 [P] [US1] Create RegisterForm component in src/features/auth/ui/RegisterForm.tsx with email/password validation
+- [ ] T046 [P] [US1] Create RegisterForm component in src/features/auth/ui/RegisterForm.tsx with client-side email/password validation. IMPORTANT: Implement FR-002b validation rules: minimum 8 characters, at least one digit, at least one letter. Show user-friendly error messages in real-time (use Ant Design Form validation)
 - [ ] T047 [P] [US1] Create GoogleOAuthButton component in src/features/auth/ui/GoogleOAuthButton.tsx
 - [ ] T048 [US1] Create EmailVerification page component in src/pages/auth-page/EmailVerification.tsx
 - [ ] T049 [US1] Create auth page layout in src/app/(auth)/layout.tsx
@@ -133,7 +133,8 @@
 
 - [ ] T055 [P] [US2] Create FoodPhoto entity model types in src/entities/photo/model/types.ts (PhotoStatus enum)
 - [ ] T056 [P] [US2] Create FoodItem entity model types in src/entities/food-item/model/types.ts
-- [ ] T057 [P] [US2] Setup Vercel Blob client in src/shared/lib/storage/blob-client.ts
+- [ ] T057 [P] [US2] Setup Vercel Blob client in src/shared/lib/storage/blob-client.ts with configuration (auto-deletion per FR-005a)
+- [ ] T057a [US2] Configure Vercel Blob 30-day auto-deletion via expires parameter in put() calls in src/shared/lib/storage/blob-client.ts. IMPORTANT: All photo uploads MUST include expires: 30 * 24 * 60 * 60 * 1000 (30 days in milliseconds) to satisfy FR-005a automatic deletion requirement
 - [ ] T058 [US2] Implement client-side image compression in src/features/photo-analysis/lib/compress-image.ts using browser-image-compression
 - [ ] T059 [P] [US2] Create photo upload API route in src/app/api/photos/upload/route.ts with Vercel Blob integration and 10 MB file size validation (FR-021)
 - [ ] T060 [US2] Implement HEIC to JPEG conversion in src/app/api/photos/upload/route.ts using sharp
@@ -148,8 +149,9 @@
 
 - [ ] T067 [P] [US2] Create photo analysis feature store in src/features/photo-analysis/model/photo-store.ts (upload state, results)
 - [ ] T068 [P] [US2] Create photo API methods in src/features/photo-analysis/api/photo-api.ts (upload, getStatus, getResults)
-- [ ] T069 [P] [US2] Create PhotoUploadButton component in src/features/photo-analysis/ui/PhotoUploadButton.tsx
+- [ ] T069 [P] [US2] Create PhotoUploadButton component in src/features/photo-analysis/ui/PhotoUploadButton.tsx with client-side file size validation (max 10 MB, user-friendly error message before upload)
 - [ ] T070 [P] [US2] Create UploadProgress component in src/features/photo-analysis/ui/UploadProgress.tsx with loading indicator
+- [ ] T070a [US2] Implement photo processing status polling logic in src/features/photo-analysis/model/photo-store.ts (poll /api/photos/[id]/status every 2 seconds while processingStatus === 'PROCESSING'). Rationale: 2-second interval balances UX responsiveness (photo analysis takes 5-10 seconds per SC-003) with API load. User sees update within 2s of completion, minimal server requests (~5 polls per analysis)
 - [ ] T071 [US2] Create PhotoUploadForm widget in src/widgets/photo-upload-form/PhotoUploadForm.tsx
 - [ ] T072 [P] [US2] Create FoodItemCard component in src/features/photo-analysis/ui/FoodItemCard.tsx displaying product details
 - [ ] T073 [US2] Create FoodItemsList widget in src/widgets/food-items-list/FoodItemsList.tsx displaying all recognized items
@@ -178,11 +180,11 @@
 
 - [ ] T082 [P] [US3] Create Meal entity model types in src/entities/meal/model/types.ts (MealCategory enum)
 - [ ] T083 [P] [US3] Implement calorie calculation utility in src/entities/food-item/lib/calculate-nutrition.ts (weight-based macro calculation)
-- [ ] T084 [P] [US3] Implement meal category suggestion logic in src/entities/meal/lib/suggest-category.ts (time-based: breakfast/lunch/dinner/snack)
+- [ ] T084 [P] [US3] Implement meal category suggestion logic in src/entities/meal/lib/suggest-category.ts (time-based: breakfast/lunch/dinner/snack). Per FR-012, use client-side timezone (new Date().getHours() on client) to determine category: 6-11h = breakfast, 11-16h = lunch, 16-21h = dinner, else = snack. Timezone is captured at meal creation and stored with meal record
 - [ ] T085 [US3] Create meal creation API route in src/app/api/meals/route.ts POST (create meal with food items)
 - [ ] T086 [P] [US3] Create meal update API route in src/app/api/meals/[id]/route.ts PATCH (update food item weights)
 - [ ] T087 [US3] Create meal retrieval API route in src/app/api/meals/[id]/route.ts GET
-- [ ] T088 [P] [US3] Implement DailyLog update trigger in src/app/api/meals/route.ts (recalculate daily totals on meal save)
+- [ ] T088 [P] [US3] Implement DailyLog update logic in src/entities/daily-log/lib/update-daily-log.ts (recalculate daily totals from all meals). Architecture: This function is called within Prisma transaction context from meal CRUD operations (src/app/api/meals/route.ts POST/PATCH/DELETE). Ensures atomic updates: meal change + DailyLog recalculation happen together or both fail
 - [ ] T089 [US3] Create meal deletion API route in src/app/api/meals/[id]/route.ts DELETE
 
 ### Frontend Implementation for User Story 3
@@ -242,7 +244,7 @@
 ### Backend Implementation for User Story 5
 
 - [ ] T111 [P] [US5] Create DailyLog entity model types in src/entities/daily-log/model/types.ts
-- [ ] T112 [P] [US5] Implement daily log calculation logic in src/entities/daily-log/lib/calculate-daily-log.ts (aggregate meals, deviation %, goal achieved)
+- [ ] T112 [P] [US5] Implement daily log calculation logic in src/entities/daily-log/lib/calculate-daily-log.ts (aggregate meals, deviation %, goal achieved). Formula for goal achievement per FR-019: goalAchieved = (Math.abs(actualCalories - targetCalories) / targetCalories) <= 0.10
 - [ ] T113 [US5] Create calendar month data API route in src/app/api/calendar/route.ts GET (returns DailyLog for month range)
 - [ ] T114 [US5] Create day details API route in src/app/api/calendar/[date]/route.ts GET (meals for specific day)
 
@@ -275,6 +277,7 @@
 - [ ] T130 [P] Create database seed script in prisma/seed.ts with common food items (optional)
 - [ ] T131 [P] Update README.md with project overview and setup instructions
 - [ ] T132 Run quickstart.md validation to ensure all setup steps work
+- [ ] T133 [P] [Post-MVP] Setup analytics integration for tracking SC-010 (user awareness surveys), SC-011 (30-day retention rate), SC-012 (time to first photo analysis). CRITICAL CONSTITUTION CHECK: Before implementation, verify that selected analytics library (Google Analytics 4 via @next/third-parties or Mixpanel SDK) has full TypeScript support without 'any' types (Принцип I). Recommended: @next/third-parties/google for GA4 (TypeScript-first) or mixpanel-browser@^2.48.0 with @types/mixpanel-browser
 
 **Checkpoint**: Application polished and ready for deployment
 
@@ -354,13 +357,13 @@ Each story adds value without breaking previous functionality.
 
 ## Task Summary
 
-**Total Tasks**: 132
+**Total Tasks**: 134
 
 **By Phase**:
 - Phase 1 (Setup): 10 tasks
 - Phase 2 (Foundational): 20 tasks
 - Phase 3 (US1 - Auth): 24 tasks
-- Phase 4 (US2 - Photo Analysis): 27 tasks
+- Phase 4 (US2 - Photo Analysis): 28 tasks (added T057a for lifecycle policy)
 - Phase 5 (US3 - Meal Editing): 15 tasks
 - Phase 6 (US4 - Profile): 14 tasks
 - Phase 7 (US5 - Calendar): 11 tasks
@@ -368,14 +371,14 @@ Each story adds value without breaking previous functionality.
 
 **By User Story**:
 - US1 (Authentication): 24 tasks
-- US2 (Photo Analysis): 27 tasks
+- US2 (Photo Analysis): 28 tasks (added T057a for lifecycle policy)
 - US3 (Meal Editing): 15 tasks
 - US4 (Profile Management): 14 tasks
 - US5 (Calendar Progress): 11 tasks
 
 **Parallel Opportunities**: 49 tasks marked [P] can run in parallel within their phase
 
-**MVP Scope** (US1+US2+US3): 66 implementation tasks + 30 foundational = **96 tasks for MVP**
+**MVP Scope** (US1+US2+US3): 67 implementation tasks + 30 foundational = **97 tasks for MVP**
 
 ---
 

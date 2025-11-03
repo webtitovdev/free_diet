@@ -1,0 +1,279 @@
+openapi: 3.0.3
+info:
+  title: Free Diet - Photos API
+  description: Photo upload and food recognition endpoints
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000/api
+    description: Development server
+
+tags:
+  - name: Photos
+    description: Food photo upload and analysis operations
+
+paths:
+  /photos/upload:
+    post:
+      tags:
+        - Photos
+      summary: Upload food photo
+      description: |
+        Uploads food photo for analysis. Max 10MB. Formats: JPG, PNG, HEIC.
+        Photo stored for 30 days then auto-deleted. (Spec §FR-005, §FR-021, §FR-005a)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - photo
+              properties:
+                photo:
+                  type: string
+                  format: binary
+                  description: Food photo file (max 10MB, JPG/PNG/HEIC)
+      responses:
+        '201':
+          description: Photo uploaded successfully, analysis started
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  photoId:
+                    type: string
+                    format: uuid
+                    description: Unique photo identifier
+                  storageUrl:
+                    type: string
+                    format: uri
+                    description: URL to uploaded photo
+                  status:
+                    type: string
+                    enum: [PROCESSING]
+                    description: Initial status (§FR-022)
+                  autoDeleteAt:
+                    type: string
+                    format: date-time
+                    description: Photo auto-deletion date (30 days from now)
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                fileTooLarge:
+                  value:
+                    error: "Photo size exceeds 10MB limit"
+                invalidFormat:
+                  value:
+                    error: "Invalid file format. Accepted: JPG, PNG, HEIC"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /photos/{photoId}/status:
+    get:
+      tags:
+        - Photos
+      summary: Get photo analysis status
+      description: |
+        Poll endpoint to check analysis progress. Client should poll every 2s until status is COMPLETED or FAILED.
+        (Spec §FR-022, §SC-003 - analysis completes within 10s)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: photoId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Photo status retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  photoId:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum: [UPLOADING, PROCESSING, COMPLETED, FAILED]
+                  progress:
+                    type: integer
+                    minimum: 0
+                    maximum: 100
+                    description: Optional progress percentage
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /photos/{photoId}/results:
+    get:
+      tags:
+        - Photos
+      summary: Get food recognition results
+      description: |
+        Returns recognized food items from photo analysis. Available when status is COMPLETED.
+        (Spec §FR-006, §FR-007, §FR-008, §FR-009)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: photoId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Analysis results available
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  photoId:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum: [COMPLETED]
+                  recognizedItems:
+                    type: array
+                    description: Recognized food items (§FR-006, §FR-007)
+                    items:
+                      $ref: '#/components/schemas/RecognizedFoodItem'
+                  totalCalories:
+                    type: number
+                    format: float
+                    description: Sum of all items calories
+                  totalProtein:
+                    type: number
+                    format: float
+                  totalFats:
+                    type: number
+                    format: float
+                  totalCarbs:
+                    type: number
+                    format: float
+        '400':
+          description: Analysis not complete or failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                notReady:
+                  value:
+                    error: "Analysis still processing. Current status: PROCESSING"
+                failed:
+                  value:
+                    error: "Photo analysis failed. Low quality or no food detected."
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /photos/{photoId}:
+    delete:
+      tags:
+        - Photos
+      summary: Delete photo manually
+      description: |
+        Manually deletes photo before 30-day auto-deletion. Associated meal data persists. (Spec §FR-005b)
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: photoId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Photo deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    RecognizedFoodItem:
+      type: object
+      description: Food item recognized by OpenRouter API
+      properties:
+        name:
+          type: string
+          description: Food product name in Russian (§FR-006)
+          example: "Куриная грудка"
+        weight:
+          type: number
+          format: float
+          description: Estimated weight in grams (§FR-007)
+          example: 200.0
+        caloriesPer100g:
+          type: number
+          format: float
+          description: Calories per 100g (§FR-008)
+          example: 165.0
+        proteinPer100g:
+          type: number
+          format: float
+          description: Protein per 100g in grams (§FR-009)
+          example: 31.0
+        fatsPer100g:
+          type: number
+          format: float
+          description: Fats per 100g in grams (§FR-009)
+          example: 3.6
+        carbsPer100g:
+          type: number
+          format: float
+          description: Carbs per 100g in grams (§FR-009)
+          example: 0.0
+        confidence:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+          description: Recognition confidence score (0-1)
+          example: 0.85
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+
+  responses:
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Unauthorized. Please log in."
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "Photo not found"
