@@ -39,7 +39,12 @@ export async function sendVerificationEmail({
   // Первая попытка + 3 retry
   for (let attempt = 0; attempt <= retryDelays.length; attempt++) {
     try {
-      await resendClient.emails.send({
+      console.log(
+        `[Email] Attempting to send verification email to ${email} (attempt ${attempt + 1})`
+      );
+      console.log(`[Email] Using FROM_EMAIL: ${FROM_EMAIL}`);
+
+      const result = await resendClient.emails.send({
         from: FROM_EMAIL,
         to: email,
         subject: "Подтвердите ваш email - Free Diet",
@@ -50,13 +55,20 @@ export async function sendVerificationEmail({
       });
 
       // Успешная отправка
-      console.log(`Verification email sent successfully to ${email} (attempt ${attempt + 1})`);
+      console.log(
+        `[Email] ✓ Verification email sent successfully to ${email} (attempt ${attempt + 1})`
+      );
+      console.log(`[Email] Response:`, JSON.stringify(result, null, 2));
       return true;
     } catch (error) {
       lastError = error as Error;
       console.error(
-        `Failed to send verification email to ${email} (attempt ${attempt + 1}):`,
-        error
+        `[Email] ✗ Failed to send verification email to ${email} (attempt ${attempt + 1})`
+      );
+      console.error(`[Email] Error details:`, JSON.stringify(error, null, 2));
+      console.error(
+        `[Email] Error message:`,
+        error instanceof Error ? error.message : String(error)
       );
 
       // Если это не последняя попытка, ждем перед следующей

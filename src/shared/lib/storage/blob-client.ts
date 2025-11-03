@@ -40,7 +40,7 @@ export async function uploadFoodPhoto(
     };
   } else {
     // Development: сохраняем локально в public/uploads
-    const buffer = file instanceof Buffer ? file : Buffer.from(await file.arrayBuffer());
+    const buffer = file instanceof Buffer ? file : Buffer.from(await (file as Blob).arrayBuffer());
     const timestamp = Date.now();
     const sanitizedFilename = filename.replace(/[^a-zA-Z0-9.-]/g, "_");
     const relativePath = `uploads/photos/${userId}`;

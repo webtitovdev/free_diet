@@ -1,5 +1,5 @@
-// Auth middleware для защиты authenticated routes
-// Next.js 14+ Middleware
+// Auth proxy для защиты authenticated routes
+// Next.js 16+ Proxy (ранее называлось Middleware)
 
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
@@ -12,7 +12,7 @@ const protectedRoutes = ["/dashboard", "/profile", "/calendar", "/photos"];
 // Route group (auth) делает URL без префикса /auth
 const authRoutes = ["/login", "/register"];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Получение JWT токена из сессии
@@ -42,7 +42,7 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// Конфигурация middleware
+// Конфигурация proxy
 export const config = {
   matcher: [
     /*
