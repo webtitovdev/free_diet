@@ -44,7 +44,7 @@
 
 - [x] T011 Create Prisma schema in prisma/schema.prisma with all 6 entities (User, UserProfile, FoodPhoto, Meal, FoodItem, DailyLog). IMPORTANT: Meal-Photo relationship must be optional (photoId nullable) with no cascade delete to satisfy FR-005b (meal records persist after photo deletion)
 - [x] T012 Configure PostgreSQL datasource and Prisma client generator in prisma/schema.prisma
-- [ ] T013 Run initial Prisma migration: npx prisma migrate dev --name init (DEFERRED: требуется настройка PostgreSQL базы данных)
+- [x] T013 Run initial Prisma migration: npx prisma migrate dev --name init
 - [x] T014 Generate Prisma Client types: npx prisma generate
 
 ### Shared API Infrastructure
