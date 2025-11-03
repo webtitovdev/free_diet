@@ -97,7 +97,7 @@
 - [ ] T036 [US1] Setup Resend email service in src/shared/lib/email/resend-client.ts
 - [ ] T037 [P] [US1] Create React Email verification template in src/shared/lib/email/templates/verification-email.tsx
 - [ ] T038 [US1] Implement send verification email function in src/shared/lib/email/send-verification.ts with retry mechanism. Per edge case (spec.md:L116), implement exponential backoff retry queue: 3 attempts with delays 1 min, 5 min, 15 min. If all retries fail, log error and allow manual resend via user profile
-- [ ] T039 [US1] Create email verification API route in src/app/api/auth/verify-email/route.ts. IMPORTANT: Check token expiration (tokenExpiresAt) per FR-003a - tokens are valid for 24 hours. If expired, return user-friendly error with option to resend verification email
+- [ ] T039 [US1] Create email verification API route in src/app/api/auth/verify-email/route.ts. CRITICAL: Implement tokenExpiresAt validation per FR-003a (24h TTL): (1) Query user by verificationToken, (2) Check if tokenExpiresAt < new Date() - if expired, return 400 with message "Verification link expired. Please request a new one", (3) If valid, set emailVerified=true and clear verificationToken/tokenExpiresAt, (4) Return success redirect to login page
 - [ ] T040 [P] [US1] Implement password hashing with bcrypt in src/entities/user/lib/hash-password.ts (salt rounds: 10)
 - [ ] T041 [US1] Create login credentials verification in src/app/api/auth/[...nextauth]/route.ts authorize callback
 - [ ] T042 [P] [US1] Create session check API route in src/app/api/auth/session/route.ts
@@ -180,7 +180,7 @@
 
 - [ ] T082 [P] [US3] Create Meal entity model types in src/entities/meal/model/types.ts (MealCategory enum)
 - [ ] T083 [P] [US3] Implement calorie calculation utility in src/entities/food-item/lib/calculate-nutrition.ts (weight-based macro calculation)
-- [ ] T084 [P] [US3] Implement meal category suggestion logic in src/entities/meal/lib/suggest-category.ts (time-based: breakfast/lunch/dinner/snack). Per FR-012, use client-side timezone (new Date().getHours() on client) to determine category: 6-11h = breakfast, 11-16h = lunch, 16-21h = dinner, else = snack. Timezone is captured at meal creation and stored with meal record
+- [ ] T084 [P] [US3] Implement meal category suggestion logic in src/entities/meal/lib/suggest-category.ts (time-based: breakfast/lunch/dinner/snack). Per FR-012, use client-side timezone: (1) Client sends meal creation request with `clientTimezoneOffset` field (e.g., -180 for UTC+3), (2) Server calculates local hour: localHour = new Date().getUTCHours() + (clientTimezoneOffset / 60), (3) Suggest category: 6-11h = breakfast, 11-16h = lunch, 16-21h = dinner, else = snack, (4) Store timezoneOffset with meal record for historical accuracy
 - [ ] T085 [US3] Create meal creation API route in src/app/api/meals/route.ts POST (create meal with food items)
 - [ ] T086 [P] [US3] Create meal update API route in src/app/api/meals/[id]/route.ts PATCH (update food item weights)
 - [ ] T087 [US3] Create meal retrieval API route in src/app/api/meals/[id]/route.ts GET
@@ -278,6 +278,7 @@
 - [ ] T131 [P] Update README.md with project overview and setup instructions
 - [ ] T132 Run quickstart.md validation to ensure all setup steps work
 - [ ] T133 [P] [Post-MVP] Setup analytics integration for tracking SC-010 (user awareness surveys), SC-011 (30-day retention rate), SC-012 (time to first photo analysis). CRITICAL CONSTITUTION CHECK: Before implementation, verify that selected analytics library (Google Analytics 4 via @next/third-parties or Mixpanel SDK) has full TypeScript support without 'any' types (Принцип I). Recommended: @next/third-parties/google for GA4 (TypeScript-first) or mixpanel-browser@^2.48.0 with @types/mixpanel-browser
+- [ ] T134 [P] Test meal persistence after photo auto-deletion (FR-005b validation): Create test script in tests/manual/meal-photo-persistence.test.ts that (1) Creates meal with associated photo, (2) Simulates photo auto-deletion (update FoodPhoto.autoDeleteAt to past date and run cleanup job), (3) Verifies meal record still exists with all food items and nutrition data intact, (4) Confirms photoId is nullable and no cascade delete occurs
 
 **Checkpoint**: Application polished and ready for deployment
 
@@ -357,7 +358,7 @@ Each story adds value without breaking previous functionality.
 
 ## Task Summary
 
-**Total Tasks**: 134
+**Total Tasks**: 135
 
 **By Phase**:
 - Phase 1 (Setup): 10 tasks
@@ -367,7 +368,7 @@ Each story adds value without breaking previous functionality.
 - Phase 5 (US3 - Meal Editing): 15 tasks
 - Phase 6 (US4 - Profile): 14 tasks
 - Phase 7 (US5 - Calendar): 11 tasks
-- Phase 8 (Polish): 11 tasks
+- Phase 8 (Polish): 12 tasks
 
 **By User Story**:
 - US1 (Authentication): 24 tasks
@@ -376,7 +377,7 @@ Each story adds value without breaking previous functionality.
 - US4 (Profile Management): 14 tasks
 - US5 (Calendar Progress): 11 tasks
 
-**Parallel Opportunities**: 49 tasks marked [P] can run in parallel within their phase
+**Parallel Opportunities**: 50 tasks marked [P] can run in parallel within their phase
 
 **MVP Scope** (US1+US2+US3): 67 implementation tasks + 30 foundational = **97 tasks for MVP**
 

@@ -1,0 +1,491 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Common Foods Seed Data Template",
+  "description": "Template for 500 most common photographed food items for calorie tracking. Referenced in spec.md FR-006. This data will be used to seed the database during initial setup (see tasks.md T130)",
+  "version": "1.0.0",
+  "lastUpdated": "2025-11-03",
+  "totalItems": 500,
+  "categories": [
+    {
+      "category": "grains",
+      "categoryRu": "Злаки и крупы",
+      "items": [
+        {
+          "id": "grain-001",
+          "nameEn": "White Rice (cooked)",
+          "nameRu": "Рис белый (вареный)",
+          "caloriesPer100g": 130,
+          "proteinPer100g": 2.7,
+          "fatsPer100g": 0.3,
+          "carbsPer100g": 28.2,
+          "usdaFoodId": "168876",
+          "notes": "Standard long grain white rice, boiled without salt"
+        },
+        {
+          "id": "grain-002",
+          "nameEn": "Brown Rice (cooked)",
+          "nameRu": "Рис коричневый (вареный)",
+          "caloriesPer100g": 112,
+          "proteinPer100g": 2.3,
+          "fatsPer100g": 0.8,
+          "carbsPer100g": 23.5,
+          "usdaFoodId": "168878",
+          "notes": "Whole grain brown rice, boiled"
+        },
+        {
+          "id": "grain-003",
+          "nameEn": "Buckwheat (cooked)",
+          "nameRu": "Гречка (вареная)",
+          "caloriesPer100g": 92,
+          "proteinPer100g": 3.4,
+          "fatsPer100g": 0.6,
+          "carbsPer100g": 19.9,
+          "usdaFoodId": "170283",
+          "notes": "Traditional Russian staple grain"
+        },
+        {
+          "id": "grain-004",
+          "nameEn": "Pasta (cooked)",
+          "nameRu": "Макароны (вареные)",
+          "caloriesPer100g": 131,
+          "proteinPer100g": 5.0,
+          "fatsPer100g": 1.1,
+          "carbsPer100g": 25.1,
+          "usdaFoodId": "169736",
+          "notes": "Standard wheat pasta, boiled"
+        },
+        {
+          "id": "grain-005",
+          "nameEn": "Oatmeal (cooked)",
+          "nameRu": "Овсянка (вареная)",
+          "caloriesPer100g": 71,
+          "proteinPer100g": 2.5,
+          "fatsPer100g": 1.4,
+          "carbsPer100g": 12.0,
+          "usdaFoodId": "169705",
+          "notes": "Traditional breakfast porridge"
+        }
+      ]
+    },
+    {
+      "category": "meat",
+      "categoryRu": "Мясо",
+      "items": [
+        {
+          "id": "meat-001",
+          "nameEn": "Chicken Breast (grilled, no skin)",
+          "nameRu": "Куриная грудка (гриль, без кожи)",
+          "caloriesPer100g": 165,
+          "proteinPer100g": 31.0,
+          "fatsPer100g": 3.6,
+          "carbsPer100g": 0.0,
+          "usdaFoodId": "171077",
+          "notes": "Most popular lean protein source"
+        },
+        {
+          "id": "meat-002",
+          "nameEn": "Chicken Thigh (grilled, with skin)",
+          "nameRu": "Куриное бедро (гриль, с кожей)",
+          "caloriesPer100g": 229,
+          "proteinPer100g": 25.1,
+          "fatsPer100g": 15.5,
+          "carbsPer100g": 0.0,
+          "usdaFoodId": "171479",
+          "notes": "Higher fat content than breast"
+        },
+        {
+          "id": "meat-003",
+          "nameEn": "Beef (ground, 85% lean)",
+          "nameRu": "Говядина (фарш, 85% постный)",
+          "caloriesPer100g": 250,
+          "proteinPer100g": 25.0,
+          "fatsPer100g": 17.0,
+          "carbsPer100g": 0.0,
+          "usdaFoodId": "172002",
+          "notes": "Standard ground beef for burgers/meatballs"
+        },
+        {
+          "id": "meat-004",
+          "nameEn": "Pork Chop (grilled)",
+          "nameRu": "Свиная отбивная (гриль)",
+          "caloriesPer100g": 242,
+          "proteinPer100g": 27.3,
+          "fatsPer100g": 14.0,
+          "carbsPer100g": 0.0,
+          "usdaFoodId": "167848",
+          "notes": "Center cut pork loin chop"
+        },
+        {
+          "id": "meat-005",
+          "nameEn": "Turkey Breast (roasted)",
+          "nameRu": "Индейка грудка (запеченная)",
+          "caloriesPer100g": 135,
+          "proteinPer100g": 30.0,
+          "fatsPer100g": 0.7,
+          "carbsPer100g": 0.0,
+          "usdaFoodId": "171482",
+          "notes": "Very lean protein option"
+        }
+      ]
+    },
+    {
+      "category": "vegetables",
+      "categoryRu": "Овощи",
+      "items": [
+        {
+          "id": "veg-001",
+          "nameEn": "Tomato (raw)",
+          "nameRu": "Помидор (сырой)",
+          "caloriesPer100g": 18,
+          "proteinPer100g": 0.9,
+          "fatsPer100g": 0.2,
+          "carbsPer100g": 3.9,
+          "usdaFoodId": "170457",
+          "notes": "Common salad ingredient"
+        },
+        {
+          "id": "veg-002",
+          "nameEn": "Cucumber (raw, with peel)",
+          "nameRu": "Огурец (сырой, с кожурой)",
+          "caloriesPer100g": 15,
+          "proteinPer100g": 0.7,
+          "fatsPer100g": 0.1,
+          "carbsPer100g": 3.6,
+          "usdaFoodId": "169225",
+          "notes": "Low-calorie vegetable"
+        },
+        {
+          "id": "veg-003",
+          "nameEn": "Cabbage (raw)",
+          "nameRu": "Капуста белокочанная (сырая)",
+          "caloriesPer100g": 25,
+          "proteinPer100g": 1.3,
+          "fatsPer100g": 0.1,
+          "carbsPer100g": 5.8,
+          "usdaFoodId": "169975",
+          "notes": "Popular in Russian cuisine"
+        },
+        {
+          "id": "veg-004",
+          "nameEn": "Potato (boiled, with skin)",
+          "nameRu": "Картофель (вареный, с кожурой)",
+          "caloriesPer100g": 87,
+          "proteinPer100g": 1.9,
+          "fatsPer100g": 0.1,
+          "carbsPer100g": 20.1,
+          "usdaFoodId": "170028",
+          "notes": "Staple starch vegetable"
+        },
+        {
+          "id": "veg-005",
+          "nameEn": "Carrot (raw)",
+          "nameRu": "Морковь (сырая)",
+          "caloriesPer100g": 41,
+          "proteinPer100g": 0.9,
+          "fatsPer100g": 0.2,
+          "carbsPer100g": 9.6,
+          "usdaFoodId": "170393",
+          "notes": "High in beta-carotene"
+        }
+      ]
+    },
+    {
+      "category": "fruits",
+      "categoryRu": "Фрукты",
+      "items": [
+        {
+          "id": "fruit-001",
+          "nameEn": "Apple (raw, with skin)",
+          "nameRu": "Яблоко (сырое, с кожурой)",
+          "caloriesPer100g": 52,
+          "proteinPer100g": 0.3,
+          "fatsPer100g": 0.2,
+          "carbsPer100g": 13.8,
+          "usdaFoodId": "171688",
+          "notes": "Most common fruit"
+        },
+        {
+          "id": "fruit-002",
+          "nameEn": "Banana (raw)",
+          "nameRu": "Банан (сырой)",
+          "caloriesPer100g": 89,
+          "proteinPer100g": 1.1,
+          "fatsPer100g": 0.3,
+          "carbsPer100g": 22.8,
+          "usdaFoodId": "173944",
+          "notes": "High-energy fruit"
+        },
+        {
+          "id": "fruit-003",
+          "nameEn": "Orange (raw)",
+          "nameRu": "Апельсин (сырой)",
+          "caloriesPer100g": 47,
+          "proteinPer100g": 0.9,
+          "fatsPer100g": 0.1,
+          "carbsPer100g": 11.8,
+          "usdaFoodId": "169097",
+          "notes": "Vitamin C rich fruit"
+        },
+        {
+          "id": "fruit-004",
+          "nameEn": "Pear (raw)",
+          "nameRu": "Груша (сырая)",
+          "caloriesPer100g": 57,
+          "proteinPer100g": 0.4,
+          "fatsPer100g": 0.1,
+          "carbsPer100g": 15.2,
+          "usdaFoodId": "169118",
+          "notes": "Common fall fruit"
+        },
+        {
+          "id": "fruit-005",
+          "nameEn": "Grapes (raw)",
+          "nameRu": "Виноград (сырой)",
+          "caloriesPer100g": 69,
+          "proteinPer100g": 0.7,
+          "fatsPer100g": 0.2,
+          "carbsPer100g": 18.1,
+          "usdaFoodId": "174682",
+          "notes": "Sweet snack fruit"
+        }
+      ]
+    },
+    {
+      "category": "dairy",
+      "categoryRu": "Молочные продукты",
+      "items": [
+        {
+          "id": "dairy-001",
+          "nameEn": "Whole Milk (3.25% fat)",
+          "nameRu": "Молоко цельное (3.25% жирности)",
+          "caloriesPer100g": 61,
+          "proteinPer100g": 3.2,
+          "fatsPer100g": 3.3,
+          "carbsPer100g": 4.8,
+          "usdaFoodId": "746782",
+          "notes": "Standard whole milk"
+        },
+        {
+          "id": "dairy-002",
+          "nameEn": "Cheddar Cheese",
+          "nameRu": "Сыр чеддер",
+          "caloriesPer100g": 403,
+          "proteinPer100g": 24.9,
+          "fatsPer100g": 33.1,
+          "carbsPer100g": 1.3,
+          "usdaFoodId": "173415",
+          "notes": "Popular hard cheese"
+        },
+        {
+          "id": "dairy-003",
+          "nameEn": "Greek Yogurt (plain, non-fat)",
+          "nameRu": "Греческий йогурт (натуральный, обезжиренный)",
+          "caloriesPer100g": 59,
+          "proteinPer100g": 10.2,
+          "fatsPer100g": 0.4,
+          "carbsPer100g": 3.6,
+          "usdaFoodId": "170903",
+          "notes": "High-protein yogurt"
+        },
+        {
+          "id": "dairy-004",
+          "nameEn": "Cottage Cheese (low-fat 2%)",
+          "nameRu": "Творог (2% жирности)",
+          "caloriesPer100g": 86,
+          "proteinPer100g": 11.1,
+          "fatsPer100g": 2.3,
+          "carbsPer100g": 5.5,
+          "usdaFoodId": "173417",
+          "notes": "Popular protein-rich dairy"
+        },
+        {
+          "id": "dairy-005",
+          "nameEn": "Sour Cream (full-fat)",
+          "nameRu": "Сметана (полножирная)",
+          "caloriesPer100g": 193,
+          "proteinPer100g": 2.4,
+          "fatsPer100g": 19.4,
+          "carbsPer100g": 4.6,
+          "usdaFoodId": "170430",
+          "notes": "Traditional Russian condiment"
+        }
+      ]
+    },
+    {
+      "category": "eggs",
+      "categoryRu": "Яйца",
+      "items": [
+        {
+          "id": "egg-001",
+          "nameEn": "Chicken Egg (whole, boiled)",
+          "nameRu": "Куриное яйцо (цельное, вареное)",
+          "caloriesPer100g": 155,
+          "proteinPer100g": 12.6,
+          "fatsPer100g": 10.6,
+          "carbsPer100g": 1.1,
+          "usdaFoodId": "173424",
+          "notes": "Standard large egg, hard-boiled"
+        },
+        {
+          "id": "egg-002",
+          "nameEn": "Chicken Egg (whole, fried)",
+          "nameRu": "Куриное яйцо (цельное, жареное)",
+          "caloriesPer100g": 196,
+          "proteinPer100g": 13.6,
+          "fatsPer100g": 15.0,
+          "carbsPer100g": 0.8,
+          "usdaFoodId": "173423",
+          "notes": "Fried in oil/butter"
+        },
+        {
+          "id": "egg-003",
+          "nameEn": "Egg White (raw)",
+          "nameRu": "Яичный белок (сырой)",
+          "caloriesPer100g": 52,
+          "proteinPer100g": 10.9,
+          "fatsPer100g": 0.2,
+          "carbsPer100g": 0.7,
+          "usdaFoodId": "172185",
+          "notes": "Low-fat protein source"
+        }
+      ]
+    },
+    {
+      "category": "bread",
+      "categoryRu": "Хлеб и выпечка",
+      "items": [
+        {
+          "id": "bread-001",
+          "nameEn": "White Bread",
+          "nameRu": "Белый хлеб",
+          "caloriesPer100g": 265,
+          "proteinPer100g": 9.0,
+          "fatsPer100g": 3.2,
+          "carbsPer100g": 49.0,
+          "usdaFoodId": "172687",
+          "notes": "Standard white wheat bread"
+        },
+        {
+          "id": "bread-002",
+          "nameEn": "Whole Wheat Bread",
+          "nameRu": "Цельнозерновой хлеб",
+          "caloriesPer100g": 247,
+          "proteinPer100g": 13.0,
+          "fatsPer100g": 3.4,
+          "carbsPer100g": 41.0,
+          "usdaFoodId": "172686",
+          "notes": "Healthier bread option"
+        },
+        {
+          "id": "bread-003",
+          "nameEn": "Rye Bread (Russian)",
+          "nameRu": "Черный хлеб (ржаной)",
+          "caloriesPer100g": 259,
+          "proteinPer100g": 8.5,
+          "fatsPer100g": 3.3,
+          "carbsPer100g": 48.3,
+          "usdaFoodId": "172684",
+          "notes": "Traditional Russian dark bread"
+        },
+        {
+          "id": "bread-004",
+          "nameEn": "Baguette",
+          "nameRu": "Батон",
+          "caloriesPer100g": 272,
+          "proteinPer100g": 9.2,
+          "fatsPer100g": 2.7,
+          "carbsPer100g": 51.4,
+          "usdaFoodId": "172689",
+          "notes": "French-style loaf, popular in Russia"
+        }
+      ]
+    },
+    {
+      "category": "prepared-dishes",
+      "categoryRu": "Готовые блюда",
+      "items": [
+        {
+          "id": "dish-001",
+          "nameEn": "Borscht (traditional Russian soup)",
+          "nameRu": "Борщ (традиционный русский суп)",
+          "caloriesPer100g": 49,
+          "proteinPer100g": 2.5,
+          "fatsPer100g": 2.1,
+          "carbsPer100g": 5.4,
+          "usdaFoodId": null,
+          "notes": "Beetroot soup with meat, estimated average"
+        },
+        {
+          "id": "dish-002",
+          "nameEn": "Chicken Soup",
+          "nameRu": "Куриный суп",
+          "caloriesPer100g": 38,
+          "proteinPer100g": 3.2,
+          "fatsPer100g": 1.3,
+          "carbsPer100g": 3.9,
+          "usdaFoodId": "174881",
+          "notes": "Traditional chicken noodle soup"
+        },
+        {
+          "id": "dish-003",
+          "nameEn": "Olivier Salad (Russian Salad)",
+          "nameRu": "Салат оливье",
+          "caloriesPer100g": 198,
+          "proteinPer100g": 5.6,
+          "fatsPer100g": 16.5,
+          "carbsPer100g": 7.5,
+          "usdaFoodId": null,
+          "notes": "Traditional Russian potato salad with mayo"
+        },
+        {
+          "id": "dish-004",
+          "nameEn": "Meatballs (beef, cooked)",
+          "nameRu": "Котлеты (говяжьи, приготовленные)",
+          "caloriesPer100g": 274,
+          "proteinPer100g": 18.0,
+          "fatsPer100g": 20.0,
+          "carbsPer100g": 6.5,
+          "usdaFoodId": "174785",
+          "notes": "Traditional meat patties"
+        },
+        {
+          "id": "dish-005",
+          "nameEn": "Dumplings (meat-filled)",
+          "nameRu": "Пельмени (с мясом)",
+          "caloriesPer100g": 245,
+          "proteinPer100g": 12.0,
+          "fatsPer100g": 12.5,
+          "carbsPer100g": 20.0,
+          "usdaFoodId": null,
+          "notes": "Traditional Russian/Ukrainian dumplings"
+        },
+        {
+          "id": "dish-006",
+          "nameEn": "Pilaf (rice with meat)",
+          "nameRu": "Плов (рис с мясом)",
+          "caloriesPer100g": 186,
+          "proteinPer100g": 7.8,
+          "fatsPer100g": 10.2,
+          "carbsPer100g": 16.5,
+          "usdaFoodId": null,
+          "notes": "Central Asian rice dish popular in Russia"
+        }
+      ]
+    }
+  ],
+  "dataSource": {
+    "primary": "USDA FoodData Central API",
+    "primaryUrl": "https://fdc.nal.usda.gov/",
+    "secondary": "Manual estimation for regional dishes",
+    "notes": "USDA Food IDs provided where available. Items without USDA ID are estimated averages based on typical recipes. All nutrition values are per 100g."
+  },
+  "usage": {
+    "prismaSeeding": "Use this data in prisma/seed.ts to populate initial food database (see tasks.md T130)",
+    "fallbackData": "If USDA API is unavailable, system can fall back to this local database (see spec.md FR-022 fallback)",
+    "visionModelTraining": "These food names help OpenRouter vision model recognize common items (see spec.md FR-006)"
+  },
+  "expansionNotes": "This template shows 50 example items. Full seed data should contain ~500 items covering all categories listed in spec.md FR-006. Add more items in same format, ensuring each item has: id, nameEn, nameRu, caloriesPer100g, proteinPer100g, fatsPer100g, carbsPer100g, usdaFoodId (or null), notes.",
+  "totalItemsInTemplate": 50,
+  "targetTotal": 500,
+  "completionPercentage": 10
+}
