@@ -1,41 +1,99 @@
-// RegisterForm component с валидацией пароля (FR-002b)
-// T046: RegisterForm с client-side validation
+// RegisterForm component - shadcn/ui migration
+// T064: Migrated from Ant Design to shadcn/ui
+// Валидация пароля (FR-002b) preserved
 
 "use client";
 
-import { useState } from "react";
-import { Form, Input, Button, Alert } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
 import { register } from "../api/auth-api";
 import { useAuthStore } from "../model/auth-store";
+import { Button } from "@/shared/ui/shadcn/Button";
+import { Input } from "@/shared/ui/shadcn/Input";
+import { PasswordInput } from "@/shared/ui/shadcn/PasswordInput";
+import { Alert } from "@/shared/ui/shadcn/Alert";
+import { User } from "lucide-react";
 
 export function RegisterForm() {
-  const { setLoading, setError, error } = useAuthStore();
-  const [form] = Form.useForm();
+  const { loading, setLoading, setError, error } = useAuthStore();
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  // Валидация пароля (FR-002b)
-  const validatePassword = (_: unknown, value: string) => {
+  // Form state
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [emailError, setEmailError] = React.useState("");
+  const [passwordError, setPasswordError] = React.useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = React.useState("");
+
+  // Валидация email
+  const validateEmail = (value: string) => {
     if (!value) {
-      return Promise.reject("Введите пароль");
+      setEmailError("Введите email");
+      return false;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+      setEmailError("Неверный формат email");
+      return false;
+    }
+    setEmailError("");
+    return true;
+  };
+
+  // Валидация пароля (FR-002b)
+  const validatePassword = (value: string) => {
+    if (!value) {
+      setPasswordError("Введите пароль");
+      return false;
     }
 
     if (value.length < 8) {
-      return Promise.reject("Пароль должен содержать минимум 8 символов");
+      setPasswordError("Пароль должен содержать минимум 8 символов");
+      return false;
     }
 
     if (!/\d/.test(value)) {
-      return Promise.reject("Пароль должен содержать хотя бы одну цифру");
+      setPasswordError("Пароль должен содержать хотя бы одну цифру");
+      return false;
     }
 
     if (!/[a-zA-Z]/.test(value)) {
-      return Promise.reject("Пароль должен содержать хотя бы одну букву");
+      setPasswordError("Пароль должен содержать хотя бы одну букву");
+      return false;
     }
 
-    return Promise.resolve();
+    setPasswordError("");
+    return true;
   };
 
-  const onFinish = async (values: { email: string; password: string }) => {
+  // Валидация подтверждения пароля
+  const validateConfirmPassword = (value: string) => {
+    if (!value) {
+      setConfirmPasswordError("Подтвердите пароль");
+      return false;
+    }
+
+    if (value !== password) {
+      setConfirmPasswordError("Пароли не совпадают");
+      return false;
+    }
+
+    setConfirmPasswordError("");
+    return true;
+  };
+
+  // Обработчик submit
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Валидация перед отправкой
+    const isEmailValid = validateEmail(email);
+    const isPasswordValid = validatePassword(password);
+    const isConfirmPasswordValid = validateConfirmPassword(confirmPassword);
+
+    if (!isEmailValid || !isPasswordValid || !isConfirmPasswordValid) {
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
@@ -43,12 +101,16 @@ export function RegisterForm() {
 
       // Регистрация через API
       const result = await register({
-        email: values.email,
-        password: values.password,
+        email,
+        password,
       });
 
       setSuccessMessage(result.message);
-      form.resetFields();
+
+      // Reset form
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
     } catch (err: unknown) {
       const error = err as { response?: { data?: { error?: string } } };
       const errorMessage = error?.response?.data?.error || "Произошла ошибка при регистрации";
@@ -59,66 +121,88 @@ export function RegisterForm() {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: "0 auto" }}>
-      <h1 style={{ textAlign: "center", marginBottom: 24 }}>Регистрация</h1>
+    <div className="max-w-[400px] mx-auto">
+      <h1 className="text-center text-2xl font-semibold mb-6 text-text-primary dark:text-gray-100">
+        Регистрация
+      </h1>
 
-      {error && <Alert message={error} type="error" showIcon style={{ marginBottom: 16 }} />}
-
-      {successMessage && (
-        <Alert message={successMessage} type="success" showIcon style={{ marginBottom: 16 }} />
+      {error && (
+        <Alert
+          type="error"
+          message={error}
+          showIcon
+          closable
+          onClose={() => setError(null)}
+          className="mb-4"
+        />
       )}
 
-      <Form form={form} name="register" onFinish={onFinish} layout="vertical" size="large">
-        <Form.Item
-          name="email"
-          rules={[
-            { required: true, message: "Введите email" },
-            { type: "email", message: "Неверный формат email" },
-          ]}
-        >
-          <Input prefix={<UserOutlined />} placeholder="Email" type="email" autoComplete="email" />
-        </Form.Item>
+      {successMessage && (
+        <Alert
+          type="success"
+          message={successMessage}
+          showIcon
+          closable
+          onClose={() => setSuccessMessage(null)}
+          className="mb-4"
+        />
+      )}
 
-        <Form.Item
-          name="password"
-          rules={[{ validator: validatePassword }]}
-          help="Минимум 8 символов, хотя бы одна цифра и одна буква"
-        >
-          <Input.Password
-            prefix={<LockOutlined />}
-            placeholder="Пароль"
-            autoComplete="new-password"
-          />
-        </Form.Item>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <Input
+          label="Email"
+          placeholder="Email"
+          type="email"
+          value={email}
+          onChange={setEmail}
+          onBlur={() => validateEmail(email)}
+          error={emailError}
+          required
+          autoComplete="email"
+          icon={<User className="w-4 h-4" />}
+          iconPosition="left"
+        />
 
-        <Form.Item
-          name="confirmPassword"
-          dependencies={["password"]}
-          rules={[
-            { required: true, message: "Подтвердите пароль" },
-            ({ getFieldValue }) => ({
-              validator(_, value) {
-                if (!value || getFieldValue("password") === value) {
-                  return Promise.resolve();
-                }
-                return Promise.reject("Пароли не совпадают");
-              },
-            }),
-          ]}
-        >
-          <Input.Password
-            prefix={<LockOutlined />}
-            placeholder="Подтвердите пароль"
-            autoComplete="new-password"
-          />
-        </Form.Item>
+        <PasswordInput
+          label="Пароль"
+          placeholder="Пароль"
+          value={password}
+          onChange={(value) => {
+            setPassword(value);
+            // Перепроверить confirm password если он уже заполнен
+            if (confirmPassword) {
+              validateConfirmPassword(confirmPassword);
+            }
+          }}
+          onBlur={() => validatePassword(password)}
+          error={passwordError}
+          helperText="Минимум 8 символов, хотя бы одна цифра и одна буква"
+          required
+          autoComplete="new-password"
+        />
 
-        <Form.Item>
-          <Button type="primary" htmlType="submit" block>
-            Зарегистрироваться
-          </Button>
-        </Form.Item>
-      </Form>
+        <PasswordInput
+          label="Подтвердите пароль"
+          placeholder="Подтвердите пароль"
+          value={confirmPassword}
+          onChange={setConfirmPassword}
+          onBlur={() => validateConfirmPassword(confirmPassword)}
+          error={confirmPasswordError}
+          required
+          autoComplete="new-password"
+        />
+
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          fullWidth
+          loading={loading}
+          disabled={loading}
+        >
+          Зарегистрироваться
+        </Button>
+      </form>
     </div>
   );
 }

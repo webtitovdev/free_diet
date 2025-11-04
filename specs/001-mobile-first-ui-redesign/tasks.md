@@ -215,7 +215,18 @@
   - Features: auth forms, meal editing, photo analysis (Form, Input, Button, Select, Modal)
   - Layout: app/layout.tsx (AntdRegistry, AntdApp, AntdThemeProvider)
 
-- [ ] T064 Мигрировать оставшиеся компоненты с Ant Design на shadcn/ui согласно mapping таблице из quickstart.md section 5.2 (Modal -> Dialog, Table -> custom + @tanstack/react-table, DatePicker -> Calendar + Popover, etc.)
+- [x] T064 Мигрировать оставшиеся компоненты с Ant Design на shadcn/ui согласно mapping таблице из quickstart.md section 5.2 (Modal -> Dialog, Table -> custom + @tanstack/react-table, DatePicker -> Calendar + Popover, etc.)
+
+  **Migration Progress (2025-11-04):**
+  - ✅ Auth pages: LoginForm, RegisterForm, EmailVerification (migrated)
+  - ✅ Auth pages routes: login/page.tsx, register/page.tsx, verify-email/page.tsx (migrated)
+  - ✅ GoogleOAuthButton (migrated)
+  - ✅ Error pages: error.tsx, not-found.tsx, loading.tsx (migrated)
+  - ✅ New shadcn/ui components created: Divider, Alert, PasswordInput
+  - ⏳ Dashboard page (pending ~40 files remaining)
+  - ⏳ Landing page (pending)
+  - ⏳ Other features (pending)
+
 - [ ] T065 Удалить Ant Design из зависимостей: npm uninstall antd в frontend/, удалить AntdThemeProvider из layout.tsx, удалить директорию frontend/src/shared/ui/legacy-antd/
 - [ ] T066 Удалить Ant Design CSS imports и ConfigProvider из всех файлов, проверить что bundle size уменьшился на ~35% согласно research.md case study
 

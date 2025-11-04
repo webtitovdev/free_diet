@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
-import { Button, Result } from "antd";
+import { ErrorState } from "@/shared/ui/shadcn/ErrorState";
 
 /**
- * Error Boundary для глобальной обработки ошибок
+ * Error Boundary для глобальной обработки ошибок - shadcn/ui migration
+ * T064: Migrated from Ant Design to shadcn/ui
  *
  * Автоматически перехватывает ошибки на уровне приложения
  * и показывает пользователю понятное сообщение
@@ -22,27 +23,13 @@ export default function Error({
   }, [error]);
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "100vh",
-        padding: "24px",
-      }}
-    >
-      <Result
-        status="error"
+    <div className="flex items-center justify-center min-h-screen p-6">
+      <ErrorState
+        type="generic"
         title="Произошла ошибка"
-        subTitle="К сожалению, что-то пошло не так. Попробуйте перезагрузить страницу."
-        extra={[
-          <Button type="primary" key="retry" onClick={reset}>
-            Попробовать снова
-          </Button>,
-          <Button key="home" onClick={() => (window.location.href = "/")}>
-            На главную
-          </Button>,
-        ]}
+        description="К сожалению, что-то пошло не так. Попробуйте перезагрузить страницу."
+        onRetry={reset}
+        retryLabel="Попробовать снова"
       />
     </div>
   );
