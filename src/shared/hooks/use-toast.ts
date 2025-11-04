@@ -27,6 +27,7 @@ export interface ToastOptions {
 
 interface ToastItem extends ToastOptions {
   id: string;
+  duration: number; // Переопределяем как обязательное
 }
 
 let toastCounter = 0;

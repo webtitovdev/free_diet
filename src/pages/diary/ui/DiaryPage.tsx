@@ -195,7 +195,7 @@ export default function DiaryPage() {
           <EmptyState
             title="Нет приемов пищи"
             description="Добавьте первый прием пищи, чтобы начать отслеживание"
-            icon="🍽️"
+            illustration="🍽️"
             action={{
               label: "Добавить еду",
               onClick: () => console.log("Add meal clicked"),

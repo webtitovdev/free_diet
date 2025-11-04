@@ -99,12 +99,10 @@ export const FoodItemsList: React.FC<FoodItemsListProps> = ({
           <EmptyState
             title="Продукты не распознаны"
             description="Попробуйте добавить продукты вручную"
-            action={
-              <Button onClick={handleOpenModal} className="flex items-center gap-2">
-                <Plus className="w-4 h-4" />
-                Добавить вручную
-              </Button>
-            }
+            action={{
+              label: "Добавить вручную",
+              onClick: handleOpenModal,
+            }}
           />
         </Card>
         <FoodSearchModal
@@ -134,14 +132,14 @@ export const FoodItemsList: React.FC<FoodItemsListProps> = ({
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <StatsCard
-            label="Калории"
+            title="Калории"
             value={Math.round(totals.calories)}
             unit="ккал"
-            variant="primary"
+            color="brand"
           />
-          <StatsCard label="Белки" value={Math.round(totals.protein * 10) / 10} unit="г" />
-          <StatsCard label="Жиры" value={Math.round(totals.fats * 10) / 10} unit="г" />
-          <StatsCard label="Углеводы" value={Math.round(totals.carbs * 10) / 10} unit="г" />
+          <StatsCard title="Белки" value={Math.round(totals.protein * 10) / 10} unit="г" />
+          <StatsCard title="Жиры" value={Math.round(totals.fats * 10) / 10} unit="г" />
+          <StatsCard title="Углеводы" value={Math.round(totals.carbs * 10) / 10} unit="г" />
         </div>
       </Card>
 

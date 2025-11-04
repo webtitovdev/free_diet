@@ -15,7 +15,7 @@ import { User } from "lucide-react";
 
 export function LoginForm() {
   const router = useRouter();
-  const { loading, setLoading, setError, error } = useAuthStore();
+  const { isLoading, setLoading, setError, error } = useAuthStore();
 
   // Form state
   const [email, setEmail] = React.useState("");
@@ -132,8 +132,8 @@ export function LoginForm() {
           variant="primary"
           size="lg"
           fullWidth
-          loading={loading}
-          disabled={loading}
+          loading={isLoading}
+          disabled={isLoading}
         >
           Войти
         </Button>

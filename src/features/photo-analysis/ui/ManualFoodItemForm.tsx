@@ -105,128 +105,58 @@ export const ManualFoodItemForm: React.FC<ManualFoodItemFormProps> = ({ onSubmit
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {/* Название продукта */}
-      <div>
-        <label
-          htmlFor="name"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-        >
-          Название продукта
-        </label>
-        <Input
-          id="name"
-          placeholder="Например: Куриная грудка"
-          value={formValues.name}
-          onChange={(e) => handleChange("name", e.target.value)}
-          error={errors.name}
-        />
-        {errors.name && <p className="mt-1 text-xs text-error-DEFAULT">{errors.name}</p>}
-      </div>
+      <Input
+        label="Название продукта"
+        id="name"
+        placeholder="Например: Куриная грудка"
+        value={formValues.name}
+        onChange={(value) => handleChange("name", value)}
+        error={errors.name}
+      />
 
       {/* Калории */}
-      <div>
-        <label
-          htmlFor="calories"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-        >
-          Калории (на 100г)
-        </label>
-        <div className="relative">
-          <Input
-            id="calories"
-            type="number"
-            placeholder="165"
-            min="0"
-            step="0.1"
-            value={formValues.caloriesPer100g}
-            onChange={(e) => handleChange("caloriesPer100g", e.target.value)}
-            error={errors.caloriesPer100g}
-          />
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">
-            ккал
-          </span>
-        </div>
-        {errors.caloriesPer100g && (
-          <p className="mt-1 text-xs text-error-DEFAULT">{errors.caloriesPer100g}</p>
-        )}
-      </div>
+      <Input
+        label="Калории (на 100г)"
+        id="calories"
+        type="number"
+        placeholder="165"
+        value={formValues.caloriesPer100g}
+        onChange={(value) => handleChange("caloriesPer100g", value)}
+        error={errors.caloriesPer100g}
+      />
 
       {/* Белки */}
-      <div>
-        <label
-          htmlFor="protein"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-        >
-          Белки (на 100г)
-        </label>
-        <div className="relative">
-          <Input
-            id="protein"
-            type="number"
-            placeholder="31"
-            min="0"
-            step="0.1"
-            value={formValues.proteinPer100g}
-            onChange={(e) => handleChange("proteinPer100g", e.target.value)}
-            error={errors.proteinPer100g}
-          />
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">г</span>
-        </div>
-        {errors.proteinPer100g && (
-          <p className="mt-1 text-xs text-error-DEFAULT">{errors.proteinPer100g}</p>
-        )}
-      </div>
+      <Input
+        label="Белки (на 100г)"
+        id="protein"
+        type="number"
+        placeholder="31"
+        value={formValues.proteinPer100g}
+        onChange={(value) => handleChange("proteinPer100g", value)}
+        error={errors.proteinPer100g}
+      />
 
       {/* Жиры */}
-      <div>
-        <label
-          htmlFor="fats"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-        >
-          Жиры (на 100г)
-        </label>
-        <div className="relative">
-          <Input
-            id="fats"
-            type="number"
-            placeholder="3.6"
-            min="0"
-            step="0.1"
-            value={formValues.fatsPer100g}
-            onChange={(e) => handleChange("fatsPer100g", e.target.value)}
-            error={errors.fatsPer100g}
-          />
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">г</span>
-        </div>
-        {errors.fatsPer100g && (
-          <p className="mt-1 text-xs text-error-DEFAULT">{errors.fatsPer100g}</p>
-        )}
-      </div>
+      <Input
+        label="Жиры (на 100г)"
+        id="fats"
+        type="number"
+        placeholder="3.6"
+        value={formValues.fatsPer100g}
+        onChange={(value) => handleChange("fatsPer100g", value)}
+        error={errors.fatsPer100g}
+      />
 
       {/* Углеводы */}
-      <div>
-        <label
-          htmlFor="carbs"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-        >
-          Углеводы (на 100г)
-        </label>
-        <div className="relative">
-          <Input
-            id="carbs"
-            type="number"
-            placeholder="0"
-            min="0"
-            step="0.1"
-            value={formValues.carbsPer100g}
-            onChange={(e) => handleChange("carbsPer100g", e.target.value)}
-            error={errors.carbsPer100g}
-          />
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">г</span>
-        </div>
-        {errors.carbsPer100g && (
-          <p className="mt-1 text-xs text-error-DEFAULT">{errors.carbsPer100g}</p>
-        )}
-      </div>
+      <Input
+        label="Углеводы (на 100г)"
+        id="carbs"
+        type="number"
+        placeholder="0"
+        value={formValues.carbsPer100g}
+        onChange={(value) => handleChange("carbsPer100g", value)}
+        error={errors.carbsPer100g}
+      />
 
       {/* Кнопка отправки */}
       <div className="flex justify-end">

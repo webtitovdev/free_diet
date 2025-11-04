@@ -14,7 +14,7 @@ import { Alert } from "@/shared/ui/shadcn/Alert";
 import { User } from "lucide-react";
 
 export function RegisterForm() {
-  const { loading, setLoading, setError, error } = useAuthStore();
+  const { isLoading, setLoading, setError, error } = useAuthStore();
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   // Form state
@@ -197,8 +197,8 @@ export function RegisterForm() {
           variant="primary"
           size="lg"
           fullWidth
-          loading={loading}
-          disabled={loading}
+          loading={isLoading}
+          disabled={isLoading}
         >
           Зарегистрироваться
         </Button>

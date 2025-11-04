@@ -4,6 +4,26 @@ import { designTokens } from "./src/shared/config/tokens";
 // Утилита для преобразования readonly типов в изменяемые для Tailwind
 type Mutable<T> = { -readonly [K in keyof T]: T[K] extends object ? Mutable<T[K]> : T[K] };
 
+// Преобразуем числовые значения в строки для Tailwind
+const fontWeights = {
+  normal: String(designTokens.typography.fontWeight.normal),
+  medium: String(designTokens.typography.fontWeight.medium),
+  semibold: String(designTokens.typography.fontWeight.semibold),
+  bold: String(designTokens.typography.fontWeight.bold),
+};
+
+const lineHeights = {
+  tight: String(designTokens.typography.lineHeight.tight),
+  normal: String(designTokens.typography.lineHeight.normal),
+  relaxed: String(designTokens.typography.lineHeight.relaxed),
+};
+
+const letterSpacings = {
+  tight: `${designTokens.typography.letterSpacing.tight}em`,
+  normal: `${designTokens.typography.letterSpacing.normal}em`,
+  wide: `${designTokens.typography.letterSpacing.wide}em`,
+};
+
 export default {
   darkMode: "class",
   content: ["./src/**/*.{ts,tsx}"],
@@ -26,15 +46,9 @@ export default {
       fontSize: designTokens.typography.fontSize as unknown as Mutable<
         typeof designTokens.typography.fontSize
       >,
-      fontWeight: designTokens.typography.fontWeight as unknown as Mutable<
-        typeof designTokens.typography.fontWeight
-      >,
-      lineHeight: designTokens.typography.lineHeight as unknown as Mutable<
-        typeof designTokens.typography.lineHeight
-      >,
-      letterSpacing: designTokens.typography.letterSpacing as unknown as Mutable<
-        typeof designTokens.typography.letterSpacing
-      >,
+      fontWeight: fontWeights,
+      lineHeight: lineHeights,
+      letterSpacing: letterSpacings,
       // Border Radius
       borderRadius: designTokens.borderRadius as unknown as Mutable<
         typeof designTokens.borderRadius

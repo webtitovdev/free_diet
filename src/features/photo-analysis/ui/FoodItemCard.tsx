@@ -110,16 +110,14 @@ export const FoodItemCard: React.FC<FoodItemCardProps> = ({ item, onWeightChange
         {isEditing ? (
           <div className="relative">
             <Input
+              label="Вес (г)"
               type="number"
               min={1}
               max={10000}
-              value={editedWeight}
-              onChange={(e) => setEditedWeight(Number(e.target.value) || 0)}
+              value={String(editedWeight)}
+              onChange={(value) => setEditedWeight(Number(value) || 0)}
               className="w-32"
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">
-              г
-            </span>
           </div>
         ) : (
           <span className="text-gray-900 dark:text-gray-100">{editedWeight} г</span>

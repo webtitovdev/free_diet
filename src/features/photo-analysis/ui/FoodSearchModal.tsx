@@ -88,10 +88,11 @@ export const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
             {/* Поисковая строка */}
             <div className="flex gap-2">
               <Input
+                label="Поиск продукта"
                 placeholder="Например: chicken breast, apple, rice"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                onChange={(value) => setSearchQuery(value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
                 className="flex-1"
               />
               <Button
