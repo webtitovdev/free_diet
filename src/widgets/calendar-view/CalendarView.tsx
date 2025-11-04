@@ -6,7 +6,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Calendar, Spin, Alert, Card } from "antd";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import { useCalendarStore } from "@/features/progress-tracking/model/calendar-store";
@@ -16,6 +15,10 @@ import {
 } from "@/features/progress-tracking/api/calendar-api";
 import { CalendarDayCell } from "@/features/progress-tracking/ui/CalendarDayCell";
 import { DayDetailModal } from "@/features/progress-tracking/ui/DayDetailModal";
+import { Calendar } from "@/shared/ui/shadcn/Calendar";
+import { Card } from "@/shared/ui/shadcn/Card";
+import { Alert } from "@/shared/ui/shadcn/Alert";
+import { LoadingSpinner } from "@/shared/ui/shadcn/LoadingSpinner";
 
 export function CalendarView() {
   const { monthData, selectedDayDetails, isLoadingMonth, isLoadingDay, monthError, dayError } =
@@ -42,15 +45,16 @@ export function CalendarView() {
   };
 
   return (
-    <div>
+    <div className="space-y-4">
       <Card>
-        {monthError && (
-          <Alert message={monthError} type="error" showIcon style={{ marginBottom: 16 }} />
-        )}
+        {monthError && <Alert type="error" message={monthError} showIcon className="mb-4" />}
         {isLoadingMonth ? (
-          <Spin tip="Загрузка календаря..." />
+          <div className="flex justify-center py-12">
+            <LoadingSpinner label="Загрузка календаря..." size="lg" />
+          </div>
         ) : (
           <Calendar
+            value={currentDate}
             cellRender={dateCellRender}
             onSelect={handleDateClick}
             onPanelChange={handlePanelChange}

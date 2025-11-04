@@ -7,7 +7,7 @@
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
-import { Spin } from "antd";
+import { LoadingSpinner } from "@/shared/ui/shadcn/LoadingSpinner";
 import { useAuthStore } from "@/features/auth/model/auth-store";
 import { AuthMethod } from "@/entities/user/model/types";
 import { BottomNavigation } from "@/widgets/navigation/ui/BottomNavigation";
@@ -52,15 +52,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (status === "loading") {
     return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Spin size="large" />
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinner size="lg" />
       </div>
     );
   }

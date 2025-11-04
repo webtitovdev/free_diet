@@ -8,16 +8,15 @@
 "use client";
 
 import React from "react";
-import { Typography } from "antd";
 import { CalendarView } from "@/widgets/calendar-view/CalendarView";
 import { Container } from "@/shared/ui/shadcn/Container";
-
-const { Title } = Typography;
 
 export default function CalendarPage() {
   return (
     <Container maxWidth="desktop" padding={6} centered>
-      <Title level={2}>Календарь Прогресса</Title>
+      <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
+        Календарь Прогресса
+      </h2>
       <CalendarView />
     </Container>
   );

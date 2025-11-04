@@ -4,8 +4,8 @@
 
 "use client";
 
-import { Card, Statistic } from "antd";
-import { FireOutlined } from "@ant-design/icons";
+import { Card, CardContent } from "@/shared/ui/card/Card";
+import { Flame } from "lucide-react";
 
 interface CalorieDisplayProps {
   targetCalories: number | null;
@@ -18,24 +18,26 @@ export function CalorieDisplay({ targetCalories, loading = false }: CalorieDispl
   }
 
   return (
-    <Card
-      style={{
-        backgroundColor: "#f0f5ff",
-        borderColor: "#1890ff",
-        marginBottom: 24,
-      }}
-      loading={loading}
-    >
-      <Statistic
-        title="Рекомендуемая дневная калорийность"
-        value={targetCalories || 0}
-        suffix="ккал"
-        prefix={<FireOutlined />}
-        valueStyle={{ color: "#1890ff", fontSize: "32px", fontWeight: "bold" }}
-      />
-      <div style={{ marginTop: 8, fontSize: "14px", color: "#666" }}>
-        Рассчитано по формуле Mifflin-St Jeor с учетом вашей цели
-      </div>
+    <Card className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-900 mb-6">
+      <CardContent className="pt-6">
+        <div className="flex items-start gap-4">
+          <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+            <Flame className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm text-muted-foreground mb-1">Рекомендуемая дневная калорийность</p>
+            <div className="flex items-baseline gap-2">
+              <span className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                {targetCalories || 0}
+              </span>
+              <span className="text-lg text-muted-foreground">ккал</span>
+            </div>
+            <p className="text-sm text-muted-foreground mt-2">
+              Рассчитано по формуле Mifflin-St Jeor с учетом вашей цели
+            </p>
+          </div>
+        </div>
+      </CardContent>
     </Card>
   );
 }

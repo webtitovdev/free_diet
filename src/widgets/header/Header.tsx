@@ -1,18 +1,17 @@
 "use client";
 
-import { Layout, Menu, Dropdown, Avatar, Space } from "antd";
-import {
-  UserOutlined,
-  LogoutOutlined,
-  CalendarOutlined,
-  CameraOutlined,
-  UserAddOutlined,
-} from "@ant-design/icons";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import type { MenuProps } from "antd";
-
-const { Header: AntHeader } = Layout;
+import { Camera, User, LogOut, Calendar, UserPlus } from "lucide-react";
+import { Button } from "@/shared/ui/button/Button";
+import { Avatar, AvatarFallback } from "@/shared/ui/shadcn/Avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/shared/ui/shadcn/DropdownMenu";
 
 /**
  * Виджет Header с навигацией и меню пользователя
@@ -26,97 +25,94 @@ export function Header() {
   const { data: session } = useSession();
   const router = useRouter();
 
-  // Элементы меню пользователя
-  const userMenuItems: MenuProps["items"] = [
-    {
-      key: "profile",
-      icon: <UserOutlined />,
-      label: "Профиль",
-      onClick: () => router.push("/profile"),
-    },
-    {
-      type: "divider",
-    },
-    {
-      key: "logout",
-      icon: <LogoutOutlined />,
-      label: "Выйти",
-      onClick: () => signOut({ callbackUrl: "/login" }),
-    },
-  ];
-
-  // Основные пункты навигации
-  const navigationItems: MenuProps["items"] = [
-    {
-      key: "photo",
-      icon: <CameraOutlined />,
-      label: "Загрузить фото",
-      onClick: () => router.push("/photos/upload"),
-    },
-    {
-      key: "calendar",
-      icon: <CalendarOutlined />,
-      label: "Календарь",
-      onClick: () => router.push("/calendar"),
-    },
-  ];
+  // Получаем инициалы пользователя
+  const getUserInitials = () => {
+    const email = session?.user?.email || "";
+    return email.charAt(0).toUpperCase();
+  };
 
   return (
-    <AntHeader
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        background: "#fff",
-        padding: "0 24px",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
-      }}
-    >
+    <header className="flex items-center justify-between bg-white dark:bg-gray-900 px-6 py-3 shadow-sm border-b border-gray-200 dark:border-gray-800">
       {/* Лого и название */}
       <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "12px",
-          cursor: "pointer",
-        }}
+        className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
         onClick={() => router.push("/")}
       >
-        <CameraOutlined style={{ fontSize: "24px", color: "#1890ff" }} />
-        <h1 style={{ margin: 0, fontSize: "18px", fontWeight: 600 }}>Трекер Калорий</h1>
+        <Camera className="h-6 w-6 text-primary" />
+        <h1 className="text-lg font-semibold text-gray-900 dark:text-white">Трекер Калорий</h1>
       </div>
 
       {/* Навигация и меню пользователя */}
-      <Space size="large">
+      <div className="flex items-center gap-6">
         {session && (
           <>
-            <Menu
-              mode="horizontal"
-              items={navigationItems}
-              style={{ border: "none", background: "transparent" }}
-            />
-            <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
-              <Space style={{ cursor: "pointer" }}>
-                <Avatar icon={<UserOutlined />} />
-                <span>{session.user?.name || session.user?.email}</span>
-              </Space>
-            </Dropdown>
+            {/* Основные пункты навигации */}
+            <nav className="hidden md:flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.push("/photos/upload")}
+                className="gap-2"
+              >
+                <Camera className="h-4 w-4" />
+                Загрузить фото
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.push("/calendar")}
+                className="gap-2"
+              >
+                <Calendar className="h-4 w-4" />
+                Календарь
+              </Button>
+            </nav>
+
+            {/* Меню пользователя */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity">
+                  <Avatar>
+                    <AvatarFallback className="bg-primary text-primary-foreground">
+                      {getUserInitials()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="hidden sm:inline text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {session.user?.name || session.user?.email}
+                  </span>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onClick={() => router.push("/profile")}>
+                  <User className="mr-2 h-4 w-4" />
+                  Профиль
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/login" })}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Выйти
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </>
         )}
         {!session && (
-          <Space>
-            <a onClick={() => router.push("/login")} style={{ cursor: "pointer" }}>
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" size="sm" onClick={() => router.push("/login")}>
               Войти
-            </a>
-            <a
+            </Button>
+            <Button
+              variant="default"
+              size="sm"
               onClick={() => router.push("/register")}
-              style={{ cursor: "pointer", fontWeight: 600 }}
+              className="gap-2"
             >
-              <UserAddOutlined /> Регистрация
-            </a>
-          </Space>
+              <UserPlus className="h-4 w-4" />
+              Регистрация
+            </Button>
+          </div>
         )}
-      </Space>
-    </AntHeader>
+      </div>
+    </header>
   );
 }

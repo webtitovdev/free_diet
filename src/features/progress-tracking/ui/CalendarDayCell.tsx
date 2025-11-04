@@ -8,7 +8,7 @@
 "use client";
 
 import React from "react";
-import { Badge } from "antd";
+import { Badge } from "@/shared/ui/shadcn/Badge";
 import type { DailyLog } from "@/entities/daily-log/model/types";
 
 interface CalendarDayCellProps {
@@ -18,23 +18,17 @@ interface CalendarDayCellProps {
 }
 
 export function CalendarDayCell({ dailyLog, onClick }: CalendarDayCellProps) {
-  // Определение цвета бейджа на основе goalAchieved
+  // Определение статуса бейджа на основе goalAchieved
   const badgeStatus = dailyLog?.goalAchieved ? "success" : dailyLog ? "default" : undefined;
 
+  if (!dailyLog) return null;
+
   return (
-    <div
-      onClick={onClick}
-      style={{
-        cursor: dailyLog ? "pointer" : "default",
-        padding: "4px",
-      }}
-    >
-      <Badge status={badgeStatus} />
-      {dailyLog && (
-        <div style={{ fontSize: "12px", color: "#666" }}>
-          {Math.round(dailyLog.totalCalories)} ккал
-        </div>
-      )}
+    <div onClick={onClick} className="cursor-pointer p-1">
+      <Badge status={badgeStatus} dot />
+      <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+        {Math.round(dailyLog.totalCalories)} ккал
+      </div>
     </div>
   );
 }

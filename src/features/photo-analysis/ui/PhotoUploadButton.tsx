@@ -4,8 +4,9 @@
 "use client";
 
 import React from "react";
-import { Button, message } from "antd";
-import { CameraOutlined } from "@ant-design/icons";
+import { Camera } from "lucide-react";
+import { useToast } from "@/shared/hooks/use-toast";
+import { Button } from "@/shared/ui/button/Button";
 import { compressPhotoBeforeUpload } from "../lib/compress-image";
 import { uploadPhoto, analyzePhoto } from "../api/photo-api";
 import { usePhotoAnalysisStore } from "../model/photo-store";
@@ -21,6 +22,7 @@ export const PhotoUploadButton: React.FC<PhotoUploadButtonProps> = ({
   onUploadComplete,
   onError,
 }) => {
+  const { toast } = useToast();
   const { setUploading, setPhoto, setError, setRecognizedItems, setProcessingStatus } =
     usePhotoAnalysisStore();
   const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -34,13 +36,12 @@ export const PhotoUploadButton: React.FC<PhotoUploadButtonProps> = ({
       onUploadStart?.();
 
       // Сжатие изображения
-      message.loading("Подготовка фото...", 0);
+      toast({ description: "Подготовка фото..." });
       const compressedFile = await compressPhotoBeforeUpload(file);
       setUploading(true, 30);
 
       // Загрузка на сервер
-      message.destroy();
-      message.loading("Загрузка фото...", 0);
+      toast({ description: "Загрузка фото..." });
       const uploadResult = await uploadPhoto(compressedFile);
       setUploading(true, 60);
 
@@ -48,8 +49,7 @@ export const PhotoUploadButton: React.FC<PhotoUploadButtonProps> = ({
       setPhoto(uploadResult.photoId, uploadResult.storageUrl, uploadResult.processingStatus);
 
       // Запуск анализа
-      message.destroy();
-      message.loading("Анализ фото...", 0);
+      toast({ description: "Анализ фото..." });
       const analyzeResult = await analyzePhoto(uploadResult.photoId);
 
       // Сохраняем результаты анализа
@@ -59,13 +59,14 @@ export const PhotoUploadButton: React.FC<PhotoUploadButtonProps> = ({
       setProcessingStatus(analyzeResult.processingStatus);
       setUploading(true, 100);
 
-      message.destroy();
-      message.success("Фото успешно загружено!");
+      toast({ description: "Фото успешно загружено!" });
       onUploadComplete?.(uploadResult.photoId);
     } catch (error) {
-      message.destroy();
       const errorMessage = error instanceof Error ? error.message : "Ошибка при загрузке фото";
-      message.error(errorMessage);
+      toast({
+        variant: "destructive",
+        description: errorMessage,
+      });
       setError(errorMessage);
       onError?.(errorMessage);
     } finally {
@@ -89,7 +90,8 @@ export const PhotoUploadButton: React.FC<PhotoUploadButtonProps> = ({
         style={{ display: "none" }}
         onChange={handleFileSelect}
       />
-      <Button type="primary" size="large" icon={<CameraOutlined />} onClick={handleButtonClick}>
+      <Button size="lg" onClick={handleButtonClick} className="w-full">
+        <Camera className="h-5 w-5" />
         Загрузить фото еды
       </Button>
     </>

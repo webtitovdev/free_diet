@@ -5,17 +5,9 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { Typography, Row, Col, Card, Statistic, Space } from "antd";
-import {
-  CameraOutlined,
-  CalendarOutlined,
-  UserOutlined,
-  PictureOutlined,
-  FireOutlined,
-  ClockCircleOutlined,
-} from "@ant-design/icons";
-
-const { Title, Paragraph } = Typography;
+import { Camera, Calendar, User, Image as ImageIcon, Flame, Clock } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card/Card";
+import { StatsCard } from "@/shared/ui/shadcn/StatsCard";
 
 // Отключаем статическую генерацию для страницы с аутентификацией
 export const dynamic = "force-dynamic";
@@ -31,146 +23,109 @@ export default async function DashboardPage() {
   const userEmail = session.user?.email || "пользователь";
 
   return (
-    <div style={{ maxWidth: 1200, margin: "0 auto", padding: "24px" }}>
-      <Space direction="vertical" size="large" style={{ width: "100%" }}>
-        {/* Приветствие */}
-        <div>
-          <Title level={2}>Добро пожаловать, {userEmail}!</Title>
-          <Paragraph type="secondary">Выберите действие для работы с приложением</Paragraph>
-        </div>
+    <div className="max-w-7xl mx-auto p-6 space-y-8">
+      {/* Приветствие */}
+      <div>
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+          Добро пожаловать, {userEmail}!
+        </h2>
+        <p className="mt-2 text-gray-600 dark:text-gray-400">
+          Выберите действие для работы с приложением
+        </p>
+      </div>
 
-        {/* Карточки действий */}
-        <Row gutter={[16, 16]}>
-          {/* Карточка: Загрузить фото еды */}
-          <Col xs={24} md={12} lg={8}>
-            <Link href="/photos/upload" style={{ textDecoration: "none" }}>
-              <Card hoverable style={{ height: "100%" }}>
-                <Space direction="vertical" size="middle">
-                  <div
-                    style={{
-                      width: 48,
-                      height: 48,
-                      backgroundColor: "#f0f5ff",
-                      borderRadius: 8,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <CameraOutlined style={{ fontSize: 24, color: "#1890ff" }} />
-                  </div>
-                  <div>
-                    <Title level={4} style={{ margin: 0 }}>
-                      Загрузить фото еды
-                    </Title>
-                    <Paragraph type="secondary" style={{ margin: "8px 0 0 0" }}>
-                      Сфотографируйте вашу еду для анализа калорий
-                    </Paragraph>
-                  </div>
-                </Space>
-              </Card>
-            </Link>
-          </Col>
+      {/* Карточки действий */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Карточка: Загрузить фото еды */}
+        <Link href="/photos/upload" className="block">
+          <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
+            <CardContent className="pt-6">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-lg bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
+                  <Camera className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                </div>
+                <div>
+                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Загрузить фото еды
+                  </h4>
+                  <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    Сфотографируйте вашу еду для анализа калорий
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
 
-          {/* Карточка: Календарь прогресса */}
-          <Col xs={24} md={12} lg={8}>
-            <Link href="/calendar" style={{ textDecoration: "none" }}>
-              <Card hoverable style={{ height: "100%" }}>
-                <Space direction="vertical" size="middle">
-                  <div
-                    style={{
-                      width: 48,
-                      height: 48,
-                      backgroundColor: "#f6ffed",
-                      borderRadius: 8,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <CalendarOutlined style={{ fontSize: 24, color: "#52c41a" }} />
-                  </div>
-                  <div>
-                    <Title level={4} style={{ margin: 0 }}>
-                      Календарь прогресса
-                    </Title>
-                    <Paragraph type="secondary" style={{ margin: "8px 0 0 0" }}>
-                      Просматривайте историю питания и отслеживайте прогресс
-                    </Paragraph>
-                  </div>
-                </Space>
-              </Card>
-            </Link>
-          </Col>
+        {/* Карточка: Календарь прогресса */}
+        <Link href="/calendar" className="block">
+          <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
+            <CardContent className="pt-6">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-lg bg-green-50 dark:bg-green-900/20 flex items-center justify-center">
+                  <Calendar className="h-6 w-6 text-green-600 dark:text-green-400" />
+                </div>
+                <div>
+                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Календарь прогресса
+                  </h4>
+                  <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    Просматривайте историю питания и отслеживайте прогресс
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
 
-          {/* Карточка: Профиль */}
-          <Col xs={24} md={12} lg={8}>
-            <Link href="/profile" style={{ textDecoration: "none" }}>
-              <Card hoverable style={{ height: "100%" }}>
-                <Space direction="vertical" size="middle">
-                  <div
-                    style={{
-                      width: 48,
-                      height: 48,
-                      backgroundColor: "#f9f0ff",
-                      borderRadius: 8,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <UserOutlined style={{ fontSize: 24, color: "#722ed1" }} />
-                  </div>
-                  <div>
-                    <Title level={4} style={{ margin: 0 }}>
-                      Профиль
-                    </Title>
-                    <Paragraph type="secondary" style={{ margin: "8px 0 0 0" }}>
-                      Настройте свои цели и параметры
-                    </Paragraph>
-                  </div>
-                </Space>
-              </Card>
-            </Link>
-          </Col>
-        </Row>
+        {/* Карточка: Профиль */}
+        <Link href="/profile" className="block">
+          <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer">
+            <CardContent className="pt-6">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-lg bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center">
+                  <User className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                </div>
+                <div>
+                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Профиль</h4>
+                  <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                    Настройте свои цели и параметры
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+      </div>
 
-        {/* Быстрая статистика */}
-        <Card title="Быстрая статистика">
-          <Row gutter={[16, 16]}>
-            <Col xs={24} md={8}>
-              <Card>
-                <Statistic
-                  title="Загруженных фото"
-                  value={0}
-                  prefix={<PictureOutlined />}
-                  valueStyle={{ color: "#1890ff" }}
-                />
-              </Card>
-            </Col>
-            <Col xs={24} md={8}>
-              <Card>
-                <Statistic
-                  title="Дней отслеживания"
-                  value={0}
-                  prefix={<ClockCircleOutlined />}
-                  valueStyle={{ color: "#52c41a" }}
-                />
-              </Card>
-            </Col>
-            <Col xs={24} md={8}>
-              <Card>
-                <Statistic
-                  title="Ккал сегодня"
-                  value={0}
-                  prefix={<FireOutlined />}
-                  valueStyle={{ color: "#722ed1" }}
-                />
-              </Card>
-            </Col>
-          </Row>
-        </Card>
-      </Space>
+      {/* Быстрая статистика */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Быстрая статистика</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <StatsCard
+              title="Загруженных фото"
+              value={0}
+              icon={<ImageIcon className="h-5 w-5" />}
+              color="brand"
+            />
+            <StatsCard
+              title="Дней отслеживания"
+              value={0}
+              icon={<Clock className="h-5 w-5" />}
+              color="success"
+            />
+            <StatsCard
+              title="Ккал сегодня"
+              value={0}
+              icon={<Flame className="h-5 w-5" />}
+              color="info"
+            />
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

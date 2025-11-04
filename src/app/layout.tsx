@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { App as AntdApp } from "antd";
 import { SessionProvider } from "@/shared/providers/SessionProvider";
 import { ToastProvider } from "@/shared/providers";
 import { ThemeProvider } from "@/app/providers/ThemeProvider";
-import { AntdThemeProvider } from "@/shared/ui/legacy-antd/AntdThemeProvider";
 import { Header } from "@/widgets/header/Header";
 import { inter } from "./styles/fonts";
 import "./globals.css";
@@ -20,18 +17,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         <ThemeProvider defaultTheme="system">
           <SessionProvider>
-            <AntdRegistry>
-              <AntdThemeProvider>
-                <AntdApp>
-                  <ToastProvider>
-                    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-                      <Header />
-                      <main style={{ flex: 1 }}>{children}</main>
-                    </div>
-                  </ToastProvider>
-                </AntdApp>
-              </AntdThemeProvider>
-            </AntdRegistry>
+            <ToastProvider>
+              <div className="min-h-screen flex flex-col">
+                <Header />
+                <main className="flex-1">{children}</main>
+              </div>
+            </ToastProvider>
           </SessionProvider>
         </ThemeProvider>
       </body>

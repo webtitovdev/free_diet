@@ -4,13 +4,17 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { Select, Typography } from "antd";
-import { CoffeeOutlined, ApiOutlined, FieldTimeOutlined, AppleOutlined } from "@ant-design/icons";
+import { Coffee, Utensils, Moon, Apple } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/shared/ui/select/Select";
 import { MealCategory } from "@/entities/meal/model/types";
 import { useMealEditingStore } from "../model/meal-store";
 import { suggestMealCategory, getClientTimezoneOffset } from "@/entities/meal/lib/suggest-category";
-
-const { Text } = Typography;
 
 const categoryLabels = {
   [MealCategory.BREAKFAST]: "Завтрак",
@@ -20,10 +24,10 @@ const categoryLabels = {
 };
 
 const categoryIcons = {
-  [MealCategory.BREAKFAST]: <CoffeeOutlined />,
-  [MealCategory.LUNCH]: <ApiOutlined />,
-  [MealCategory.DINNER]: <FieldTimeOutlined />,
-  [MealCategory.SNACK]: <AppleOutlined />,
+  [MealCategory.BREAKFAST]: <Coffee className="h-4 w-4" />,
+  [MealCategory.LUNCH]: <Utensils className="h-4 w-4" />,
+  [MealCategory.DINNER]: <Moon className="h-4 w-4" />,
+  [MealCategory.SNACK]: <Apple className="h-4 w-4" />,
 };
 
 export const MealCategorySelector: React.FC = () => {
@@ -37,31 +41,28 @@ export const MealCategorySelector: React.FC = () => {
     }
   }, [category, setCategory]);
 
-  const handleCategoryChange = (value: MealCategory) => {
-    setCategory(value);
+  const handleCategoryChange = (value: string) => {
+    setCategory(value as MealCategory);
   };
 
-  const options = Object.values(MealCategory).map((cat) => ({
-    value: cat,
-    label: (
-      <span>
-        {categoryIcons[cat]} {categoryLabels[cat]}
-      </span>
-    ),
-  }));
-
   return (
-    <div style={{ marginBottom: 16 }}>
-      <Text strong style={{ display: "block", marginBottom: 8 }}>
-        Категория приема пищи:
-      </Text>
-      <Select
-        value={category}
-        onChange={handleCategoryChange}
-        options={options}
-        style={{ width: "100%" }}
-        size="large"
-      />
+    <div className="mb-4">
+      <label className="block font-semibold mb-2">Категория приема пищи:</label>
+      <Select value={category || undefined} onValueChange={handleCategoryChange}>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder="Выберите категорию" />
+        </SelectTrigger>
+        <SelectContent>
+          {Object.values(MealCategory).map((cat) => (
+            <SelectItem key={cat} value={cat}>
+              <div className="flex items-center gap-2">
+                {categoryIcons[cat]}
+                <span>{categoryLabels[cat]}</span>
+              </div>
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
   );
 };

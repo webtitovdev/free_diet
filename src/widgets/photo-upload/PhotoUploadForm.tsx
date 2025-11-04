@@ -5,7 +5,8 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { Card, Typography, Space, message } from "antd";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card/Card";
+import { useToast } from "@/shared/hooks/use-toast";
 import { PhotoUploadButton } from "@/features/photo-analysis/ui/PhotoUploadButton";
 import { UploadProgress } from "@/features/photo-analysis/ui/UploadProgress";
 import { FoodItemsList } from "@/features/photo-analysis/ui/FoodItemsList";
@@ -14,8 +15,6 @@ import { PhotoStatus } from "@/entities/photo/model/types";
 import { RecognizedFoodItem } from "@/entities/food-item/model/types";
 import { MealEditor } from "@/widgets/meal-editor/MealEditor";
 import { useMealEditingStore } from "@/features/meal-editing/model/meal-store";
-
-const { Title, Paragraph } = Typography;
 
 interface PhotoUploadFormProps {
   onSaveToJournal?: (items: RecognizedFoodItem[]) => void;
@@ -26,6 +25,7 @@ export const PhotoUploadForm: React.FC<PhotoUploadFormProps> = ({
   onSaveToJournal,
   onAddManually,
 }) => {
+  const { toast } = useToast();
   const { photoUrl, photoId, processingStatus, recognizedItems, setRecognizedItems, reset } =
     usePhotoAnalysisStore();
 
@@ -43,42 +43,46 @@ export const PhotoUploadForm: React.FC<PhotoUploadFormProps> = ({
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleSaveSuccess = (_mealId: string) => {
-    message.success("Прием пищи успешно сохранен в дневник!");
+    toast({ description: "Прием пищи успешно сохранен в дневник!" });
     // Сбрасываем оба store
     reset();
     resetMealEditor();
   };
 
   const handleSaveError = (error: string) => {
-    message.error(`Ошибка при сохранении: ${error}`);
+    toast({ variant: "destructive", description: `Ошибка при сохранении: ${error}` });
   };
 
   return (
-    <div style={{ maxWidth: 800, margin: "0 auto", padding: "24px 16px" }}>
+    <div className="max-w-3xl mx-auto px-4 py-6">
       {/* Заголовок */}
-      <Card style={{ marginBottom: 16, textAlign: "center" }}>
-        <Title level={2}>Анализ фотографии еды</Title>
-        <Paragraph>
-          Загрузите фотографию вашей еды, и мы автоматически определим продукты и их питательную
-          ценность
-        </Paragraph>
+      <Card className="mb-4">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl">Анализ фотографии еды</CardTitle>
+          <p className="text-muted-foreground mt-2">
+            Загрузите фотографию вашей еды, и мы автоматически определим продукты и их питательную
+            ценность
+          </p>
+        </CardHeader>
       </Card>
 
       {/* Кнопка загрузки */}
       {!processingStatus && (
-        <Card style={{ textAlign: "center" }}>
-          <Space direction="vertical" size="large" style={{ width: "100%" }}>
-            <PhotoUploadButton
-              onUploadComplete={() => {
-                // Загрузка завершена, polling начнется автоматически
-              }}
-            />
-            <Paragraph type="secondary">
-              Поддерживаемые форматы: JPG, PNG, HEIC
-              <br />
-              Максимальный размер: 10 МБ
-            </Paragraph>
-          </Space>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="flex flex-col items-center gap-4">
+              <PhotoUploadButton
+                onUploadComplete={() => {
+                  // Загрузка завершена, polling начнется автоматически
+                }}
+              />
+              <p className="text-sm text-muted-foreground text-center">
+                Поддерживаемые форматы: JPG, PNG, HEIC
+                <br />
+                Максимальный размер: 10 МБ
+              </p>
+            </div>
+          </CardContent>
         </Card>
       )}
 
@@ -87,7 +91,7 @@ export const PhotoUploadForm: React.FC<PhotoUploadFormProps> = ({
 
       {/* Результаты анализа */}
       {showResults && (
-        <div style={{ marginTop: 16 }}>
+        <div className="mt-4">
           <FoodItemsList
             items={recognizedItems}
             photoUrl={photoUrl || undefined}
@@ -103,8 +107,10 @@ export const PhotoUploadForm: React.FC<PhotoUploadFormProps> = ({
 
       {/* Кнопка "Загрузить новое фото" если нет активной обработки */}
       {!processingStatus && recognizedItems.length === 0 && (
-        <Card style={{ marginTop: 16, textAlign: "center" }}>
-          <Paragraph type="secondary">Начните с загрузки фотографии вашей еды</Paragraph>
+        <Card className="mt-4">
+          <CardContent className="pt-6 text-center">
+            <p className="text-muted-foreground">Начните с загрузки фотографии вашей еды</p>
+          </CardContent>
         </Card>
       )}
     </div>

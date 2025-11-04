@@ -4,18 +4,14 @@
 "use client";
 
 import React, { useEffect, useRef, useCallback } from "react";
-import { Progress, Card, Typography, Spin, Alert, Button } from "antd";
-import {
-  LoadingOutlined,
-  CheckCircleOutlined,
-  CloseCircleOutlined,
-  ReloadOutlined,
-} from "@ant-design/icons";
+import { Loader2, CheckCircle, XCircle, RotateCw } from "lucide-react";
+import { Card, CardContent } from "@/shared/ui/card/Card";
+import { Button } from "@/shared/ui/button/Button";
+import { Progress } from "@/shared/ui/progress/Progress";
+import { Alert, AlertDescription } from "@/shared/ui/alert/Alert";
 import { PhotoStatus } from "@/entities/photo/model/types";
 import { usePhotoAnalysisStore } from "../model/photo-store";
 import { getPhotoStatus } from "../api/photo-api";
-
-const { Text } = Typography;
 
 const POLLING_INTERVAL_MS = 2000; // 2 секунды согласно T070a
 
@@ -89,20 +85,14 @@ export const UploadProgress: React.FC = () => {
     return null;
   }
 
-  const getProgressStatus = () => {
-    if (processingStatus === PhotoStatus.COMPLETED) return "success";
-    if (processingStatus === PhotoStatus.FAILED) return "exception";
-    return "active";
-  };
-
   const getIcon = () => {
     if (processingStatus === PhotoStatus.COMPLETED) {
-      return <CheckCircleOutlined style={{ color: "#52c41a", fontSize: 24 }} />;
+      return <CheckCircle className="h-6 w-6 text-green-500" />;
     }
     if (processingStatus === PhotoStatus.FAILED) {
-      return <CloseCircleOutlined style={{ color: "#ff4d4f", fontSize: 24 }} />;
+      return <XCircle className="h-6 w-6 text-red-500" />;
     }
-    return <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />;
+    return <Loader2 className="h-6 w-6 animate-spin text-primary" />;
   };
 
   const getMessage = () => {
@@ -120,44 +110,36 @@ export const UploadProgress: React.FC = () => {
   };
 
   return (
-    <Card style={{ marginTop: 16 }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 16 }}>
-        {getIcon()}
-        <Text strong>{getMessage()}</Text>
-      </div>
+    <Card className="mt-4">
+      <CardContent className="pt-6">
+        <div className="flex items-center gap-4 mb-4">
+          {getIcon()}
+          <p className="font-semibold">{getMessage()}</p>
+        </div>
 
-      <Progress
-        percent={uploadProgress}
-        status={getProgressStatus()}
-        strokeColor={{
-          "0%": "#108ee9",
-          "100%": "#87d068",
-        }}
-      />
+        <Progress value={uploadProgress} className="h-2" />
 
-      {processingStatus === PhotoStatus.PROCESSING && (
-        <Alert
-          message="Это может занять несколько секунд"
-          type="info"
-          showIcon
-          style={{ marginTop: 16 }}
-        />
-      )}
+        {processingStatus === PhotoStatus.PROCESSING && (
+          <Alert className="mt-4">
+            <AlertDescription>Это может занять несколько секунд</AlertDescription>
+          </Alert>
+        )}
 
-      {processingStatus === PhotoStatus.FAILED && (
-        <Alert
-          message="Не удалось распознать продукты на фотографии"
-          description="Попробуйте сделать фото еще раз с лучшим освещением"
-          type="error"
-          showIcon
-          style={{ marginTop: 16 }}
-          action={
-            <Button size="small" danger icon={<ReloadOutlined />} onClick={handleRetry}>
-              Попробовать снова
-            </Button>
-          }
-        />
-      )}
+        {processingStatus === PhotoStatus.FAILED && (
+          <Alert variant="destructive" className="mt-4">
+            <AlertDescription>
+              <div className="space-y-2">
+                <p className="font-semibold">Не удалось распознать продукты на фотографии</p>
+                <p className="text-sm">Попробуйте сделать фото еще раз с лучшим освещением</p>
+                <Button size="sm" variant="outline" onClick={handleRetry}>
+                  <RotateCw className="h-4 w-4 mr-2" />
+                  Попробовать снова
+                </Button>
+              </div>
+            </AlertDescription>
+          </Alert>
+        )}
+      </CardContent>
     </Card>
   );
 };

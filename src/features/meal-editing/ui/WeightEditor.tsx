@@ -4,10 +4,8 @@
 "use client";
 
 import React from "react";
-import { InputNumber, Typography } from "antd";
+import { Input } from "@/shared/ui/input/Input";
 import { useMealEditingStore } from "../model/meal-store";
-
-const { Text } = Typography;
 
 interface WeightEditorProps {
   index: number;
@@ -24,8 +22,9 @@ export const WeightEditor: React.FC<WeightEditorProps> = ({
 }) => {
   const { updateFoodItemWeight } = useMealEditingStore();
 
-  const handleWeightChange = (value: number | null) => {
-    if (value !== null && value > 0) {
+  const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    if (!isNaN(value) && value > 0) {
       updateFoodItemWeight(index, value);
     }
   };
@@ -34,21 +33,21 @@ export const WeightEditor: React.FC<WeightEditorProps> = ({
   const currentCalories = Math.round((currentWeight / 100) * caloriesPer100g);
 
   return (
-    <div style={{ marginBottom: 8 }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <Text>{label}:</Text>
-        <InputNumber
-          min={1}
-          max={10000}
-          value={currentWeight}
-          onChange={handleWeightChange}
-          addonAfter="г"
-          style={{ width: 120 }}
-          step={10}
-        />
-        <Text type="secondary" style={{ fontSize: 12 }}>
-          ≈ {currentCalories} ккал
-        </Text>
+    <div className="mb-2">
+      <div className="flex items-center gap-2">
+        <span className="text-sm">{label}:</span>
+        <div className="flex items-center gap-1">
+          <Input
+            type="number"
+            min={1}
+            max={10000}
+            value={currentWeight}
+            onChange={handleWeightChange}
+            className="w-24"
+          />
+          <span className="text-sm">г</span>
+        </div>
+        <span className="text-xs text-muted-foreground">≈ {currentCalories} ккал</span>
       </div>
     </div>
   );

@@ -5,13 +5,14 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Card, Button, Space, Typography, Statistic, Row, Col, Empty } from "antd";
-import { SaveOutlined, PlusOutlined } from "@ant-design/icons";
+import { Save, Plus } from "lucide-react";
 import { RecognizedFoodItem, USDAFoodSearchResult } from "@/entities/food-item/model/types";
 import { FoodItemCard } from "./FoodItemCard";
 import { FoodSearchModal } from "./FoodSearchModal";
-
-const { Title } = Typography;
+import { Card } from "@/shared/ui/shadcn/Card";
+import { Button } from "@/shared/ui/shadcn/Button";
+import { EmptyState } from "@/shared/ui/shadcn/EmptyState";
+import { StatsCard } from "@/shared/ui/shadcn/StatsCard";
 
 interface FoodItemsListProps {
   items: RecognizedFoodItem[];
@@ -95,11 +96,16 @@ export const FoodItemsList: React.FC<FoodItemsListProps> = ({
     return (
       <>
         <Card>
-          <Empty description="Продукты не распознаны" image={Empty.PRESENTED_IMAGE_SIMPLE}>
-            <Button type="primary" icon={<PlusOutlined />} onClick={handleOpenModal}>
-              Добавить вручную
-            </Button>
-          </Empty>
+          <EmptyState
+            title="Продукты не распознаны"
+            description="Попробуйте добавить продукты вручную"
+            action={
+              <Button onClick={handleOpenModal} className="flex items-center gap-2">
+                <Plus className="w-4 h-4" />
+                Добавить вручную
+              </Button>
+            }
+          />
         </Card>
         <FoodSearchModal
           open={isModalOpen}
@@ -111,70 +117,62 @@ export const FoodItemsList: React.FC<FoodItemsListProps> = ({
   }
 
   return (
-    <div>
+    <div className="space-y-4">
       {/* Фотография */}
       {photoUrl && (
-        <Card style={{ marginBottom: 16 }}>
-          <div style={{ position: "relative", width: "100%", height: 400 }}>
-            <Image
-              src={photoUrl}
-              alt="Фото еды"
-              fill
-              style={{
-                objectFit: "contain",
-                borderRadius: 8,
-              }}
-            />
+        <Card>
+          <div className="relative w-full h-[400px]">
+            <Image src={photoUrl} alt="Фото еды" fill className="object-contain rounded-lg" />
           </div>
         </Card>
       )}
 
       {/* Общая статистика */}
-      <Card style={{ marginBottom: 16 }}>
-        <Title level={5}>Общая питательная ценность</Title>
-        <Row gutter={16}>
-          <Col span={6}>
-            <Statistic
-              title="Калории"
-              value={Math.round(totals.calories)}
-              suffix="ккал"
-              valueStyle={{ color: "#3f8600" }}
-            />
-          </Col>
-          <Col span={6}>
-            <Statistic title="Белки" value={Math.round(totals.protein * 10) / 10} suffix="г" />
-          </Col>
-          <Col span={6}>
-            <Statistic title="Жиры" value={Math.round(totals.fats * 10) / 10} suffix="г" />
-          </Col>
-          <Col span={6}>
-            <Statistic title="Углеводы" value={Math.round(totals.carbs * 10) / 10} suffix="г" />
-          </Col>
-        </Row>
+      <Card>
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+          Общая питательная ценность
+        </h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <StatsCard
+            label="Калории"
+            value={Math.round(totals.calories)}
+            unit="ккал"
+            variant="primary"
+          />
+          <StatsCard label="Белки" value={Math.round(totals.protein * 10) / 10} unit="г" />
+          <StatsCard label="Жиры" value={Math.round(totals.fats * 10) / 10} unit="г" />
+          <StatsCard label="Углеводы" value={Math.round(totals.carbs * 10) / 10} unit="г" />
+        </div>
       </Card>
 
       {/* Список продуктов */}
       <Card>
-        <div style={{ marginBottom: 16, display: "flex", justifyContent: "space-between" }}>
-          <Title level={5}>Распознанные продукты ({items.length})</Title>
-          <Space>
-            <Button icon={<PlusOutlined />} onClick={handleOpenModal}>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            Распознанные продукты ({items.length})
+          </h2>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={handleOpenModal} className="flex items-center gap-2">
+              <Plus className="w-4 h-4" />
               Добавить вручную
             </Button>
-            <Button type="primary" icon={<SaveOutlined />} onClick={() => onSaveToJournal?.(items)}>
+            <Button onClick={() => onSaveToJournal?.(items)} className="flex items-center gap-2">
+              <Save className="w-4 h-4" />
               Сохранить в дневник
             </Button>
-          </Space>
+          </div>
         </div>
 
-        {items.map((item, index) => (
-          <FoodItemCard
-            key={index}
-            item={item}
-            onWeightChange={(newWeight) => handleWeightChange(index, newWeight)}
-            onDelete={() => handleDelete(index)}
-          />
-        ))}
+        <div className="space-y-4">
+          {items.map((item, index) => (
+            <FoodItemCard
+              key={index}
+              item={item}
+              onWeightChange={(newWeight) => handleWeightChange(index, newWeight)}
+              onDelete={() => handleDelete(index)}
+            />
+          ))}
+        </div>
       </Card>
 
       {/* Модальное окно для добавления продукта */}

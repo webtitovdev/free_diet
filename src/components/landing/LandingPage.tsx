@@ -1,17 +1,10 @@
 "use client";
 
-import { Button, Card, Row, Col, Typography, Space } from "antd";
-import {
-  CameraOutlined,
-  EditOutlined,
-  CalendarOutlined,
-  UserOutlined,
-  CheckCircleOutlined,
-} from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-
-const { Title, Paragraph, Text } = Typography;
+import { Camera, Edit, Calendar, User, CheckCircle } from "lucide-react";
+import { Button } from "@/shared/ui/button/Button";
+import { Card, CardContent } from "@/shared/ui/card/Card";
 
 /**
  * Landing Page - главная страница приложения
@@ -27,25 +20,25 @@ export function LandingPage() {
 
   const features = [
     {
-      icon: <CameraOutlined style={{ fontSize: "48px", color: "#1890ff" }} />,
+      icon: <Camera className="h-12 w-12 text-blue-600" />,
       title: "Анализ по Фото",
       description:
         "Загрузите фото вашего блюда, и система автоматически определит продукты, вес и калорийность",
     },
     {
-      icon: <EditOutlined style={{ fontSize: "48px", color: "#52c41a" }} />,
+      icon: <Edit className="h-12 w-12 text-green-600" />,
       title: "Редактирование Порций",
       description:
         "Уточните вес продуктов, добавьте недостающие - система пересчитает калории в реальном времени",
     },
     {
-      icon: <UserOutlined style={{ fontSize: "48px", color: "#722ed1" }} />,
+      icon: <User className="h-12 w-12 text-purple-600" />,
       title: "Персональные Цели",
       description:
         "Укажите параметры (вес, рост, возраст, пол) и цель - получите рекомендуемую калорийность",
     },
     {
-      icon: <CalendarOutlined style={{ fontSize: "48px", color: "#fa8c16" }} />,
+      icon: <Calendar className="h-12 w-12 text-orange-600" />,
       title: "Календарь Прогресса",
       description:
         "Отслеживайте прогресс в календаре - зеленые дни показывают достижение целевой калорийности",
@@ -62,168 +55,103 @@ export function LandingPage() {
   ];
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f0f2f5" }}>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Section */}
-      <div
-        style={{
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-          color: "white",
-          padding: "80px 24px",
-          textAlign: "center",
-        }}
-      >
-        <Space direction="vertical" size="large" style={{ width: "100%" }}>
-          <CameraOutlined style={{ fontSize: "72px" }} />
-          <Title level={1} style={{ color: "white", margin: 0 }}>
-            Трекер Калорий по Фотографии
-          </Title>
-          <Paragraph
-            style={{
-              fontSize: "20px",
-              color: "rgba(255, 255, 255, 0.9)",
-              maxWidth: "600px",
-              margin: "0 auto",
-            }}
-          >
+      <div className="bg-gradient-to-br from-purple-600 to-purple-900 text-white py-20 px-6 text-center">
+        <div className="max-w-4xl mx-auto space-y-8">
+          <Camera className="h-18 w-18 mx-auto" />
+          <h1 className="text-5xl font-bold">Трекер Калорий по Фотографии</h1>
+          <p className="text-xl text-white/90 max-w-2xl mx-auto">
             Отслеживайте калории легко - просто сфотографируйте вашу еду
-          </Paragraph>
-          <Space size="middle" style={{ marginTop: "24px" }}>
+          </p>
+          <div className="flex items-center justify-center gap-4 mt-6">
             {!session ? (
               <>
                 <Button
-                  type="primary"
-                  size="large"
+                  size="lg"
                   onClick={() => router.push("/register")}
-                  style={{
-                    background: "#52c41a",
-                    borderColor: "#52c41a",
-                    height: "48px",
-                    fontSize: "16px",
-                  }}
+                  className="bg-green-600 hover:bg-green-700 text-white h-12 px-8 text-base"
                 >
                   Начать бесплатно
                 </Button>
                 <Button
-                  size="large"
+                  variant="outline"
+                  size="lg"
                   onClick={() => router.push("/login")}
-                  style={{
-                    background: "rgba(255, 255, 255, 0.2)",
-                    borderColor: "white",
-                    color: "white",
-                    height: "48px",
-                    fontSize: "16px",
-                  }}
+                  className="bg-white/10 border-white text-white hover:bg-white/20 h-12 px-8 text-base"
                 >
                   Войти
                 </Button>
               </>
             ) : (
               <Button
-                type="primary"
-                size="large"
+                size="lg"
                 onClick={() => router.push("/photos/upload")}
-                style={{
-                  background: "#52c41a",
-                  borderColor: "#52c41a",
-                  height: "48px",
-                  fontSize: "16px",
-                }}
+                className="bg-green-600 hover:bg-green-700 text-white h-12 px-8 text-base"
               >
                 Перейти к загрузке фото
               </Button>
             )}
-          </Space>
-        </Space>
+          </div>
+        </div>
       </div>
 
       {/* Features Section */}
-      <div
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          padding: "80px 24px",
-        }}
-      >
-        <Title level={2} style={{ textAlign: "center", marginBottom: "48px" }}>
+      <div className="max-w-7xl mx-auto py-20 px-6">
+        <h2 className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">
           Возможности приложения
-        </Title>
-        <Row gutter={[24, 24]}>
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
-            <Col xs={24} sm={12} lg={6} key={index}>
-              <Card
-                hoverable
-                style={{
-                  textAlign: "center",
-                  height: "100%",
-                  borderRadius: "8px",
-                }}
-              >
-                <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-                  {feature.icon}
-                  <Title level={4}>{feature.title}</Title>
-                  <Paragraph style={{ margin: 0 }}>{feature.description}</Paragraph>
-                </Space>
-              </Card>
-            </Col>
+            <Card key={index} className="text-center hover:shadow-lg transition-shadow">
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  <div className="flex justify-center">{feature.icon}</div>
+                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    {feature.title}
+                  </h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{feature.description}</p>
+                </div>
+              </CardContent>
+            </Card>
           ))}
-        </Row>
+        </div>
       </div>
 
       {/* Benefits Section */}
-      <div
-        style={{
-          background: "white",
-          padding: "80px 24px",
-        }}
-      >
-        <div style={{ maxWidth: "800px", margin: "0 auto" }}>
-          <Title level={2} style={{ textAlign: "center", marginBottom: "48px" }}>
+      <div className="bg-white dark:bg-gray-800 py-20 px-6">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">
             Почему выбирают нас
-          </Title>
-          <Row gutter={[16, 16]}>
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {benefits.map((benefit, index) => (
-              <Col xs={24} sm={12} key={index}>
-                <Space>
-                  <CheckCircleOutlined style={{ fontSize: "24px", color: "#52c41a" }} />
-                  <Text style={{ fontSize: "16px" }}>{benefit}</Text>
-                </Space>
-              </Col>
+              <div key={index} className="flex items-center gap-3">
+                <CheckCircle className="h-6 w-6 text-green-600 flex-shrink-0" />
+                <span className="text-base text-gray-700 dark:text-gray-300">{benefit}</span>
+              </div>
             ))}
-          </Row>
+          </div>
         </div>
       </div>
 
       {/* CTA Section */}
       {!session && (
-        <div
-          style={{
-            background: "#f0f2f5",
-            padding: "80px 24px",
-            textAlign: "center",
-          }}
-        >
-          <Space direction="vertical" size="large" style={{ width: "100%" }}>
-            <Title level={2}>Готовы начать?</Title>
-            <Paragraph style={{ fontSize: "18px", maxWidth: "600px", margin: "0 auto" }}>
+        <div className="bg-gray-50 dark:bg-gray-900 py-20 px-6 text-center">
+          <div className="max-w-3xl mx-auto space-y-6">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Готовы начать?</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400">
               Присоединяйтесь к тысячам пользователей, которые уже отслеживают свои калории с
               помощью нашего приложения
-            </Paragraph>
+            </p>
             <Button
-              type="primary"
-              size="large"
+              size="lg"
               onClick={() => router.push("/register")}
-              style={{
-                background: "#1890ff",
-                borderColor: "#1890ff",
-                height: "48px",
-                fontSize: "16px",
-                paddingLeft: "48px",
-                paddingRight: "48px",
-              }}
+              className="h-12 px-12 text-base"
             >
               Создать аккаунт бесплатно
             </Button>
-          </Space>
+          </div>
         </div>
       )}
     </div>

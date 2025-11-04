@@ -4,14 +4,14 @@
 "use client";
 
 import React from "react";
-import { Card, Typography, Statistic, Row, Col, Button, Divider } from "antd";
-import { DeleteOutlined } from "@ant-design/icons";
+import { Trash2 } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card/Card";
+import { Button } from "@/shared/ui/button/Button";
+import { Separator } from "@/shared/ui/separator/Separator";
 import { useMealEditingStore } from "@/features/meal-editing/model/meal-store";
 import { MealCategorySelector } from "@/features/meal-editing/ui/MealCategorySelector";
 import { WeightEditor } from "@/features/meal-editing/ui/WeightEditor";
 import { SaveMealButton } from "@/features/meal-editing/ui/SaveMealButton";
-
-const { Title, Text } = Typography;
 
 interface MealEditorProps {
   onSaveSuccess?: (mealId: string) => void;
@@ -26,73 +26,80 @@ export const MealEditor: React.FC<MealEditorProps> = ({ onSaveSuccess, onSaveErr
   }
 
   return (
-    <Card style={{ marginTop: 16 }}>
-      <Title level={4}>Редактирование приема пищи</Title>
+    <Card className="mt-4">
+      <CardHeader>
+        <CardTitle>Редактирование приема пищи</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {/* Выбор категории */}
+        <MealCategorySelector />
 
-      {/* Выбор категории */}
-      <MealCategorySelector />
+        <Separator />
 
-      <Divider />
+        {/* Общая статистика */}
+        <Card>
+          <CardContent className="pt-6">
+            <h3 className="font-semibold mb-4">Итого:</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div>
+                <p className="text-sm text-muted-foreground">Калории</p>
+                <p className="text-2xl font-bold text-green-600">
+                  {Math.round(stats.totalCalories)} <span className="text-sm">ккал</span>
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Белки</p>
+                <p className="text-2xl font-bold">
+                  {Math.round(stats.totalProtein * 10) / 10} <span className="text-sm">г</span>
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Жиры</p>
+                <p className="text-2xl font-bold">
+                  {Math.round(stats.totalFats * 10) / 10} <span className="text-sm">г</span>
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Углеводы</p>
+                <p className="text-2xl font-bold">
+                  {Math.round(stats.totalCarbs * 10) / 10} <span className="text-sm">г</span>
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-      {/* Общая статистика */}
-      <Card type="inner" style={{ marginBottom: 16 }}>
-        <Title level={5}>Итого:</Title>
-        <Row gutter={16}>
-          <Col span={6}>
-            <Statistic
-              title="Калории"
-              value={Math.round(stats.totalCalories)}
-              suffix="ккал"
-              valueStyle={{ color: "#3f8600" }}
-            />
-          </Col>
-          <Col span={6}>
-            <Statistic title="Белки" value={Math.round(stats.totalProtein * 10) / 10} suffix="г" />
-          </Col>
-          <Col span={6}>
-            <Statistic title="Жиры" value={Math.round(stats.totalFats * 10) / 10} suffix="г" />
-          </Col>
-          <Col span={6}>
-            <Statistic title="Углеводы" value={Math.round(stats.totalCarbs * 10) / 10} suffix="г" />
-          </Col>
-        </Row>
-      </Card>
+        {/* Список продуктов с редакторами весов */}
+        <div>
+          <h3 className="font-semibold mb-2">Продукты ({foodItems.length}):</h3>
+          <div className="space-y-2">
+            {foodItems.map((item, index) => (
+              <Card key={index}>
+                <CardContent className="pt-4">
+                  <div className="flex justify-between items-start mb-2">
+                    <p className="font-semibold">{item.name}</p>
+                    <Button variant="ghost" size="sm" onClick={() => removeFoodItem(index)}>
+                      <Trash2 className="h-4 w-4 text-destructive" />
+                    </Button>
+                  </div>
+                  <WeightEditor
+                    index={index}
+                    currentWeight={item.weight}
+                    caloriesPer100g={item.caloriesPer100g}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    На 100г: {item.caloriesPer100g} ккал | Б: {item.proteinPer100g}г | Ж:{" "}
+                    {item.fatsPer100g}г | У: {item.carbsPer100g}г
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
 
-      {/* Список продуктов с редакторами весов */}
-      <div style={{ marginBottom: 16 }}>
-        <Title level={5}>Продукты ({foodItems.length}):</Title>
-        {foodItems.map((item, index) => (
-          <Card
-            key={index}
-            type="inner"
-            size="small"
-            style={{ marginBottom: 8 }}
-            extra={
-              <Button
-                type="text"
-                danger
-                size="small"
-                icon={<DeleteOutlined />}
-                onClick={() => removeFoodItem(index)}
-              />
-            }
-          >
-            <Text strong>{item.name}</Text>
-            <WeightEditor
-              index={index}
-              currentWeight={item.weight}
-              caloriesPer100g={item.caloriesPer100g}
-            />
-            <Text type="secondary" style={{ fontSize: 12 }}>
-              На 100г: {item.caloriesPer100g} ккал | Б: {item.proteinPer100g}г | Ж:{" "}
-              {item.fatsPer100g}г | У: {item.carbsPer100g}г
-            </Text>
-          </Card>
-        ))}
-      </div>
-
-      {/* Кнопка сохранения */}
-      <SaveMealButton onSuccess={onSaveSuccess} onError={onSaveError} />
+        {/* Кнопка сохранения */}
+        <SaveMealButton onSuccess={onSaveSuccess} onError={onSaveError} />
+      </CardContent>
     </Card>
   );
 };

@@ -1,75 +1,34 @@
-/**
- * Input Component
- * Wrapper вокруг Ant Design Input для консистентности UI
- */
+// Input component from shadcn/ui
+"use client";
 
-import React from "react";
-import { Input as AntInput, InputProps as AntInputProps } from "antd";
+import * as React from "react";
+import { cn } from "@/shared/lib/utils";
 
-// Расширяем типы Ant Design Input
-export interface InputProps extends AntInputProps {
-  /**
-   * Лейбл для поля ввода
-   */
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
-  /**
-   * Текст ошибки валидации
-   */
   error?: string;
-  /**
-   * Полная ширина
-   */
-  fullWidth?: boolean;
 }
 
-/**
- * Кастомный Input компонент
- */
-export const Input: React.FC<InputProps> = ({
-  label,
-  error,
-  fullWidth = false,
-  style,
-  ...props
-}) => {
-  return (
-    <div style={{ width: fullWidth ? "100%" : "auto" }}>
-      {label && (
-        <label
-          style={{
-            display: "block",
-            marginBottom: "4px",
-            fontSize: "14px",
-            fontWeight: 500,
-          }}
-        >
-          {label}
-        </label>
-      )}
-      <AntInput
-        status={error ? "error" : undefined}
-        style={{
-          ...style,
-          width: fullWidth ? "100%" : style?.width,
-        }}
-        {...props}
-      />
-      {error && (
-        <div
-          style={{
-            color: "#ff4d4f",
-            fontSize: "12px",
-            marginTop: "4px",
-          }}
-        >
-          {error}
-        </div>
-      )}
-    </div>
-  );
-};
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type, label, error, ...props }, ref) => {
+    return (
+      <div className="w-full">
+        {label && <label className="block mb-1 text-sm font-medium">{label}</label>}
+        <input
+          type={type}
+          className={cn(
+            "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+            error && "border-destructive focus-visible:ring-destructive",
+            className
+          )}
+          ref={ref}
+          {...props}
+        />
+        {error && <p className="text-sm text-destructive mt-1">{error}</p>}
+      </div>
+    );
+  }
+);
+Input.displayName = "Input";
 
-// Named exports для других типов Input
-export const { TextArea, Search, Password, Group } = AntInput;
-
-export default Input;
+export { Input };

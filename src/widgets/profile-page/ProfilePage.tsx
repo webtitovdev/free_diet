@@ -5,21 +5,20 @@
 
 "use client";
 
-import { Typography } from "antd";
 import { ProfileForm } from "@/widgets/profile-form/ProfileForm";
 import { Container } from "@/shared/ui/shadcn/Container";
-
-const { Title, Paragraph } = Typography;
 
 export function ProfilePage() {
   return (
     <Container maxWidth="desktop" padding={6} centered>
-      <Title level={2}>Профиль и цели</Title>
-      <Paragraph>
-        Настройте ваш профиль, чтобы получить персонализированную рекомендацию по калорийности.
-        Система автоматически рассчитает вашу дневную норму калорий по формуле Mifflin-St Jeor с
-        учетом вашей цели.
-      </Paragraph>
+      <div className="mb-6">
+        <h2 className="text-3xl font-bold mb-2">Профиль и цели</h2>
+        <p className="text-muted-foreground">
+          Настройте ваш профиль, чтобы получить персонализированную рекомендацию по калорийности.
+          Система автоматически рассчитает вашу дневную норму калорий по формуле Mifflin-St Jeor с
+          учетом вашей цели.
+        </p>
+      </div>
 
       <ProfileForm />
     </Container>

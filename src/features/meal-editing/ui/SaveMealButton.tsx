@@ -4,8 +4,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button, message } from "antd";
-import { SaveOutlined } from "@ant-design/icons";
+import { Save } from "lucide-react";
+import { Button } from "@/shared/ui/button/Button";
+import { useToast } from "@/shared/hooks/use-toast";
 import { useMealEditingStore } from "../model/meal-store";
 import { createMeal } from "../api/meal-api";
 import { getClientTimezoneOffset } from "@/entities/meal/lib/suggest-category";
@@ -16,6 +17,7 @@ interface SaveMealButtonProps {
 }
 
 export const SaveMealButton: React.FC<SaveMealButtonProps> = ({ onSuccess, onError }) => {
+  const { toast } = useToast();
   const { category, foodItems, photoId, setError, reset } = useMealEditingStore();
   const [isSaving, setIsSaving] = useState(false);
 
@@ -23,14 +25,14 @@ export const SaveMealButton: React.FC<SaveMealButtonProps> = ({ onSuccess, onErr
     // Валидация
     if (!category) {
       const errorMsg = "Выберите категорию приема пищи";
-      message.error(errorMsg);
+      toast({ variant: "destructive", description: errorMsg });
       setError(errorMsg);
       return;
     }
 
     if (foodItems.length === 0) {
       const errorMsg = "Добавьте хотя бы один продукт";
-      message.error(errorMsg);
+      toast({ variant: "destructive", description: errorMsg });
       setError(errorMsg);
       return;
     }
@@ -44,12 +46,12 @@ export const SaveMealButton: React.FC<SaveMealButtonProps> = ({ onSuccess, onErr
         clientTimezoneOffset: getClientTimezoneOffset(),
       });
 
-      message.success("Прием пищи успешно сохранен!");
+      toast({ description: "Прием пищи успешно сохранен!" });
       reset();
       onSuccess?.(meal.id);
     } catch (error) {
       const errorMsg = error instanceof Error ? error.message : "Ошибка при сохранении";
-      message.error(errorMsg);
+      toast({ variant: "destructive", description: errorMsg });
       setError(errorMsg);
       onError?.(errorMsg);
     } finally {
@@ -59,15 +61,19 @@ export const SaveMealButton: React.FC<SaveMealButtonProps> = ({ onSuccess, onErr
 
   return (
     <Button
-      type="primary"
-      size="large"
-      icon={<SaveOutlined />}
+      size="lg"
       onClick={handleSave}
-      loading={isSaving}
-      disabled={foodItems.length === 0 || !category}
-      block
+      disabled={foodItems.length === 0 || !category || isSaving}
+      className="w-full"
     >
-      Сохранить в дневник
+      {isSaving ? (
+        <>Сохранение...</>
+      ) : (
+        <>
+          <Save className="h-5 w-5" />
+          Сохранить в дневник
+        </>
+      )}
     </Button>
   );
 };

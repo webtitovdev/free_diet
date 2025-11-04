@@ -1,37 +1,58 @@
-/**
- * Card Component
- * Wrapper вокруг Ant Design Card для консистентности UI
- */
+// Card component from shadcn/ui
+"use client";
 
-import React from "react";
-import { Card as AntCard, CardProps as AntCardProps } from "antd";
+import * as React from "react";
+import { cn } from "@/shared/lib/utils";
 
-// Расширяем типы Ant Design Card
-export interface CardProps extends AntCardProps {
-  /**
-   * Полная ширина
-   */
-  fullWidth?: boolean;
-}
-
-/**
- * Кастомный Card компонент
- */
-export const Card: React.FC<CardProps> = ({ fullWidth = false, style, children, ...props }) => {
-  return (
-    <AntCard
-      style={{
-        ...style,
-        width: fullWidth ? "100%" : style?.width,
-      }}
+const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn("rounded-lg border bg-card text-card-foreground shadow-sm", className)}
       {...props}
-    >
-      {children}
-    </AntCard>
-  );
-};
+    />
+  )
+);
+Card.displayName = "Card";
 
-// Named export для Grid
-export const { Grid, Meta } = AntCard;
+const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("flex flex-col space-y-1.5 p-6", className)} {...props} />
+  )
+);
+CardHeader.displayName = "CardHeader";
 
-export default Card;
+const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLHeadingElement>>(
+  ({ className, ...props }, ref) => (
+    <h3
+      ref={ref}
+      className={cn("text-2xl font-semibold leading-none tracking-tight", className)}
+      {...props}
+    />
+  )
+);
+CardTitle.displayName = "CardTitle";
+
+const CardDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <p ref={ref} className={cn("text-sm text-muted-foreground", className)} {...props} />
+));
+CardDescription.displayName = "CardDescription";
+
+const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+  )
+);
+CardContent.displayName = "CardContent";
+
+const CardFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("flex items-center p-6 pt-0", className)} {...props} />
+  )
+);
+CardFooter.displayName = "CardFooter";
+
+export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent };

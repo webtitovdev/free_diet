@@ -4,14 +4,17 @@
 "use client";
 
 import React, { useState } from "react";
-import { Modal, Input, Button, List, Spin, Empty, Tabs, message } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Search } from "lucide-react";
 import axios from "axios";
 import { USDAFoodSearchResult } from "@/entities/food-item/model/types";
 import { ManualFoodItemForm } from "./ManualFoodItemForm";
-
-const { Search } = Input;
-const { TabPane } = Tabs;
+import { Dialog } from "@/shared/ui/shadcn/Dialog";
+import { Tabs } from "@/shared/ui/shadcn/Tabs";
+import { Input } from "@/shared/ui/shadcn/Input";
+import { Button } from "@/shared/ui/shadcn/Button";
+import { LoadingSpinner } from "@/shared/ui/shadcn/LoadingSpinner";
+import { EmptyState } from "@/shared/ui/shadcn/EmptyState";
+import { toast } from "@/shared/hooks/use-toast";
 
 interface FoodSearchModalProps {
   open: boolean;
@@ -29,9 +32,10 @@ export const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
   const [searchResults, setSearchResults] = useState<USDAFoodSearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
-  const handleSearch = async (query: string) => {
-    if (!query.trim()) {
-      message.warning("Введите название продукта");
+  const handleSearch = async () => {
+    const query = searchQuery.trim();
+    if (!query) {
+      toast.error("Введите название продукта");
       return;
     }
 
@@ -43,10 +47,10 @@ export const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
       const results = response.data.results;
       setSearchResults(results);
       if (results.length === 0) {
-        message.info("Продукты не найдены. Попробуйте изменить запрос или добавить вручную.");
+        toast.info("Продукты не найдены. Попробуйте изменить запрос или добавить вручную.");
       }
     } catch (error) {
-      message.error("Ошибка при поиске продуктов");
+      toast.error("Ошибка при поиске продуктов");
     } finally {
       setIsSearching(false);
     }
@@ -77,61 +81,77 @@ export const FoodSearchModal: React.FC<FoodSearchModalProps> = ({
   };
 
   return (
-    <Modal title="Добавить продукт" open={open} onCancel={handleCancel} footer={null} width={600}>
+    <Dialog open={open} onClose={handleCancel} title="Добавить продукт" maxWidth="lg">
       <Tabs activeKey={activeTab} onChange={setActiveTab}>
-        <TabPane tab="Поиск по базе USDA" key="search">
-          <div style={{ marginBottom: 16 }}>
-            <Search
-              placeholder="Например: chicken breast, apple, rice"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              onSearch={handleSearch}
-              enterButton={<SearchOutlined />}
-              size="large"
-              loading={isSearching}
-            />
-          </div>
-
-          {isSearching && (
-            <div style={{ textAlign: "center", padding: 40 }}>
-              <Spin size="large" />
+        <Tabs.TabPane tab="Поиск по базе USDA" key="search">
+          <div className="space-y-4">
+            {/* Поисковая строка */}
+            <div className="flex gap-2">
+              <Input
+                placeholder="Например: chicken breast, apple, rice"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                className="flex-1"
+              />
+              <Button
+                onClick={handleSearch}
+                disabled={isSearching}
+                className="flex items-center gap-2"
+              >
+                <Search className="w-4 h-4" />
+                Поиск
+              </Button>
             </div>
-          )}
 
-          {!isSearching && searchResults.length === 0 && searchQuery && (
-            <Empty description="Продукты не найдены" />
-          )}
+            {/* Индикатор загрузки */}
+            {isSearching && (
+              <div className="flex justify-center py-10">
+                <LoadingSpinner size="lg" />
+              </div>
+            )}
 
-          {!isSearching && searchResults.length > 0 && (
-            <List
-              dataSource={searchResults}
-              renderItem={(item, index) => (
-                <List.Item
-                  actions={[
+            {/* Пустое состояние */}
+            {!isSearching && searchResults.length === 0 && searchQuery && (
+              <EmptyState
+                title="Продукты не найдены"
+                description="Попробуйте изменить запрос или добавить продукт вручную"
+              />
+            )}
+
+            {/* Результаты поиска */}
+            {!isSearching && searchResults.length > 0 && (
+              <div className="max-h-[400px] overflow-y-auto space-y-2">
+                {searchResults.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex items-start justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                  >
+                    <div className="flex-1">
+                      <h4 className="font-medium text-gray-900 dark:text-gray-100">{item.name}</h4>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        {item.caloriesPer100g} ккал | Б: {item.proteinPer100g}г | Ж:{" "}
+                        {item.fatsPer100g}г | У: {item.carbsPer100g}г (на 100г)
+                      </p>
+                    </div>
                     <Button
-                      key={`select-${index}`}
-                      type="link"
+                      variant="ghost"
                       onClick={() => handleSelectResult(item)}
+                      className="ml-4"
                     >
                       Выбрать
-                    </Button>,
-                  ]}
-                >
-                  <List.Item.Meta
-                    title={item.name}
-                    description={`${item.caloriesPer100g} ккал | Б: ${item.proteinPer100g}г | Ж: ${item.fatsPer100g}г | У: ${item.carbsPer100g}г (на 100г)`}
-                  />
-                </List.Item>
-              )}
-              style={{ maxHeight: 400, overflow: "auto" }}
-            />
-          )}
-        </TabPane>
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </Tabs.TabPane>
 
-        <TabPane tab="Ввести вручную" key="manual">
+        <Tabs.TabPane tab="Ввести вручную" key="manual">
           <ManualFoodItemForm onSubmit={handleManualAdd} />
-        </TabPane>
+        </Tabs.TabPane>
       </Tabs>
-    </Modal>
+    </Dialog>
   );
 };
