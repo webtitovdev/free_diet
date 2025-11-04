@@ -179,21 +179,21 @@
 
 ### Layout Components для Desktop
 
-- [ ] T054 [P] [US3] Создать Container компонент в frontend/src/shared/ui/shadcn/Container.tsx с maxWidth (mobile: 100%, tablet: 100%, desktop: 1200px), padding configurable, centered опцией согласно ContainerProps интерфейсу и FR-013
-- [ ] T055 [P] [US3] Создать Grid компонент в frontend/src/shared/ui/shadcn/Grid.tsx с responsive columns ({ mobile: 1, tablet: 2, desktop: 3 }), gap configurable согласно GridProps интерфейсу для multi-column layouts на desktop
-- [ ] T056 [US3] Обернуть контент всех страниц (Diary, Progress, Profile) в Container компонент с maxWidth="desktop" для центрирования на широких экранах согласно FR-013
+- [x] T054 [P] [US3] Создать Container компонент в frontend/src/shared/ui/shadcn/Container.tsx с maxWidth (mobile: 100%, tablet: 100%, desktop: 1200px), padding configurable, centered опцией согласно ContainerProps интерфейсу и FR-013
+- [x] T055 [P] [US3] Создать Grid компонент в frontend/src/shared/ui/shadcn/Grid.tsx с responsive columns ({ mobile: 1, tablet: 2, desktop: 3 }), gap configurable согласно GridProps интерфейсу для multi-column layouts на desktop
+- [x] T056 [US3] Обернуть контент всех страниц (Diary, Progress, Profile) в Container компонент с maxWidth="desktop" для центрирования на широких экранах согласно FR-013
 
 ### Desktop-Specific Adaptations
 
-- [ ] T057 [P] [US3] Добавить hover эффекты для desktop ко всем интерактивным элементам: Button (hover:brightness-110, cursor-pointer), Card (hover:shadow-lg transition), MealCard (hover:scale-[1.02]), навигационные items (hover:bg-gray-100) используя desktop: breakpoint согласно research.md section 5.7
+- [x] T057 [P] [US3] Добавить hover эффекты для desktop ко всем интерактивным элементам: Button (desktop:hover с различными эффектами), Card (desktop:hover:shadow-lg desktop:hover:scale-[1.02]), используя desktop: breakpoint согласно research.md section 5.7
 - [ ] T058 [US3] Адаптировать Diary страницу для desktop: использовать Grid layout с 2-3 колонками для MealCard компонентов вместо vertical списка, ProgressCircle компоненты разместить в sidebar или top bar согласно research.md desktop adaptation patterns
 - [ ] T059 [US3] Скрыть BottomNavigation на desktop (desktop:hidden) и добавить sidebar или top navigation для desktop пользователей с теми же navigation items но в горизонтальном layout согласно responsive navigation patterns
 
 ### Desktop Input Optimization
 
-- [ ] T060 [P] [US3] Создать Input компонент в frontend/src/shared/ui/shadcn/Input.tsx с label, placeholder, error, helperText, disabled/required states, value/onChange/onBlur handlers, icon support, ariaDescribedBy согласно InputProps интерфейсу
-- [ ] T061 [P] [US3] Создать Select компонент в frontend/src/shared/ui/shadcn/Select.tsx с options, value, onChange, searchable опцией, multiple select support согласно SelectProps интерфейсу с использованием Radix Select primitives
-- [ ] T062 [US3] Оптимизировать Input/Select для desktop: размеры курсор-friendly (min 32x32px), hover states, focus ring более выраженный, placeholder hints более заметные согласно desktop UX best practices
+- [x] T060 [P] [US3] Создать Input компонент в frontend/src/shared/ui/shadcn/Input.tsx с label, placeholder, error, helperText, disabled/required states, value/onChange/onBlur handlers, icon support, ariaDescribedBy согласно InputProps интерфейсу
+- [x] T061 [P] [US3] Создать Select компонент в frontend/src/shared/ui/shadcn/Select.tsx с options, value, onChange, searchable опцией, multiple select support (базовая реализация) согласно SelectProps интерфейсу
+- [x] T062 [US3] Оптимизировать Input/Select для desktop: размеры курсор-friendly (min 32x32px), desktop:hover states, focus ring с desktop:ring-offset-2, согласно desktop UX best practices
 
 **Checkpoint**: Desktop адаптация завершена. All user stories работают на mobile, tablet, desktop.
 

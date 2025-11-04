@@ -94,10 +94,10 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
           borderRadiusMap[borderRadius],
           // Тень
           shadowMap[shadow],
-          // Интерактивность
+          // Интерактивность (T057: desktop hover эффекты)
           interactive && [
             "cursor-pointer",
-            "hover:shadow-lg hover:scale-[1.02]",
+            "desktop:hover:shadow-lg desktop:hover:scale-[1.02]",
             "active:scale-[0.98]",
           ],
           // Кастомные классы

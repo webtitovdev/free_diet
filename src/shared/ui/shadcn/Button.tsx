@@ -52,17 +52,20 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 /**
  * Варианты стилей кнопок
  */
+/**
+ * T057: Desktop hover эффекты добавлены с desktop: префиксом
+ */
 const buttonVariants: Record<ButtonVariant, string> = {
   primary:
-    "bg-brand-DEFAULT text-text-inverse hover:bg-brand-dark active:scale-[0.98] shadow-sm dark:bg-brand-dark dark:hover:bg-brand-DEFAULT",
+    "bg-brand-DEFAULT text-text-inverse desktop:hover:bg-brand-dark active:scale-[0.98] shadow-sm dark:bg-brand-dark dark:desktop:hover:bg-brand-DEFAULT",
   secondary:
-    "bg-background-secondary text-text-primary hover:bg-background-tertiary active:scale-[0.98] shadow-sm dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600",
+    "bg-background-secondary text-text-primary desktop:hover:bg-background-tertiary active:scale-[0.98] shadow-sm dark:bg-gray-700 dark:text-gray-100 dark:desktop:hover:bg-gray-600",
   outline:
-    "border-2 border-border-default text-text-primary hover:bg-background-secondary active:scale-[0.98] dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800",
+    "border-2 border-border-default text-text-primary desktop:hover:bg-background-secondary active:scale-[0.98] dark:border-gray-600 dark:text-gray-200 dark:desktop:hover:bg-gray-800",
   ghost:
-    "text-text-primary hover:bg-background-secondary active:scale-[0.98] dark:text-gray-200 dark:hover:bg-gray-800",
+    "text-text-primary desktop:hover:bg-background-secondary active:scale-[0.98] dark:text-gray-200 dark:desktop:hover:bg-gray-800",
   danger:
-    "bg-semantic-error text-text-inverse hover:brightness-110 active:scale-[0.98] shadow-sm dark:bg-red-600 dark:hover:bg-red-700",
+    "bg-semantic-error text-text-inverse desktop:hover:brightness-110 active:scale-[0.98] shadow-sm dark:bg-red-600 dark:desktop:hover:bg-red-700",
 };
 
 /**

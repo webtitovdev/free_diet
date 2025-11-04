@@ -6,8 +6,10 @@
  * - StatsCard для weekly/monthly trends
  * - Цветовая кодировка согласно research.md (Lifesum pattern)
  *
+ * Updated: T056 [US3] - Wrapped в Container компонент для desktop центрирования
+ *
  * @see specs/001-mobile-first-ui-redesign/research.md
- * @see specs/001-mobile-first-ui-redesign/tasks.md (T041)
+ * @see specs/001-mobile-first-ui-redesign/tasks.md (T041, T056)
  */
 
 "use client";
@@ -15,6 +17,7 @@
 import React from "react";
 import { ProgressCircle } from "@/shared/ui/shadcn/ProgressCircle";
 import { StatsCard } from "@/shared/ui/shadcn/StatsCard";
+import { Container } from "@/shared/ui/shadcn/Container";
 import { Activity, Flame, TrendingUp, Target } from "lucide-react";
 
 export default function ProgressPage() {
@@ -39,7 +42,7 @@ export default function ProgressPage() {
   };
 
   return (
-    <div className="container mx-auto max-w-4xl space-y-6">
+    <Container maxWidth="desktop" padding={6} centered className="space-y-6">
       {/* Заголовок */}
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Прогресс</h1>
@@ -172,6 +175,6 @@ export default function ProgressPage() {
           (Weight chart, Calories trend, etc.)
         </p>
       </div>
-    </div>
+    </Container>
   );
 }
