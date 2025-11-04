@@ -34,6 +34,8 @@ export function BottomNavigation({
         position === "fixed" && "fixed bottom-0 left-0 right-0",
         position === "sticky" && "sticky bottom-0",
         "shadow-md dark:shadow-lg",
+        // T059: Скрыть на desktop
+        "desktop:hidden",
         className
       )}
       role="navigation"

@@ -134,6 +134,23 @@ a {
   border-width: 0;
 }
 
+/* Fade In Animation для MealCard (T029) */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation-name: fadeIn;
+  animation-timing-function: ease-in-out;
+}
+
 /* Reduced Motion для Accessibility */
 @media (prefers-reduced-motion: reduce) {
   *,

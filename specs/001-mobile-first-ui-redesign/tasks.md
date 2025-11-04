@@ -186,8 +186,8 @@
 ### Desktop-Specific Adaptations
 
 - [x] T057 [P] [US3] Добавить hover эффекты для desktop ко всем интерактивным элементам: Button (desktop:hover с различными эффектами), Card (desktop:hover:shadow-lg desktop:hover:scale-[1.02]), используя desktop: breakpoint согласно research.md section 5.7
-- [ ] T058 [US3] Адаптировать Diary страницу для desktop: использовать Grid layout с 2-3 колонками для MealCard компонентов вместо vertical списка, ProgressCircle компоненты разместить в sidebar или top bar согласно research.md desktop adaptation patterns
-- [ ] T059 [US3] Скрыть BottomNavigation на desktop (desktop:hidden) и добавить sidebar или top navigation для desktop пользователей с теми же navigation items но в горизонтальном layout согласно responsive navigation patterns
+- [x] T058 [US3] Адаптировать Diary страницу для desktop: использовать Grid layout с 2-3 колонками для MealCard компонентов вместо vertical списка, ProgressCircle компоненты разместить в sidebar или top bar согласно research.md desktop adaptation patterns
+- [x] T059 [US3] Скрыть BottomNavigation на desktop (desktop:hidden) и добавить sidebar или top navigation для desktop пользователей с теми же navigation items но в горизонтальном layout согласно responsive navigation patterns
 
 ### Desktop Input Optimization
 
@@ -205,7 +205,16 @@
 
 ### Ant Design Removal (FR-019)
 
-- [ ] T063 Аудит всех страниц и компонентов на использование Ant Design: grep -r "from 'antd'" frontend/src/, составить список оставшихся не мигрированных компонентов
+- [x] T063 Аудит всех страниц и компонентов на использование Ant Design: grep -r "from 'antd'" frontend/src/, составить список оставшихся не мигрированных компонентов
+
+  **Audit Results (2025-11-04):**
+  - Auth pages: login, register, verify-email (Divider, Spin, Form, Input, Button)
+  - Dashboard: dashboard/page (Typography, Row, Col, Card, Statistic, Space)
+  - Error pages: error.tsx, not-found.tsx (Button, Result)
+  - Landing: LandingPage (Button, Card, Row, Col, Typography)
+  - Features: auth forms, meal editing, photo analysis (Form, Input, Button, Select, Modal)
+  - Layout: app/layout.tsx (AntdRegistry, AntdApp, AntdThemeProvider)
+
 - [ ] T064 Мигрировать оставшиеся компоненты с Ant Design на shadcn/ui согласно mapping таблице из quickstart.md section 5.2 (Modal -> Dialog, Table -> custom + @tanstack/react-table, DatePicker -> Calendar + Popover, etc.)
 - [ ] T065 Удалить Ant Design из зависимостей: npm uninstall antd в frontend/, удалить AntdThemeProvider из layout.tsx, удалить директорию frontend/src/shared/ui/legacy-antd/
 - [ ] T066 Удалить Ant Design CSS imports и ConfigProvider из всех файлов, проверить что bundle size уменьшился на ~35% согласно research.md case study
@@ -228,7 +237,7 @@
 ### Documentation & Migration Tracking
 
 - [ ] T075 [P] Создать migration tracker опционально в specs/001-mobile-first-ui-redesign/migration-tracker.json с статусами всех страниц (pending, in-progress, migrated, qa-approved), компонентов Ant Design -> shadcn/ui mapping, QA approver names согласно MigrationTracker entity из data-model.md
-- [ ] T076 [P] Обновить CLAUDE.md проекта вручную (или через скрипт .specify/scripts/powershell/update-agent-context.ps1 если доступен): заменить "N/A" на "shadcn/ui + Tailwind CSS" в Active Technologies секции, обновить дату Last updated согласно plan.md post-design constitution re-evaluation
+- [x] T076 [P] Обновить CLAUDE.md проекта вручную (или через скрипт .specify/scripts/powershell/update-agent-context.ps1 если доступен): заменить "N/A" на "shadcn/ui + Tailwind CSS" в Active Technologies секции, обновить дату Last updated согласно plan.md post-design constitution re-evaluation
 - [ ] T077 Создать changelog запись в CHANGELOG.md с описанием UI редизайна: миграция от Ant Design к shadcn/ui, mobile-first подход, WCAG AA accessibility, dark theme support, performance improvements (bundle size -35%)
 
 **Checkpoint**: Миграция полностью завершена. Ant Design удален. QA пройдено. Performance оптимизирован.

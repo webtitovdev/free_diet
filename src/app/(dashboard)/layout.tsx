@@ -11,6 +11,7 @@ import { Spin } from "antd";
 import { useAuthStore } from "@/features/auth/model/auth-store";
 import { AuthMethod } from "@/entities/user/model/types";
 import { BottomNavigation } from "@/widgets/navigation/ui/BottomNavigation";
+import { DesktopSidebar } from "@/widgets/navigation/ui/DesktopSidebar";
 import { TopHeader } from "@/widgets/header/ui/TopHeader";
 import { navigationItems } from "@/widgets/navigation/config/navigationItems";
 import { Menu, Bell } from "lucide-react";
@@ -69,7 +70,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }
 
   // Определение активного item на основе pathname
-  const activeItemId = navigationItems.find((item) => pathname?.startsWith(item.href))?.id;
+  const activeItemId =
+    navigationItems.find((item) => pathname?.startsWith(item.href))?.id ||
+    navigationItems[0]?.id ||
+    "home";
+
+  // Обработчик клика по элементу навигации
+  const handleNavigationClick = (itemId: string) => {
+    const item = navigationItems.find((navItem) => navItem.id === itemId);
+    if (item && !item.disabled) {
+      router.push(item.href);
+    }
+  };
 
   // Определение title на основе pathname
   const getPageTitle = () => {
@@ -83,40 +95,51 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   };
 
   return (
-    <div className="flex flex-col min-h-screen pb-16 mobile:pb-[72px]">
-      {/* TopHeader с динамическим title */}
-      <TopHeader
-        title={getPageTitle()}
-        leftAction={
-          <button
-            className="flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            aria-label="Открыть меню"
-          >
-            <Menu className="w-6 h-6" />
-          </button>
-        }
-        rightAction={
-          <button
-            className="flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            aria-label="Уведомления"
-          >
-            <Bell className="w-6 h-6" />
-          </button>
-        }
-        sticky
-        showShadowOnScroll
-      />
-
-      {/* Main content */}
-      <main className="flex-1 p-4 mobile:p-6">{children}</main>
-
-      {/* BottomNavigation - фиксированная внизу */}
-      <BottomNavigation
+    <div className="flex min-h-screen">
+      {/* DesktopSidebar - T059: показывается только на desktop */}
+      <DesktopSidebar
         items={navigationItems}
         activeItem={activeItemId}
-        position="fixed"
-        showLabels
+        onItemClick={handleNavigationClick}
       />
+
+      {/* Main content area - сдвигаем на desktop чтобы не было overlap с sidebar */}
+      <div className="flex flex-col min-h-screen pb-16 mobile:pb-[72px] desktop:pb-0 desktop:ml-64 w-full">
+        {/* TopHeader с динамическим title */}
+        <TopHeader
+          title={getPageTitle()}
+          leftAction={
+            <button
+              className="flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              aria-label="Открыть меню"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+          }
+          rightAction={
+            <button
+              className="flex items-center justify-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              aria-label="Уведомления"
+            >
+              <Bell className="w-6 h-6" />
+            </button>
+          }
+          sticky
+          showShadowOnScroll
+        />
+
+        {/* Main content */}
+        <main className="flex-1 p-4 mobile:p-6">{children}</main>
+
+        {/* BottomNavigation - фиксированная внизу на mobile/tablet, скрыта на desktop */}
+        <BottomNavigation
+          items={navigationItems}
+          activeItem={activeItemId}
+          onItemClick={handleNavigationClick}
+          position="fixed"
+          showLabels
+        />
+      </div>
     </div>
   );
 }
