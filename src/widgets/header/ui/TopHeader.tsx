@@ -35,13 +35,13 @@ export function TopHeader({
   return (
     <header
       className={cn(
-        "w-full bg-background-primary",
+        "w-full bg-background-primary dark:bg-gray-900",
         "flex items-center justify-between",
         "px-4 py-3",
         "mobile:px-6 mobile:py-4",
         "z-40",
         sticky && "sticky top-0",
-        showShadowOnScroll && isScrolled && "shadow-md",
+        showShadowOnScroll && isScrolled && "shadow-md dark:shadow-lg",
         "transition-shadow duration-200 ease-in-out",
         className
       )}
@@ -63,7 +63,7 @@ export function TopHeader({
 
       <h1
         className={cn(
-          "text-lg font-semibold text-text-primary",
+          "text-lg font-semibold text-text-primary dark:text-gray-100",
           "mobile:text-xl",
           "desktop:text-2xl",
           "text-center flex-1",

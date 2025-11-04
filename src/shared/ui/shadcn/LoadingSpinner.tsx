@@ -77,7 +77,11 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
       <Loader2 className={cn("animate-spin", colorMap[color])} size={spinnerSizes[size]} />
 
       {/* Optional Label */}
-      {label && <span className={cn("text-text-secondary", colorMap[color])}>{label}</span>}
+      {label && (
+        <span className={cn("text-text-secondary dark:text-gray-400", colorMap[color])}>
+          {label}
+        </span>
+      )}
 
       {/* Screen Reader Text */}
       <span className="sr-only">{label || "Loading..."}</span>
@@ -117,7 +121,7 @@ export const LoadingOverlay: React.FC<LoadingOverlayProps> = ({ show, label, cla
       aria-modal="true"
       aria-label="Loading"
     >
-      <div className="flex flex-col items-center gap-4 rounded-lg bg-background-primary p-6 shadow-lg">
+      <div className="flex flex-col items-center gap-4 rounded-lg bg-background-primary dark:bg-gray-800 p-6 shadow-lg dark:shadow-xl">
         <LoadingSpinner size="lg" label={label} />
       </div>
     </div>

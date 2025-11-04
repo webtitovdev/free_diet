@@ -58,9 +58,9 @@ export interface MealCardProps {
  * Цветовая кодировка макронутриентов (согласно Lifesum pattern)
  */
 const macroColors = {
-  protein: "text-blue-600 bg-blue-50", // Синий для белков
-  carbs: "text-amber-600 bg-amber-50", // Желтый для углеводов
-  fat: "text-orange-600 bg-orange-50", // Оранжевый для жиров
+  protein: "text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-900/30", // Синий для белков
+  carbs: "text-amber-600 bg-amber-50 dark:text-amber-400 dark:bg-amber-900/30", // Желтый для углеводов
+  fat: "text-orange-600 bg-orange-50 dark:text-orange-400 dark:bg-orange-900/30", // Оранжевый для жиров
 };
 
 /**
@@ -103,7 +103,7 @@ export const MealCard: React.FC<MealCardProps> = ({
         {imageUrl && (
           <div
             className={cn(
-              "relative overflow-hidden bg-background-tertiary",
+              "relative overflow-hidden bg-background-tertiary dark:bg-gray-700",
               isCompact ? "h-24 w-24 flex-shrink-0 rounded-DEFAULT" : "h-48 w-full rounded-lg"
             )}
             style={{
@@ -121,8 +121,10 @@ export const MealCard: React.FC<MealCardProps> = ({
           {/* Header */}
           <div className="flex items-start justify-between gap-2">
             <div className="flex-1">
-              <h3 className="text-lg font-semibold text-text-primary">{title}</h3>
-              <div className="mt-1 flex items-center gap-1.5 text-sm text-text-secondary">
+              <h3 className="text-lg font-semibold text-text-primary dark:text-gray-100">
+                {title}
+              </h3>
+              <div className="mt-1 flex items-center gap-1.5 text-sm text-text-secondary dark:text-gray-400">
                 <Clock size={14} />
                 <span>{formatTime(timestamp)}</span>
               </div>
@@ -165,8 +167,10 @@ export const MealCard: React.FC<MealCardProps> = ({
 
           {/* Calories */}
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-text-primary">{calories}</span>
-            <span className="text-sm text-text-secondary">ккал</span>
+            <span className="text-2xl font-bold text-text-primary dark:text-gray-100">
+              {calories}
+            </span>
+            <span className="text-sm text-text-secondary dark:text-gray-400">ккал</span>
           </div>
 
           {/* Macros */}
@@ -209,7 +213,7 @@ export const MealCard: React.FC<MealCardProps> = ({
 
           {/* Compact Macros */}
           {isCompact && (
-            <div className="flex gap-3 text-xs text-text-secondary">
+            <div className="flex gap-3 text-xs text-text-secondary dark:text-gray-400">
               <span>Б: {macros.protein}г</span>
               <span>У: {macros.carbs}г</span>
               <span>Ж: {macros.fat}г</span>

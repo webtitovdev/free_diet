@@ -147,7 +147,7 @@
 
 - [x] T042 [P] [US4] Загрузить Inter font family в frontend/src/app/styles/fonts.ts через @next/font или local files с font-weights 400, 500, 600, 700 и настроить variable font для оптимизации согласно typography tokens fontFamily
 - [x] T043 [P] [US4] Создать Typography компоненты в frontend/src/shared/ui/shadcn/Typography.tsx: Heading (h1-h6 с адаптивными размерами mobile: 24-32px, desktop: 28-36px), Text (body text с sizes sm/base/lg), Caption (xs для вспомогательного текста) согласно fontSize tokens и FR-009
-- [ ] T044 [US4] Применить Typography систему ко всем текстовым элементам в мигрированных компонентах (Button, Card, MealCard, StatsCard, TopHeader, BottomNavigation): заменить hardcoded font sizes на Typography компоненты или Tailwind typography classes. Mapping к FR-009: text-sm (14px mobile), text-base (16px mobile/desktop), text-lg (18px desktop) для основного текста
+- [x] T044 [US4] Применить Typography систему ко всем текстовым элементам в мигрированных компонентах (Button, Card, MealCard, StatsCard, TopHeader, BottomNavigation): заменить hardcoded font sizes на Typography компоненты или Tailwind typography classes. Mapping к FR-009: text-sm (14px mobile), text-base (16px mobile/desktop), text-lg (18px desktop) для основного текста
 
 ### Visual Elements & Feedback Components
 
@@ -160,12 +160,12 @@
 
 - [x] T049 [P] [US4] Реализовать dark theme color tokens в frontend/src/shared/config/colors.ts с dark variants для всех цветов: background (темные gray), text (светлые gray), shadows (светлее или отключены) согласно DarkThemeColorTokens интерфейсу
 - [x] T050 [US4] Добавить dark mode переключение в ThemeProvider frontend/src/app/providers/ThemeProvider.tsx с localStorage persistence, system preference detection (prefers-color-scheme), toggle функцией и CSS class application (dark class на html element)
-- [ ] T051 [US4] Применить dark: variants ко всем компонентам (Button, Card, Input, etc.): dark:bg-_, dark:text-_, dark:border-\* Tailwind classes для корректного отображения в темной теме согласно FR-008
+- [x] T051 [US4] Применить dark: variants ко всем компонентам (Button, Card, Input, etc.): dark:bg-_, dark:text-_, dark:border-\* Tailwind classes для корректного отображения в темной теме согласно FR-008
 
 ### Visual Polish
 
-- [ ] T052 [US4] Валидировать визуальную консистентность всех компонентов: border-radius 8-16px на всех Card/MealCard/Modal, box-shadow elevation levels применены корректно (sm для buttons, md для cards, lg для modals), spacing 16-24px padding на мобильных карточках согласно design tokens
-- [ ] T053 [US4] Добавить micro-interactions ко всем интерактивным элементам: ripple effect на touch (active state), scale animations (0.98) на button press, smooth color transitions 200ms ease-in-out согласно animation presets и FR-006, FR-007
+- [x] T052 [US4] Валидировать визуальную консистентность всех компонентов: border-radius 8-16px на всех Card/MealCard/Modal, box-shadow elevation levels применены корректно (sm для buttons, md для cards, lg для modals), spacing 16-24px padding на мобильных карточках согласно design tokens
+- [x] T053 [US4] Добавить micro-interactions ко всем интерактивным элементам: ripple effect на touch (active state), scale animations (0.98) на button press, smooth color transitions 200ms ease-in-out согласно animation presets и FR-006, FR-007
 
 **Checkpoint**: Визуальный стиль применен консистентно. All user stories имеют modern clean look.
 

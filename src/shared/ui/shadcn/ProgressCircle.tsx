@@ -109,7 +109,8 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
             cx={svgSize / 2}
             cy={svgSize / 2}
             r={radius}
-            stroke="#E5E7EB" // gray-200
+            stroke="#E5E7EB" // gray-200 light mode
+            className="dark:stroke-gray-700" // dark mode
             strokeWidth={stroke}
             fill="none"
           />
@@ -133,19 +134,23 @@ export const ProgressCircle: React.FC<ProgressCircleProps> = ({
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
             {showPercentage && (
-              <span className="text-sm font-semibold text-text-primary">
+              <span className="text-sm font-semibold text-text-primary dark:text-gray-100">
                 {Math.round(percentage)}%
               </span>
             )}
             {showValue && !showPercentage && (
-              <span className="text-sm font-semibold text-text-primary">{value}</span>
+              <span className="text-sm font-semibold text-text-primary dark:text-gray-100">
+                {value}
+              </span>
             )}
           </div>
         </div>
       </div>
 
       {/* Label */}
-      <span className="text-xs text-text-secondary text-center max-w-[120px]">{label}</span>
+      <span className="text-xs text-text-secondary dark:text-gray-400 text-center max-w-[120px]">
+        {label}
+      </span>
     </div>
   );
 };

@@ -36,9 +36,10 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
  * Варианты стилей карточек
  */
 const cardVariants: Record<CardVariant, string> = {
-  default: "bg-background-primary border border-border-default",
-  outlined: "bg-transparent border-2 border-border-default",
-  elevated: "bg-background-primary border-0",
+  default:
+    "bg-background-primary border border-border-default dark:bg-gray-800 dark:border-gray-700",
+  outlined: "bg-transparent border-2 border-border-default dark:border-gray-600 dark:text-gray-100",
+  elevated: "bg-background-primary border-0 dark:bg-gray-800",
 };
 
 /**
@@ -143,7 +144,11 @@ export interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement>
 export const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
   ({ children, className, ...props }, ref) => {
     return (
-      <h3 ref={ref} className={cn("text-lg font-semibold text-text-primary", className)} {...props}>
+      <h3
+        ref={ref}
+        className={cn("text-lg font-semibold text-text-primary dark:text-gray-100", className)}
+        {...props}
+      >
         {children}
       </h3>
     );
@@ -163,7 +168,11 @@ export interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraph
 export const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescriptionProps>(
   ({ children, className, ...props }, ref) => {
     return (
-      <p ref={ref} className={cn("text-sm text-text-secondary", className)} {...props}>
+      <p
+        ref={ref}
+        className={cn("text-sm text-text-secondary dark:text-gray-400", className)}
+        {...props}
+      >
         {children}
       </p>
     );

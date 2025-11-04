@@ -53,13 +53,16 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
  * Варианты стилей кнопок
  */
 const buttonVariants: Record<ButtonVariant, string> = {
-  primary: "bg-brand-DEFAULT text-text-inverse hover:bg-brand-dark active:scale-[0.98] shadow-sm",
+  primary:
+    "bg-brand-DEFAULT text-text-inverse hover:bg-brand-dark active:scale-[0.98] shadow-sm dark:bg-brand-dark dark:hover:bg-brand-DEFAULT",
   secondary:
-    "bg-background-secondary text-text-primary hover:bg-background-tertiary active:scale-[0.98] shadow-sm",
+    "bg-background-secondary text-text-primary hover:bg-background-tertiary active:scale-[0.98] shadow-sm dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600",
   outline:
-    "border-2 border-border-default text-text-primary hover:bg-background-secondary active:scale-[0.98]",
-  ghost: "text-text-primary hover:bg-background-secondary active:scale-[0.98]",
-  danger: "bg-semantic-error text-text-inverse hover:brightness-110 active:scale-[0.98] shadow-sm",
+    "border-2 border-border-default text-text-primary hover:bg-background-secondary active:scale-[0.98] dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800",
+  ghost:
+    "text-text-primary hover:bg-background-secondary active:scale-[0.98] dark:text-gray-200 dark:hover:bg-gray-800",
+  danger:
+    "bg-semantic-error text-text-inverse hover:brightness-110 active:scale-[0.98] shadow-sm dark:bg-red-600 dark:hover:bg-red-700",
 };
 
 /**
@@ -106,7 +109,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           // Базовые стили
           "inline-flex items-center justify-center font-medium",
           "transition-all duration-200 ease-in-out",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-DEFAULT focus-visible:ring-offset-2",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-DEFAULT focus-visible:ring-offset-2 dark:focus-visible:ring-brand-light dark:focus-visible:ring-offset-gray-900",
 
           // FAB (Floating Action Button) стили
           fab

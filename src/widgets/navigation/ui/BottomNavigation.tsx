@@ -26,14 +26,14 @@ export function BottomNavigation({
   return (
     <nav
       className={cn(
-        "w-full bg-background-primary border-t border-border-default",
+        "w-full bg-background-primary dark:bg-gray-900 border-t border-border-default dark:border-gray-700",
         "flex items-center justify-around",
         "z-50",
         "h-16 px-2",
         "mobile:h-[72px]",
         position === "fixed" && "fixed bottom-0 left-0 right-0",
         position === "sticky" && "sticky bottom-0",
-        "shadow-md",
+        "shadow-md dark:shadow-lg",
         className
       )}
       role="navigation"
@@ -58,7 +58,7 @@ export function BottomNavigation({
               "flex flex-col items-center justify-center gap-1",
               "relative",
               "transition-all duration-200 ease-in-out",
-              "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-DEFAULT",
+              "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-DEFAULT dark:focus-visible:outline-brand-light",
 
               // Центральная CTA кнопка - выделяется
               isCentralCTA
@@ -69,9 +69,9 @@ export function BottomNavigation({
                     // Круглая форма
                     "rounded-full",
                     // Brand background
-                    "bg-brand-DEFAULT text-white",
+                    "bg-brand-DEFAULT text-white dark:bg-brand-dark dark:hover:bg-brand-DEFAULT",
                     // Elevated shadow
-                    "shadow-lg",
+                    "shadow-lg dark:shadow-xl",
                     // Hover эффект
                     "hover:bg-brand-dark hover:shadow-xl hover:scale-110",
                     // Поднимаем визуально вверх
@@ -84,7 +84,8 @@ export function BottomNavigation({
                     "flex-1",
                     item.disabled && "opacity-50 cursor-not-allowed pointer-events-none",
                     isActive && "scale-105",
-                    !item.disabled && "desktop:hover:bg-background-secondary desktop:rounded-md",
+                    !item.disabled &&
+                      "desktop:hover:bg-background-secondary dark:desktop:hover:bg-gray-800 desktop:rounded-md",
                   ]
             )}
             aria-label={item.ariaLabel || item.label}
@@ -103,8 +104,8 @@ export function BottomNavigation({
                 isCentralCTA
                   ? "text-white" // Белая иконка для CTA
                   : isActive
-                    ? "text-brand-DEFAULT"
-                    : "text-text-secondary"
+                    ? "text-brand-DEFAULT dark:text-brand-light"
+                    : "text-text-secondary dark:text-gray-400"
               )}
             >
               {item.icon}
@@ -117,7 +118,9 @@ export function BottomNavigation({
                   "text-xs font-medium",
                   "transition-colors duration-200",
                   "text-center",
-                  isActive ? "text-brand-DEFAULT" : "text-text-secondary"
+                  isActive
+                    ? "text-brand-DEFAULT dark:text-brand-light"
+                    : "text-text-secondary dark:text-gray-400"
                 )}
               >
                 {item.label}
@@ -130,7 +133,7 @@ export function BottomNavigation({
                   "absolute top-0 right-2",
                   "min-w-[18px] h-[18px]",
                   "flex items-center justify-center",
-                  "bg-error text-white",
+                  "bg-error dark:bg-red-600 text-white",
                   "rounded-full",
                   "text-xs font-semibold",
                   "px-1"
