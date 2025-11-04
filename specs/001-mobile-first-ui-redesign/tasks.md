@@ -145,21 +145,21 @@
 
 ### Typography System Implementation
 
-- [ ] T042 [P] [US4] Загрузить Inter font family в frontend/src/app/styles/fonts.ts через @next/font или local files с font-weights 400, 500, 600, 700 и настроить variable font для оптимизации согласно typography tokens fontFamily
-- [ ] T043 [P] [US4] Создать Typography компоненты в frontend/src/shared/ui/shadcn/Typography.tsx: Heading (h1-h6 с адаптивными размерами mobile: 24-32px, desktop: 28-36px), Text (body text с sizes sm/base/lg), Caption (xs для вспомогательного текста) согласно fontSize tokens и FR-009
+- [x] T042 [P] [US4] Загрузить Inter font family в frontend/src/app/styles/fonts.ts через @next/font или local files с font-weights 400, 500, 600, 700 и настроить variable font для оптимизации согласно typography tokens fontFamily
+- [x] T043 [P] [US4] Создать Typography компоненты в frontend/src/shared/ui/shadcn/Typography.tsx: Heading (h1-h6 с адаптивными размерами mobile: 24-32px, desktop: 28-36px), Text (body text с sizes sm/base/lg), Caption (xs для вспомогательного текста) согласно fontSize tokens и FR-009
 - [ ] T044 [US4] Применить Typography систему ко всем текстовым элементам в мигрированных компонентах (Button, Card, MealCard, StatsCard, TopHeader, BottomNavigation): заменить hardcoded font sizes на Typography компоненты или Tailwind typography classes. Mapping к FR-009: text-sm (14px mobile), text-base (16px mobile/desktop), text-lg (18px desktop) для основного текста
 
 ### Visual Elements & Feedback Components
 
-- [ ] T045 [P] [US4] Создать Skeleton компонент в frontend/src/shared/ui/shadcn/Skeleton.tsx с variants (text, circular, rectangular), width/height configurable, animation (pulse/wave/none), lines опцией для text variant согласно SkeletonProps интерфейсу. Используется для loading состояний при низкой скорости интернета (edge case) и улучшения воспринимаемой производительности согласно FR-023
-- [ ] T046 [P] [US4] Создать Toast notification компонент в frontend/src/shared/ui/shadcn/Toast.tsx с types (success, error, warning, info), duration auto-close, action button, positions (top/bottom left/center/right) согласно ToastProps интерфейсу с использованием Radix Toast primitives
-- [ ] T047 [US4] Создать EmptyState компонент в frontend/src/shared/ui/shadcn/EmptyState.tsx с title, description, illustration placeholder, action button согласно EmptyStateProps интерфейсу для пустых списков (например, "Нет приемов пищи сегодня")
-- [ ] T048 [US4] Создать ErrorState компонент в frontend/src/shared/ui/shadcn/ErrorState.tsx с title, description, illustration, onRetry handler, retryLabel, type (network/server/not-found/generic) согласно ErrorStateProps интерфейсу для обработки FR-020, FR-021 offline error
+- [x] T045 [P] [US4] Создать Skeleton компонент в frontend/src/shared/ui/shadcn/Skeleton.tsx с variants (text, circular, rectangular), width/height configurable, animation (pulse/wave/none), lines опцией для text variant согласно SkeletonProps интерфейсу. Используется для loading состояний при низкой скорости интернета (edge case) и улучшения воспринимаемой производительности согласно FR-023
+- [x] T046 [P] [US4] Создать Toast notification компонент в frontend/src/shared/ui/shadcn/Toast.tsx с types (success, error, warning, info), duration auto-close, action button, positions (top/bottom left/center/right) согласно ToastProps интерфейсу с использованием Radix Toast primitives
+- [x] T047 [US4] Создать EmptyState компонент в frontend/src/shared/ui/shadcn/EmptyState.tsx с title, description, illustration placeholder, action button согласно EmptyStateProps интерфейсу для пустых списков (например, "Нет приемов пищи сегодня")
+- [x] T048 [US4] Создать ErrorState компонент в frontend/src/shared/ui/shadcn/ErrorState.tsx с title, description, illustration, onRetry handler, retryLabel, type (network/server/not-found/generic) согласно ErrorStateProps интерфейсу для обработки FR-020, FR-021 offline error
 
 ### Dark Theme Support
 
-- [ ] T049 [P] [US4] Реализовать dark theme color tokens в frontend/src/shared/config/colors.ts с dark variants для всех цветов: background (темные gray), text (светлые gray), shadows (светлее или отключены) согласно DarkThemeColorTokens интерфейсу
-- [ ] T050 [US4] Добавить dark mode переключение в ThemeProvider frontend/src/app/providers/ThemeProvider.tsx с localStorage persistence, system preference detection (prefers-color-scheme), toggle функцией и CSS class application (dark class на html element)
+- [x] T049 [P] [US4] Реализовать dark theme color tokens в frontend/src/shared/config/colors.ts с dark variants для всех цветов: background (темные gray), text (светлые gray), shadows (светлее или отключены) согласно DarkThemeColorTokens интерфейсу
+- [x] T050 [US4] Добавить dark mode переключение в ThemeProvider frontend/src/app/providers/ThemeProvider.tsx с localStorage persistence, system preference detection (prefers-color-scheme), toggle функцией и CSS class application (dark class на html element)
 - [ ] T051 [US4] Применить dark: variants ко всем компонентам (Button, Card, Input, etc.): dark:bg-_, dark:text-_, dark:border-\* Tailwind classes для корректного отображения в темной теме согласно FR-008
 
 ### Visual Polish

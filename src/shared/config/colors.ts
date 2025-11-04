@@ -150,8 +150,8 @@ export const colorTokens: ColorTokens = {
 /**
  * Dark Theme Color Tokens
  *
- * TODO: Реализовать полностью для FR-008
- * Текущие значения - placeholder для будущей реализации
+ * Темная тема для FR-008. Все цвета инвертированы для обеспечения контраста.
+ * Background: темные gray, Text: светлые gray, Brand: светлее для видимости.
  */
 export const darkColorTokens: DarkColorTokens = {
   brand: {

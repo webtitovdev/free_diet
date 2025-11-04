@@ -81,7 +81,7 @@ export interface TypographyTokens {
 export const typographyTokens: TypographyTokens = {
   fontFamily: {
     sans: [
-      "Inter",
+      "var(--font-inter)", // CSS variable из src/app/styles/fonts.ts
       "-apple-system",
       "BlinkMacSystemFont",
       "Segoe UI",
