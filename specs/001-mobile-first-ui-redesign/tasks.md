@@ -113,25 +113,25 @@
 
 ### Navigation Components
 
-- [ ] T032 [P] [US2] Создать BottomNavigation компонент в frontend/src/widgets/navigation/ui/BottomNavigation.tsx с 3-5 items (id, label, icon, href, badge), activeItem highlighting, onItemClick handler, position (fixed/sticky/static), showLabels опцией согласно BottomNavigationProps интерфейсу и research.md (MyFitnessPal/Instagram pattern)
-- [ ] T033 [P] [US2] Создать TopHeader компонент в frontend/src/widgets/header/ui/TopHeader.tsx с title, leftAction (кнопка назад/меню), rightAction (поиск/настройки), sticky positioning при скролле, showShadowOnScroll согласно TopHeaderProps интерфейсу
-- [ ] T034 [US2] Стилизовать BottomNavigation с fixed positioning внизу экрана, height 64-72px на мобильном для удобного thumb access, активный item с brand.DEFAULT цветом и scale animation, неактивные items с text.secondary цветом согласно research.md thumb-friendly design
+- [x] T032 [P] [US2] Создать BottomNavigation компонент в frontend/src/widgets/navigation/ui/BottomNavigation.tsx с 3-5 items (id, label, icon, href, badge), activeItem highlighting, onItemClick handler, position (fixed/sticky/static), showLabels опцией согласно BottomNavigationProps интерфейсу и research.md (MyFitnessPal/Instagram pattern)
+- [x] T033 [P] [US2] Создать TopHeader компонент в frontend/src/widgets/header/ui/TopHeader.tsx с title, leftAction (кнопка назад/меню), rightAction (поиск/настройки), sticky positioning при скролле, showShadowOnScroll согласно TopHeaderProps интерфейсу
+- [x] T034 [US2] Стилизовать BottomNavigation с fixed positioning внизу экрана, height 64-72px на мобильном для удобного thumb access, активный item с brand.DEFAULT цветом и scale animation, неактивные items с text.secondary цветом согласно research.md thumb-friendly design
 
 ### Main Navigation Integration
 
-- [ ] T035 [US2] Создать конфигурацию navigation items в frontend/src/widgets/navigation/config/navigationItems.tsx с 4 основными разделами: Дневник (diary icon, href: /diary), Добавить (plus icon в центре, href: /add-meal, выделен размером/цветом), Прогресс (chart icon, href: /progress), Профиль (user icon, href: /profile) согласно research.md section 5.1
-- [ ] T036 [US2] Интегрировать BottomNavigation в root layout frontend/src/app/layout.tsx для отображения на всех страницах кроме auth routes, передать текущий активный route из usePathname hook
-- [ ] T037 [US2] Интегрировать TopHeader в main route group layout frontend/src/app/(main)/layout.tsx с динамическим title на основе текущей страницы, leftAction (меню icon), rightAction (notification bell icon)
+- [x] T035 [US2] Создать конфигурацию navigation items в frontend/src/widgets/navigation/config/navigationItems.tsx с 4 основными разделами: Дневник (diary icon, href: /diary), Добавить (plus icon в центре, href: /add-meal, выделен размером/цветом), Прогресс (chart icon, href: /progress), Профиль (user icon, href: /profile) согласно research.md section 5.1
+- [x] T036 [US2] Интегрировать BottomNavigation в root layout frontend/src/app/layout.tsx для отображения на всех страницах кроме auth routes, передать текущий активный route из usePathname hook
+- [x] T037 [US2] Интегрировать TopHeader в main route group layout frontend/src/app/(main)/layout.tsx с динамическим title на основе текущей страницы, leftAction (меню icon), rightAction (notification bell icon)
 
 ### Central CTA (FAB) для добавления еды
 
-- [ ] T038 [US2] Создать FAB (Floating Action Button) вариант Button компонента в frontend/src/shared/ui/shadcn/Button.tsx с круглой формой (rounded-full), размером 56x56px на мобильном (touch-friendly), shadow-lg, fixed positioning, z-index высокий, animated scale hover согласно research.md section 5.2 (главная CTA должна быть самой доступной)
-- [ ] T039 [US2] Разместить центральную кнопку "Добавить еду" в BottomNavigation как средний item с визуальным выделением (больший размер, elevated shadow, brand.DEFAULT background) или как отдельный FAB в правом нижнем углу согласно research.md MyFitnessPal critique
+- [x] T038 [US2] Создать FAB (Floating Action Button) вариант Button компонента в frontend/src/shared/ui/shadcn/Button.tsx с круглой формой (rounded-full), размером 56x56px на мобильном (touch-friendly), shadow-lg, fixed positioning, z-index высокий, animated scale hover согласно research.md section 5.2 (главная CTA должна быть самой доступной)
+- [x] T039 [US2] Разместить центральную кнопку "Добавить еду" в BottomNavigation как средний item с визуальным выделением (больший размер, elevated shadow, brand.DEFAULT background) или как отдельный FAB в правом нижнем углу согласно research.md MyFitnessPal critique
 
 ### Progress Visualization (Графики и диаграммы)
 
-- [ ] T040 [P] [US2] Создать StatsCard компонент в frontend/src/shared/ui/shadcn/StatsCard.tsx с title, value, unit, icon, color, trend (value, direction: up/down/neutral) согласно StatsCardProps интерфейсу для отображения статистики
-- [ ] T041 [US2] Создать Progress страницу в frontend/src/pages/progress/ui/ProgressPage.tsx с использованием ProgressCircle компонентов для макронутриентов (protein, carbs, fat) с цветовой кодировкой согласно research.md Lifesum color-coding pattern, StatsCard для weekly/monthly trends
+- [x] T040 [P] [US2] Создать StatsCard компонент в frontend/src/shared/ui/shadcn/StatsCard.tsx с title, value, unit, icon, color, trend (value, direction: up/down/neutral) согласно StatsCardProps интерфейсу для отображения статистики
+- [x] T041 [US2] Создать Progress страницу в frontend/src/pages/progress/ui/ProgressPage.tsx с использованием ProgressCircle компонентов для макронутриентов (protein, carbs, fat) с цветовой кодировкой согласно research.md Lifesum color-coding pattern, StatsCard для weekly/monthly trends
 
 **Checkpoint**: User Stories 1 И 2 работают независимо. Навигация функциональна.
 

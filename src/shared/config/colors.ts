@@ -74,6 +74,14 @@ export interface DarkColorTokens {
     dark: string;
   };
 
+  /** Semantic Colors для темной темы */
+  semantic: {
+    success: string;
+    error: string;
+    warning: string;
+    info: string;
+  };
+
   /** Background Colors для темной темы */
   background: {
     primary: string;
@@ -151,6 +159,13 @@ export const darkColorTokens: DarkColorTokens = {
     light: "#2D6A4F",
     DEFAULT: "#A8E6A3", // Светлее для контраста на темном фоне
     dark: "#C8F0C5",
+  },
+
+  semantic: {
+    success: "#22C55E", // Green (те же значения для консистентности)
+    error: "#EF4444", // Red
+    warning: "#F59E0B", // Amber
+    info: "#3B82F6", // Blue
   },
 
   background: {

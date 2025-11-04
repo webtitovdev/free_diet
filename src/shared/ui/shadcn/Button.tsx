@@ -44,6 +44,9 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
   /** Иконка справа */
   iconRight?: React.ReactNode;
+
+  /** FAB (Floating Action Button) стиль - круглая кнопка с фиксированным позиционированием */
+  fab?: boolean;
 }
 
 /**
@@ -79,6 +82,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       disabled = false,
       loading = false,
       fullWidth = false,
+      fab = false,
       children,
       ariaLabel,
       className,
@@ -101,14 +105,30 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           // Базовые стили
           "inline-flex items-center justify-center font-medium",
-          "rounded-DEFAULT transition-all duration-200 ease-in-out",
+          "transition-all duration-200 ease-in-out",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-DEFAULT focus-visible:ring-offset-2",
+
+          // FAB (Floating Action Button) стили
+          fab
+            ? [
+                "rounded-full", // Круглая форма
+                "w-14 h-14 mobile:w-[56px] mobile:h-[56px]", // 56x56px на мобильном
+                "fixed bottom-20 right-4 mobile:bottom-24 mobile:right-6", // Fixed positioning
+                "shadow-lg hover:shadow-xl", // Большая тень
+                "z-[100]", // Высокий z-index
+                "hover:scale-110 active:scale-95", // Animated scale
+              ]
+            : [
+                "rounded-DEFAULT",
+                // Размер (только если не FAB)
+                buttonSizes[size],
+                // Полная ширина
+                fullWidth && "w-full",
+              ],
+
           // Вариант
           buttonVariants[variant],
-          // Размер
-          buttonSizes[size],
-          // Полная ширина
-          fullWidth && "w-full",
+
           // Disabled состояние
           isDisabled && "opacity-50 cursor-not-allowed pointer-events-none",
           // Кастомные классы

@@ -9,12 +9,17 @@
  */
 
 import { colorTokens, darkColorTokens, type ColorTokens, type DarkColorTokens } from "./colors";
-import { spacingTokens, type SpacingTokens } from "./spacing";
-import { typographyTokens, type TypographyTokens } from "./typography";
-import { borderRadiusTokens, type BorderRadiusTokens } from "./border-radius";
-import { shadowTokens, darkShadowTokens, type ShadowTokens } from "./shadows";
+import { spacingTokens, type SpacingTokens, type SpacingKey } from "./spacing";
+import {
+  typographyTokens,
+  type TypographyTokens,
+  type FontSizeKey,
+  type FontWeightKey,
+} from "./typography";
+import { borderRadiusTokens, type BorderRadiusTokens, type BorderRadiusKey } from "./border-radius";
+import { shadowTokens, darkShadowTokens, type ShadowTokens, type ShadowKey } from "./shadows";
 import { breakpointConfig, type BreakpointConfig } from "./breakpoints";
-import { animationConfig, type AnimationConfig } from "./animations";
+import { animationConfig, type AnimationConfig, type AnimationPreset } from "./animations";
 import { accessibilityConfig, type AccessibilityConfig } from "./accessibility";
 
 /**

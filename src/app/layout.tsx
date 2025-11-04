@@ -6,6 +6,7 @@ import { ToastProvider } from "@/shared/providers";
 import { ThemeProvider } from "@/app/providers/ThemeProvider";
 import { AntdThemeProvider } from "@/shared/ui/legacy-antd/AntdThemeProvider";
 import { Header } from "@/widgets/header/Header";
+import { inter } from "./styles/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,8 +16,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ru" suppressHydrationWarning>
-      <body>
+    <html lang="ru" suppressHydrationWarning className={inter.variable}>
+      <body className={inter.className}>
         <ThemeProvider defaultTheme="system">
           <SessionProvider>
             <AntdRegistry>
