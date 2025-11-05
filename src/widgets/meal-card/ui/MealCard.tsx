@@ -91,137 +91,142 @@ export const MealCard: React.FC<MealCardProps> = ({
   const isCompact = variant === "compact";
 
   return (
-    <Card
-      interactive={!!onClick}
-      onClick={onClick}
-      borderRadius="md"
-      shadow="md"
-      className={cn("overflow-hidden transition-all duration-200", "hover:shadow-lg", className)}
-    >
-      <div className={cn("flex gap-4", isCompact ? "flex-row" : "flex-col")}>
-        {/* Image */}
-        {imageUrl && (
-          <div
-            className={cn(
-              "relative overflow-hidden bg-background-tertiary dark:bg-gray-700",
-              isCompact ? "h-24 w-24 flex-shrink-0 rounded-DEFAULT" : "h-48 w-full rounded-lg"
-            )}
-            style={{
-              backgroundImage: `url(${imageUrl})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-            role="img"
-            aria-label={`Фото: ${title}`}
-          />
+    <div className="relative group">
+      <Card
+        interactive={!!onClick}
+        onClick={onClick}
+        borderRadius="lg"
+        shadow="lg"
+        className={cn(
+          "overflow-hidden transition-all duration-300 border-0",
+          "hover:shadow-2xl hover:scale-105",
+          "bg-white dark:bg-slate-800",
+          className
         )}
+      >
+        {/* Gradient overlay на hover */}
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
 
-        {/* Content */}
-        <div className="flex flex-1 flex-col gap-3">
-          {/* Header */}
-          <div className="flex items-start justify-between gap-2">
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-text-primary dark:text-gray-100">
-                {title}
-              </h3>
-              <div className="mt-1 flex items-center gap-1.5 text-sm text-text-secondary dark:text-gray-400">
-                <Clock size={14} />
-                <span>{formatTime(timestamp)}</span>
+        <div className={cn("flex gap-4 relative z-10", isCompact ? "flex-row" : "flex-col")}>
+          {/* Image */}
+          {imageUrl && (
+            <div
+              className={cn(
+                "relative overflow-hidden",
+                isCompact ? "h-24 w-24 flex-shrink-0 rounded-xl" : "h-48 w-full rounded-t-xl"
+              )}
+            >
+              {/* Image с градиентом сверху */}
+              <div
+                className="absolute inset-0 bg-cover bg-center"
+                style={{
+                  backgroundImage: `url(${imageUrl})`,
+                }}
+                role="img"
+                aria-label={`Фото: ${title}`}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+            </div>
+          )}
+
+          {/* Content */}
+          <div className="flex flex-1 flex-col gap-3 p-4">
+            {/* Header */}
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex-1">
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                  {title}
+                </h3>
+                <div className="mt-1 flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400">
+                  <Clock size={14} />
+                  <span>{formatTime(timestamp)}</span>
+                </div>
               </div>
+
+              {/* Actions */}
+              {(onEdit || onDelete) && (
+                <div className="flex items-center gap-1">
+                  {onEdit && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onEdit();
+                      }}
+                      ariaLabel="Редактировать прием пищи"
+                      className="h-8 w-8 p-0 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:text-blue-600"
+                    >
+                      <Edit2 size={16} />
+                    </Button>
+                  )}
+                  {onDelete && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete();
+                      }}
+                      ariaLabel="Удалить прием пищи"
+                      className="h-8 w-8 p-0 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600"
+                    >
+                      <Trash2 size={16} />
+                    </Button>
+                  )}
+                </div>
+              )}
             </div>
 
-            {/* Actions */}
-            {(onEdit || onDelete) && (
-              <div className="flex items-center gap-1">
-                {onEdit && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onEdit();
-                    }}
-                    ariaLabel="Редактировать прием пищи"
-                    className="h-8 w-8 p-0"
-                  >
-                    <Edit2 size={16} />
-                  </Button>
-                )}
-                {onDelete && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDelete();
-                    }}
-                    ariaLabel="Удалить прием пищи"
-                    className="h-8 w-8 p-0 hover:text-semantic-error"
-                  >
-                    <Trash2 size={16} />
-                  </Button>
-                )}
+            {/* Calories с градиентом */}
+            <div className="flex items-baseline gap-2">
+              <span className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+                {calories}
+              </span>
+              <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">ккал</span>
+            </div>
+
+            {/* Macros с градиентами */}
+            {!isCompact && (
+              <div className="flex flex-wrap gap-2">
+                {/* Protein */}
+                <div className="relative overflow-hidden rounded-lg px-3 py-2 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-200 dark:border-blue-800">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-medium text-blue-700 dark:text-blue-300">Белки</span>
+                    <span className="text-sm font-bold text-blue-900 dark:text-blue-100">{macros.protein}г</span>
+                  </div>
+                </div>
+
+                {/* Carbs */}
+                <div className="relative overflow-hidden rounded-lg px-3 py-2 bg-gradient-to-br from-amber-500/10 to-yellow-500/10 border border-amber-200 dark:border-amber-800">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-medium text-amber-700 dark:text-amber-300">Углеводы</span>
+                    <span className="text-sm font-bold text-amber-900 dark:text-amber-100">{macros.carbs}г</span>
+                  </div>
+                </div>
+
+                {/* Fat */}
+                <div className="relative overflow-hidden rounded-lg px-3 py-2 bg-gradient-to-br from-orange-500/10 to-red-500/10 border border-orange-200 dark:border-orange-800">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs font-medium text-orange-700 dark:text-orange-300">Жиры</span>
+                    <span className="text-sm font-bold text-orange-900 dark:text-orange-100">{macros.fat}г</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Compact Macros */}
+            {isCompact && (
+              <div className="flex gap-3 text-xs font-medium text-gray-600 dark:text-gray-400">
+                <span>Б: {macros.protein}г</span>
+                <span>У: {macros.carbs}г</span>
+                <span>Ж: {macros.fat}г</span>
               </div>
             )}
           </div>
-
-          {/* Calories */}
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold text-text-primary dark:text-gray-100">
-              {calories}
-            </span>
-            <span className="text-sm text-text-secondary dark:text-gray-400">ккал</span>
-          </div>
-
-          {/* Macros */}
-          {!isCompact && (
-            <div className="flex flex-wrap gap-2">
-              {/* Protein */}
-              <div
-                className={cn(
-                  "flex items-center gap-1.5 rounded-DEFAULT px-3 py-1.5",
-                  macroColors.protein
-                )}
-              >
-                <span className="text-xs font-medium">Белки</span>
-                <span className="text-sm font-semibold">{macros.protein}г</span>
-              </div>
-
-              {/* Carbs */}
-              <div
-                className={cn(
-                  "flex items-center gap-1.5 rounded-DEFAULT px-3 py-1.5",
-                  macroColors.carbs
-                )}
-              >
-                <span className="text-xs font-medium">Углеводы</span>
-                <span className="text-sm font-semibold">{macros.carbs}г</span>
-              </div>
-
-              {/* Fat */}
-              <div
-                className={cn(
-                  "flex items-center gap-1.5 rounded-DEFAULT px-3 py-1.5",
-                  macroColors.fat
-                )}
-              >
-                <span className="text-xs font-medium">Жиры</span>
-                <span className="text-sm font-semibold">{macros.fat}г</span>
-              </div>
-            </div>
-          )}
-
-          {/* Compact Macros */}
-          {isCompact && (
-            <div className="flex gap-3 text-xs text-text-secondary dark:text-gray-400">
-              <span>Б: {macros.protein}г</span>
-              <span>У: {macros.carbs}г</span>
-              <span>Ж: {macros.fat}г</span>
-            </div>
-          )}
         </div>
-      </div>
-    </Card>
+      </Card>
+    </div>
   );
 };
 
