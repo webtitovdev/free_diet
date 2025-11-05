@@ -8,19 +8,29 @@ import Link from "next/link";
 
 export default function RegisterPage() {
   return (
-    <div>
+    <div className="space-y-6">
+      {/* Page Title */}
+      <div className="text-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          Создать аккаунт
+        </h2>
+        <p className="text-sm text-gray-600 dark:text-gray-400">
+          Начните отслеживать калории прямо сейчас
+        </p>
+      </div>
+
       <RegisterForm />
 
       <Divider>или</Divider>
 
       <GoogleOAuthButton />
 
-      <div className="mt-4 text-center">
-        <p className="text-text-secondary dark:text-gray-400">
+      <div className="mt-6 text-center">
+        <p className="text-sm text-gray-600 dark:text-gray-400">
           Уже есть аккаунт?{" "}
           <Link
             href="/login"
-            className="text-brand-DEFAULT hover:text-brand-dark dark:text-brand-light dark:hover:text-brand-DEFAULT underline transition-colors"
+            className="font-semibold text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 transition-colors"
           >
             Войти
           </Link>
