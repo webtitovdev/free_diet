@@ -12,33 +12,45 @@
 
 /* CSS Variables для Light Theme */
 :root {
-  /* Brand Colors */
+  /* Brand Colors - Beautiful Pastel Green Palette */
   --color-brand-pastel: #a8e6a3;
   --color-brand-light: #c8f0c5;
   --color-brand-default: #2d6a4f;
   --color-brand-dark: #1f4a37;
 
+  /* Gradient Colors - Modern & Vibrant */
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-success: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+  --gradient-brand: linear-gradient(135deg, #a8e6a3 0%, #2d6a4f 100%);
+  --gradient-warm: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  --gradient-cool: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+  --gradient-sunset: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+
   /* Semantic Colors */
-  --color-success: #22c55e;
+  --color-success: #10b981;
   --color-error: #ef4444;
   --color-warning: #f59e0b;
   --color-info: #3b82f6;
 
-  /* Background Colors */
+  /* Background Colors - More depth */
   --color-bg-primary: #ffffff;
-  --color-bg-secondary: #f9fafb;
-  --color-bg-tertiary: #f3f4f6;
+  --color-bg-secondary: #f8fafc;
+  --color-bg-tertiary: #f1f5f9;
 
   /* Text Colors */
-  --color-text-primary: #1f2937;
-  --color-text-secondary: #4b5563;
-  --color-text-disabled: #9ca3af;
+  --color-text-primary: #1e293b;
+  --color-text-secondary: #64748b;
+  --color-text-disabled: #94a3b8;
   --color-text-inverse: #ffffff;
 
   /* Border Colors */
-  --color-border-default: #e5e7eb;
+  --color-border-default: #e2e8f0;
   --color-border-focus: #2d6a4f;
   --color-border-error: #ef4444;
+
+  /* Glass Morphism */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.18);
 }
 
 /* CSS Variables для Dark Theme */
@@ -49,21 +61,33 @@
   --color-brand-default: #a8e6a3;
   --color-brand-dark: #c8f0c5;
 
+  /* Gradients for Dark Theme */
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-success: linear-gradient(135deg, #5eead4 0%, #3b82f6 100%);
+  --gradient-brand: linear-gradient(135deg, #a8e6a3 0%, #2d6a4f 100%);
+  --gradient-warm: linear-gradient(135deg, #f87171 0%, #fbbf24 100%);
+  --gradient-cool: linear-gradient(135deg, #06b6d4 0%, #3730a3 100%);
+  --gradient-sunset: linear-gradient(135deg, #f43f5e 0%, #fb923c 100%);
+
   /* Background Colors */
-  --color-bg-primary: #1f2937;
-  --color-bg-secondary: #111827;
-  --color-bg-tertiary: #374151;
+  --color-bg-primary: #0f172a;
+  --color-bg-secondary: #1e293b;
+  --color-bg-tertiary: #334155;
 
   /* Text Colors */
-  --color-text-primary: #f9fafb;
-  --color-text-secondary: #d1d5db;
-  --color-text-disabled: #6b7280;
-  --color-text-inverse: #1f2937;
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #cbd5e1;
+  --color-text-disabled: #64748b;
+  --color-text-inverse: #0f172a;
 
   /* Border Colors */
-  --color-border-default: #374151;
+  --color-border-default: #334155;
   --color-border-focus: #a8e6a3;
   --color-border-error: #ef4444;
+
+  /* Glass Morphism */
+  --glass-bg: rgba(15, 23, 42, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
 }
 
 /* Base Styles */
@@ -142,6 +166,87 @@ a {
 .animate-fadeIn {
   animation-name: fadeIn;
   animation-timing-function: ease-in-out;
+}
+
+/* Pulse Animation для ProgressCircle и Skeleton */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Slide Up Animation для модалов и карточек */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Shimmer Animation для загрузки */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Glass Morphism Utility */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Floating Animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }
 
 /* Reduced Motion для Accessibility */
